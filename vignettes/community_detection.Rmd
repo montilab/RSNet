@@ -1,0 +1,32 @@
+---
+title: "Community Detection"
+output: rmarkdown::html_vignette
+author: "Ziwei Huang"
+date: "10/06/2025"
+vignette: >
+  %\VignetteIndexEntry{Community Detection}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<font color = "#000000">
+
+```{r}
+library(RSNet)
+```
+
+
+</font>
+--
+
+
+
+
+
+
+

@@ -1,0 +1,28 @@
+---
+title: "Conditional Gaussian Bayesian Networks Structure Learning"
+output: rmarkdown::html_vignette
+author: "Ziwei Huang"
+date: "10/06/2025"
+vignette: >
+  %\VignetteIndexEntry{Conditional Gaussian Bayesian Networks Structure Learning}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = requireNamespace("RHugin", quietly = TRUE))
+```
+
+
+<font color = "#000000">
+
+```{r}
+library(RSNet)
+```
+
+
+</font>
+--
+
+
