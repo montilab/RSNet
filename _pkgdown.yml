@@ -1,11 +1,12 @@
 url: https://montilab.github.io/RSNet
 
+# Use Bootstrap 5; remove the old BS3 params block
+template:
+  bootstrap: 5
+  bootswatch: cosmo   # optional: Bootswatch theme for BS5
+
 development:
   mode: auto
-
-template:
-  params:
-    bootswatch: cosmo
 
 authors:
   Ziwei Huang:
@@ -13,80 +14,64 @@ authors:
   Stefano Monti:
     href: https://github.com/tetomonti
 
-
 news:
   one_page: false
 
+# Start with a minimal, valid reference. Add more sections once it builds.
 reference:
-- title: Network Structure Inference Methods
-  desc: ~
-  contents:
-  - '`ensemble_ggm'
-  - '`ensemble_cgbn`'
-  - '`consensus_net_ggm`'
-  - '`consensus_net_cgbn`'
-  - '`resample`'
-  - '`resample_cluster`'
-  - '`matrix_p_adjust`'
-  - '`upper_tri_to_matrix`'
+  - title: Network Structure Inference Methods
+    contents:
+      - ensemble_ggm
+      - ensemble_cgbn
+      - consensus_net_ggm
+      - consensus_net_cgbn
+      - resample
+      - resample_cluster
+      - matrix_p_adjust
+      - upper_tri_to_matrix
 
-- title: Graphlet-based Methods
-  desc: ~
-  contents:
-  - '`gdvm_gcm`'
-  - '`signed_gdvm_gcm`'
-  - '`gdv_distance`'
-  - '`pgdv_distance`'
+  - title: Graphlet-based Methods
+    contents:
+      - gdvm_gcm
+      - signed_gdvm_gcm
+      - gdv_distance
+      - pgdv_distance
 
-- title: Community Detection Methods
-  desc: ~
-  contents:
-  - '`community_detection`'
-  - '`remove_isolated`'
-  - '`remove_small_community`'
+  - title: Community Detection Methods
+    contents:
+      - community_detection
+      - remove_isolated
+      - remove_small_community
+      - colorize_community
 
-- title: Centrality Methods
-  desc: ~
-  contents:
-  - '`centrality`'
+  - title: Centrality Methods
+    contents:
+      - centrality
 
-- title: Differential Connectivity Methods
-  desc: ~
-  contents:
-  - '`null_ggm`'
-  - '`permutation_diffanal`'
-  - '`bootstrap_diffanal`'
-  - '`bootBCStats`'
+  - title: Differential Connectivity Methods
+    contents:
+      - null_ggm
+      - permutation_diffanal
+      - bootstrap_diffanal
+      - bootBCStats
 
-- title: Plot Methods
-  desc: ~
-  contents:
-  - '`plot_cn`'
-  - '`ggempty`'
+  - title: Plot Methods
+    contents:
+      - plot_cn
 
+  - title: Simulation Methods
+    contents:
+      - model_er
+      - model_pa
+      - model_mpa
+      - model_sbm
+      - model_sw
+      - model_sim
+      - sim_fam_data    # <-- removed stray space/backtick
 
-- title: Simulation Methods
-  desc: ~
-  contents:
-  - '`model_er`'
-  - '`model_pa`'
-  - '`model_mpa`'
-  - '`model_sbm`'
-  - '`model_sw`'
-  - '`model_sim`'
-  - '`sim_fam_data `'
-
-- title: Miscellaneous Methods
-  desc: ~
-  contents:
-  - '`zzz`'
-  - '`jaccard_similarity`'
-  - '`euclidean_pairwise_complete_obs`'
-
-- title: Data Objects
-  desc: ~
-  contents:
-  - '`toy_er`'
+  - title: Data Objects
+    contents:
+      - toy_er
 
 navbar:
   title: "RSNet"
@@ -95,14 +80,14 @@ navbar:
       href: index.html
     - text: "Documentation"
       menu:
-      - text: "Markov Network Structure Learning"
-        href: articles/structure_learning_ggm.html
-      - text: "Conditional Gaussian Bayesian Network Structure Learning"
-        href: articles/structure_learning_cgbn.html
-      - text: "Graphlet-based Analysis"
-        href: articles/graphlet.html
-      - text: "Community Detection"
-        href: articles/community_detection.html
+        - text: "Markov Network Structure Learning"
+          href: articles/structure_learning_ggm.html
+        - text: "Conditional Gaussian Bayesian Network Structure Learning"
+          href: articles/structure_learning_cgbn.html
+        - text: "Graphlet-based Analysis"
+          href: articles/graphlet.html
+        - text: "Community Detection"
+          href: articles/community_detection.html
     - text: "Reference"
       href: reference/index.html
   right:
