@@ -42,7 +42,6 @@ reference:
       - community_detection
       - remove_isolated
       - remove_small_community
-      - colorize_community
 
   - title: Centrality Methods
     contents:
@@ -72,6 +71,21 @@ reference:
   - title: Data Objects
     contents:
       - toy_er
+
+  - title:  Miscellaneous
+    contents:
+      - distinct_colors
+      - normalize_range
+      - colorize
+      - colorize_community
+      - ggempty
+      - euclidean_pairwise_complete_obs
+      - jaccard_similarity
+
+
+
+
+
 
 navbar:
   title: "RSNet"

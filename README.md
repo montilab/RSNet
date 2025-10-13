@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# hypeR.GEM
+# RSNet
 
 ![Gitter](https://img.shields.io/gitter/room/montilab/RSNet) ![GitHub
 issues](https://img.shields.io/github/issues/montilab/RSNet) ![GitHub
@@ -24,7 +24,7 @@ The Conditional Gaussian Bayesian Network (CGBN) functionalities
 [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html),
 [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html),
 and
-[Linux](https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html)
+[Linux](https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html).
 
 ## (i) Load R packages
 
