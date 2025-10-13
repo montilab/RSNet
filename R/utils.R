@@ -312,6 +312,97 @@ remove_small_community <- function(igs,
   return(igs)
 }
 
+#' Distinct colors for large categorical datasets
+#'
+#' Colors derived from the R package colorspace
+#' colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes
+#' https://cran.r-project.org/web/packages/colorspace/index.html
+#' License: BSD_3_clause + https://cran.r-project.org/web/packages/colorspace/LICENSE
+#'
+#' @param n Number of colors desired
+#'
+#' @return Color palette
+#'
+#' @export
+distinct_colors <- function(n) {
+  x <- c("#353E7C","#007094","#009B95","#00BE7D","#96D84B","#FDE333","#040404","#3E134F","#851170","#C53270",
+         "#F36E35","#F8B83C","#A23D47","#A96C00","#9A9800","#75C165","#50E2BB","#B0F4FA","#26185F","#005D9E",
+         "#18BDB0","#9ADCBB","#D7F4CF","#DD008F","#DB6AC0","#D5A6DB","#F6F6FC","#CBA079","#928261","#605F4C",
+         "#363932","#001889","#87008D","#DAFF47","#88002D","#FE945C","#FFE2C0","#004533","#006F69","#0091AD",
+         "#EDD788","#AB4A3D","#73243C","#AC0535","#EB2C31","#EF4868","#F56553","#404E9C","#3D7CB8","#4BA5BF",
+         "#55C7B1","#A3E292","#FAEF8B","#0A1230","#3C2871","#7A3392","#B7509A","#E68375","#F1C687","#985277",
+         "#A37B49","#9BA453","#86CBA0","#7DEBEA","#C0FCFC","#2C2C7D","#396ABC","#5DC6DB","#AAE6EA","#DEFDFD",
+         "#CA40B4","#CF82E3","#D1B6F3","#F7FFFF","#C7AEAE","#928F93","#626C7B","#3A465F","#25309C","#7B31A9",
+         "#DEFD99","#7D245B","#F3A698","#FDF0F3","#215061","#367A94","#4B9CD2","#EBE4C4","#A15D70","#6B3868")
+  return(rep(x, floor(n/length(x))+1)[1:n])
+}
+
+#' Normalize values between a given range
+#'
+#' @param x Values to normalize
+#' @param a Min of range
+#' @param b max of range
+#'
+#' @return Normalized values
+#'
+#' @export
+normalize_range <- function(x, a=0, b=1) {
+  (b-a)*( (x-min(x)) / (max(x)-min(x)) )+a
+}
+
+
+#' Colorize numerical values
+#'
+#' @param values values to be colorized
+#' @param resolution Limit resolution for small values
+#'
+#' @return Colorized values
+#' @importFrom grDevices heat.colors
+#' @export
+colorize <- function(values, resolution=4) {
+  multiplier <- 100*resolution
+  colors <- rev(heat.colors(multiplier+1))
+  colors[round(normalize_range(values)*multiplier, 0)+1]
+}
+
+
+#' Assign unique color to each community
+#'
+#' @param ig an igraph object
+#' @param community_attr_name the node attribute that represents the community partition
+
+#' @import methods utils
+#' @importFrom magrittr %>%
+#' @importFrom dplyr select pull left_join rename
+#' @importFrom igraph vertex_attr_names as_data_frame V
+
+#' @return an igraph object with "color" node attribute
+#' @export
+colorize_community <- function(ig,
+                               community_attr_name = "community"){
+
+  stopifnot(is(ig,"igraph"))
+  if(!(community_attr_name %in% igraph::vertex_attr_names(ig))) stop("`community_attr_name` should be in `vertex_attr` of `ig`")
+
+  ## obtain unique community labels
+  communities_unique <- igraph::as_data_frame(ig, what='vertices') %>%
+    dplyr::pull(!!as.name(community_attr_name)) %>%
+    unique()
+
+  ## create color palette
+  color_pal <- data.frame(community = communities_unique,
+                          color = distinct_colors(length(communities_unique)))
+
+  igraph::V(ig)$color <- igraph::as_data_frame(ig, what='vertices') %>%
+    dplyr::rename(community = !!as.name(community_attr_name)) %>%
+    dplyr::select(community) %>%
+    dplyr::left_join(color_pal, by="community") %>%
+    dplyr::pull(color)
+
+  return(ig)
+
+}
+
 
 ########################### Plot ###############################################
 

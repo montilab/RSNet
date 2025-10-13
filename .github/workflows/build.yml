@@ -14,27 +14,23 @@ permissions:
 jobs:
   check-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: r-lib/actions/setup-pandoc@v2
-
       - uses: r-lib/actions/setup-r@v2
         with:
-          use-public-rspm: true   # binaries + sysreqs auto-resolved
+          use-public-rspm: true
 
-      # --- Install hard deps for R CMD check (skip Suggests) ---
+      # Install hard deps for check (no Suggests)
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          # rcmdcheck to run checks; BiocManager so Bioconductor Imports (e.g., Biobase) can install
           extra-packages: |
             any::rcmdcheck
             any::BiocManager
+            any::testthat        # <-- ensures tests run
             local::.
           dependencies: '"hard"'
 
-      # --- Run R CMD check with Suggests disabled ---
       - name: R CMD check (skip Suggests)
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: "false"
@@ -42,7 +38,7 @@ jobs:
         run: |
           Rscript -e 'rcmdcheck::rcmdcheck(args = c("--no-manual","--as-cran"), error_on = "warning", check_dir = "check")'
 
-      # --- Install deps for website build (pkgdown + your pkg), still no Suggests ---
+      # Deps for website build (pkgdown + your pkg), still no Suggests
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
@@ -51,13 +47,10 @@ jobs:
           needs: website
           dependencies: '"hard"'
 
-      # --- Build the pkgdown site into ./docs ---
       - name: Build pkgdown site
         run: Rscript -e 'pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)'
 
-      # --- Deploy ./docs to gh-pages branch ---
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: docs
+          bra

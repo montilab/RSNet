@@ -227,6 +227,7 @@ model_sim <- function(n, ig, seed=1){
 #' @return an ExpressionSet object
 
 #' @import methods utils
+#' @importFrom stats rnorm
 #' @importFrom magrittr %>% set_rownames
 #' @importFrom kinship2 makekinship
 #' @importFrom Biobase ExpressionSet AnnotatedDataFrame

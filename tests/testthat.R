@@ -1,4 +1,7 @@
-library(testthat)
-library(RSNet)
+# tests/testthat.R
+if (requireNamespace("testthat", quietly = TRUE)) {
+  testthat::test_check("RSNet")
+} else {
+  message("Skipping tests because 'testthat' is not installed.")
+}
 
-testthat::test_check("RSNet")
