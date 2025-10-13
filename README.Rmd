@@ -31,7 +31,7 @@ devtools::install_github("montilab/RSNet")
 # Usage
 
 
-The Conditional Gaussian Bayesian Network (CGBN) functionalities `ensemble_cgbn` and `consensus_net_cgbn` are optional and require the `RHugin` package. Installation instructions for [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html), [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html), and [Linux](https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html)
+The Conditional Gaussian Bayesian Network (CGBN) functionalities `ensemble_cgbn` and `consensus_net_cgbn` are optional and require the `RHugin` package. Installation instructions for [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html), [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html), and [Linux](https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html).
 
 
 ## (i) Load R packages

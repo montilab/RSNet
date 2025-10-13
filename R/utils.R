@@ -327,6 +327,154 @@ ggempty <- function() {
     theme_void()
 }
 
+#################### Differential Connectivity  ###############################
+
+#' Permutation for differential connectivity analysis
+#'
+#' @param df an input n by (p+1) data frame
+#' @param group_col the column that represents the "group/phenotype" to be shuffled
+#' @param balanced a logical parameter for regular or balanced permutation
+#' @param seed random seed
+#'
+#' @returns an list object containing two shuffled data frame for each group
+#' @export
+permutation_diffanal <- function(df,
+                                  group_col = "phenotype",
+                                  balanced = FALSE,
+                                  seed = NULL) {
+
+  stopifnot(is.data.frame(df))
+  stopifnot(group_col %in% names(df))
+  if (!is.null(seed)) set.seed(seed)
+
+  # Check: all columns except group_col are numeric
+  numeric_check <- vapply(df[ , !(names(df) %in% group_col), drop = FALSE],
+                          is.numeric, logical(1))
+  if (!all(numeric_check)) {
+    bad_cols <- names(numeric_check)[!numeric_check]
+    stop(sprintf("All columns except '%s' must be numeric. Non-numeric column(s) found: %s",
+                 group_col, paste(bad_cols, collapse = ", ")))
+  }
+
+  group <- df[[group_col]]
+
+  if (!is.character(group) && !is.factor(group) &&
+      !is.integer(group) && !is.logical(group)) {
+    stop("'group_col' must be character, factor, integer, or logical")
+  }
+
+  group_vals <- unique(group)
+  if (length(group_vals) != 2L) {
+    stop(sprintf("`%s` must have exactly 2 unique values (found %d).",
+                 group_col, length(group_vals)))
+  }
+
+  n1 <- sum(group == group_vals[1])
+  n2 <- sum(group == group_vals[2])
+
+  if (!balanced) {
+    # Unbalanced: standard label shuffle (preserves counts)
+    df$group_perm <- sample(group, length(group), replace = FALSE)
+  } else {
+    # Balanced: down-sample to equal group sizes
+    n_min <- min(n1, n2)
+    idx1 <- sample(which(group == group_vals[1]), n_min)
+    idx2 <- sample(which(group == group_vals[2]), n_min)
+    idx_bal <- c(idx1, idx2)
+
+    df <- df[idx_bal, , drop = FALSE]
+    df$group_perm <- sample(df[[group_col]], length(df[[group_col]]), replace = FALSE)
+  }
+
+  # Build list by permuted label
+  df_list <- lapply(group_vals, function(v) {
+    df_sub <- df[df$group_perm == v, , drop = FALSE]
+    # Drop both group_col and group_perm columns
+    df_sub <- df_sub[, !(names(df_sub) %in% c(group_col, "group_perm")), drop = FALSE]
+    return(df_sub)
+  })
+
+  names(df_list) <- group_vals
+  return(df_list)
+}
+
+#' Bootstrap for differential connectivity analysis (pooled bootstrap)
+#'
+#' @param df        An input n x (p+1) data frame.
+#' @param group_col Column that represents the group/phenotype.
+#' @param max_tries Max retries to ensure both classes appear in the bootstrap (default 100).
+#' @param seed      Optional random seed.
+#'
+#' @return A named list of two bootstrapped data frames (one per group),
+#'         with \code{group_col} and the temporary \code{group_boot} removed.
+#' @export
+bootstrap_diffanal <- function(df,
+                               group_col = "phenotype",
+                               max_tries = 100,
+                               seed = NULL) {
+  stopifnot(is.data.frame(df))
+  stopifnot(group_col %in% names(df))
+  if (!is.null(seed)) set.seed(seed)
+
+  # 1) Check: all columns except group_col are numeric
+  numeric_check <- vapply(df[, !(names(df) %in% group_col), drop = FALSE],
+                          is.numeric, logical(1))
+  if (!all(numeric_check)) {
+    bad_cols <- names(numeric_check)[!numeric_check]
+    stop(sprintf("All columns except '%s' must be numeric. Non-numeric column(s) found: %s",
+                 group_col, paste(bad_cols, collapse = ", ")))
+  }
+
+  # 2) Validate group column
+  group <- df[[group_col]]
+  if (!is.character(group) && !is.factor(group) &&
+      !is.integer(group) && !is.logical(group)) {
+    stop("'group_col' must be character, factor, integer, or logical")
+  }
+  if (anyNA(group)) {
+    stop(sprintf("`%s` contains NA; please handle missing labels first.", group_col))
+  }
+
+  # Stable naming
+  group_vals <- unique(as.character(group))
+  if (length(group_vals) != 2L) {
+    stop(sprintf("`%s` must have exactly 2 unique values (found %d).",
+                 group_col, length(group_vals)))
+  }
+
+  # 3) Pooled bootstrap of rows (labels come along; counts vary)
+  n <- nrow(df)
+  tries <- 0L
+  repeat {
+    idx_boot <- sample.int(n, size = n, replace = TRUE)
+    df_boot  <- df[idx_boot, , drop = FALSE]
+
+    # Inherit labels from resampled rows (no shuffling)
+    df_boot$group_boot <- as.character(df_boot[[group_col]])
+
+    tab <- table(df_boot$group_boot)
+    # proceed if both target groups are present and non-zero
+    if (all(group_vals %in% names(tab)) && all(tab[group_vals] > 0)) break
+
+    tries <- tries + 1L
+    if (tries >= max_tries) {
+      stop("Bootstrap repeatedly produced a single-class sample; increase 'max_tries' or sample size.")
+    }
+  }
+
+  # 4) Build list by bootstrapped label; drop label columns
+  df_list <- lapply(group_vals, function(v) {
+    df_sub <- df_boot[df_boot$group_boot == v, , drop = FALSE]
+    df_sub <- df_sub[, !(names(df_sub) %in% c(group_col, "group_boot")), drop = FALSE]
+    df_sub
+  })
+
+  names(df_list) <- group_vals
+
+  return(df_list)
+}
+
+
 
 ######################## Miscellaneous  ########################################
 
