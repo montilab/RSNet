@@ -27,27 +27,23 @@ jobs:
       - name: Setup Pandoc
         uses: r-lib/actions/setup-pandoc@v2
 
-      # Install helper tools (rcmdcheck, pkgdown) but do NOT try to install your
-      # package's Suggests; we'll install hard deps explicitly in the next step.
+      # ⛔️ Do NOT use setup-r-dependencies to resolve deps::.
+      # Just install helper tools directly.
       - name: Install helper packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          # Only install these tools; do not resolve deps::.
-          extra-packages: |
-            any::rcmdcheck
-            any::pkgdown
-          needs: check
+        run: |
+          Rscript -e 'install.packages(c("rcmdcheck","pkgdown"), repos = "https://cran.r-project.org")'
 
-      # Explicitly install ONLY hard deps of the local package (no Suggests)
+      # Install ONLY hard deps of your package (Depends/Imports/LinkingTo), not Suggests
       - name: Install package hard dependencies (no Suggests)
         run: |
           Rscript -e 'install.packages("pak", repos = "https://cran.r-project.org")'
           Rscript -e 'pak::pkg_install("deps::.", dependencies = c("Depends","Imports","LinkingTo"))'
 
+      # R CMD check without forcing Suggests (so RHugin is not required)
       - name: R CMD check (skip Suggests)
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: "false"
-          _R_CHECK_FORCE_SUGGESTS_: "false"   # <- critical for RHugin
+          _R_CHECK_FORCE_SUGGESTS_: "false"
         run: |
           Rscript -e 'rcmdcheck::rcmdcheck(args = c("--no-manual","--as-cran"), error_on = "warning", check_dir = "check")'
 

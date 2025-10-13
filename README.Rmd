@@ -12,7 +12,7 @@ library(devtools)
 devtools::load_all(".")
 ```
 
-# hypeR.GEM
+# RSNet
 
 ![Gitter](https://img.shields.io/gitter/room/montilab/RSNet)
 ![GitHub issues](https://img.shields.io/github/issues/montilab/RSNet)

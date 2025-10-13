@@ -50,6 +50,14 @@ reference:
   contents:
   - '`centrality`'
 
+- title: Differential Connectivity Methods
+  desc: ~
+  contents:
+  - '`null_ggm`'
+  - '`permutation_diffanal`'
+  - '`bootstrap_diffanal`'
+  - '`bootBCStats`'
+
 - title: Plot Methods
   desc: ~
   contents:
