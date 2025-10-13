@@ -16,30 +16,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup R
-        uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
         with:
-          use-public-rspm: true
+          use-public-rspm: true   # binaries + sysreqs auto-resolved
 
-      - name: Setup Pandoc
-        uses: r-lib/actions/setup-pandoc@v2
+      # --- Install hard deps for R CMD check (skip Suggests) ---
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          # rcmdcheck to run checks; BiocManager so Bioconductor Imports (e.g., Biobase) can install
+          extra-packages: |
+            any::rcmdcheck
+            any::BiocManager
+            local::.
+          dependencies: '"hard"'
 
-      # ⛔️ Do NOT use setup-r-dependencies to resolve deps::.
-      # Just install helper tools directly.
-      - name: Install helper packages
-        run: |
-          Rscript -e 'install.packages(c("rcmdcheck","pkgdown"), repos = "https://cran.r-project.org")'
-
-      # Install ONLY hard deps of your package (Depends/Imports/LinkingTo), not Suggests
-      - name: Install package hard dependencies (no Suggests)
-        run: |
-          Rscript -e 'install.packages("pak", repos = "https://cran.r-project.org")'
-          Rscript -e 'pak::pkg_install("deps::.", dependencies = c("Depends","Imports","LinkingTo"))'
-
-      # R CMD check without forcing Suggests (so RHugin is not required)
+      # --- Run R CMD check with Suggests disabled ---
       - name: R CMD check (skip Suggests)
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: "false"
@@ -47,13 +42,22 @@ jobs:
         run: |
           Rscript -e 'rcmdcheck::rcmdcheck(args = c("--no-manual","--as-cran"), error_on = "warning", check_dir = "check")'
 
-      - name: Build pkgdown site
-        run: |
-          Rscript -e 'pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)'
-
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+      # --- Install deps for website build (pkgdown + your pkg), still no Suggests ---
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          publish_branch: gh-pages
+          extra-packages: |
+            any::pkgdown
+            local::.
+          needs: website
+          dependencies: '"hard"'
+
+      # --- Build the pkgdown site into ./docs ---
+      - name: Build pkgdown site
+        run: Rscript -e 'pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)'
+
+      # --- Deploy ./docs to gh-pages branch ---
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: docs
