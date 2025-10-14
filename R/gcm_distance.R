@@ -26,7 +26,7 @@ gcm_distance <- function(gcm1, gcm2){
 #' @param v2 the second vector
 #'
 #' @return the Euclidean distance
-#' @export
+#' @keywords internal
 .euclidean_pairwise_complete_obs <- function(v1, v2) {
   # Identify valid (non-NA) pairs
 

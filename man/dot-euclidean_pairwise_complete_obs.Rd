@@ -17,3 +17,4 @@ the Euclidean distance
 \description{
 Function to compute Euclidean distance with "pairwise.complete.obs" method
 }
+\keyword{internal}
