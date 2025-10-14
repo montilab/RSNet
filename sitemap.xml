@@ -22,6 +22,7 @@
 <url><loc>https://montilab.github.io/RSNet/reference/dot-count_2star_orbits.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-count_tri_orbits.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-diffanal_wrapper.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/reference/dot-euclidean_pairwise_complete_obs.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-fit_cgbn.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-get_continuous_marginal.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-get_discrete_marginal.html</loc></url>
@@ -38,7 +39,7 @@
 <url><loc>https://montilab.github.io/RSNet/reference/dot-walktrap.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/ensemble_cgbn.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/ensemble_ggm.html</loc></url>
-<url><loc>https://montilab.github.io/RSNet/reference/euclidean_pairwise_complete_obs.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/reference/gcm_distance.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/gdv_distance.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/gdvm_gcm.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/ggempty.html</loc></url>
