@@ -511,23 +511,6 @@ jaccard_similarity <- function(x,y){
 }
 
 
-#' Function to compute Euclidean distance with "pairwise.complete.obs" method
-#'
-#' @param v1 the first vector
-#' @param v2 the second vector
-#'
-#' @return the Euclidean distance
-#' @export
-euclidean_pairwise_complete_obs <- function(v1, v2) {
-  # Identify valid (non-NA) pairs
-
-  valid_idx <- !is.na(v1) & !is.na(v2)
-  # If there are no valid pairs (all are NA), return NA
-  if (sum(valid_idx) == 0) {return(NA)}
-  # Compute the Euclidean distance on the valid (non-NA) values
-  return(sqrt(sum((v1[valid_idx] - v2[valid_idx])^2)))
-}
-
 #' Distinct colors for large categorical datasets
 #'
 #' Colors derived from the R package colorspace

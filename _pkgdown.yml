@@ -35,6 +35,7 @@ reference:
       - gdvm_gcm
       - signed_gdvm_gcm
       - gdv_distance
+      - gcm_distance
       - pgdv_distance
 
   - title: Community Detection Methods
@@ -79,7 +80,6 @@ reference:
       - colorize
       - colorize_community
       - ggempty
-      - euclidean_pairwise_complete_obs
       - jaccard_similarity
 
 
