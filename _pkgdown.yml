@@ -55,6 +55,7 @@ reference:
       - permutation_diffanal
       - bootstrap_diffanal
       - diff_centrality
+      - diff_gdv
 
   - title: Plot Methods
     contents:
@@ -73,6 +74,7 @@ reference:
   - title: Data Objects
     contents:
       - toy_er
+      - toy_load
 
   - title:  Miscellaneous
     contents:
