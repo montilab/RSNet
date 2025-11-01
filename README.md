@@ -127,10 +127,10 @@ significance using the filter parameter: nominal p-value
 whose confidence intervals include zero are automatically excluded.
 
 ``` r
-consensus_er <- consensus_net_ggm(ggm_networks = ensemble_er,
-                                  CI = 0.95,
-                                  filter = "pval",
-                                  threshold = 0.05)
+consensus_er <- consensus_net_ggm(ggm_networks = ensemble_er, # the output of "ensemble_ggm()"
+                                  CI = 0.95, # confidence interval
+                                  filter = "pval", # filter method
+                                  threshold = 0.05) # significant level of the selected filter
 ```
 
 ## (v) Interactive visualization
@@ -156,12 +156,12 @@ conditions are met:
     attributes
 
 ``` r
-p <- plot_cn(ig = consensus_er$consensus_network, 
-             query = NULL,
-             order = 1,
-             edge_label = "pcor",
-             CI_show = TRUE,
-             main = "Example")
+p <- plot_cn(ig = consensus_er$consensus_network, # an "igraph" object
+             query = NULL, # node of interests, NULL or a character vector
+             order = 1, # order of neighbors
+             edge_label = "pcor", # the edge attribute to be shown
+             CI_show = TRUE, # show empirical confidence interval
+             main = "Example") # title
 
 
 p$p
