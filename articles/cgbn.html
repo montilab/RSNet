@@ -33,9 +33,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-documentation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Documentation</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-documentation">
-<li><a class="dropdown-item" href="../articles/cgbn.html">Conditional Gaussian Bayesian Networks Structure Learning</a></li>
-    <li><a class="dropdown-item" href="../articles/graphlet.html">Graphlet</a></li>
+<li><a class="dropdown-item" href="../articles/graphlet.html">Graphlet</a></li>
     <li><a class="dropdown-item" href="../articles/differential_connectivity_analysis.html">Markov Networks-based Differential Connectivity Analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/cgbn.html">Conditional Gaussian Bayesian Networks Structure Learning</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -68,11 +68,115 @@ Huang</h4>
 
     
     
+<div class="section level2">
+<h2 id="conditional-gaussian-bayesian-network-cgbn">Conditional Gaussian Bayesian network (CGBN)<a class="anchor" aria-label="anchor" href="#conditional-gaussian-bayesian-network-cgbn"></a>
+</h2>
+<p>A <strong>Conditional Gaussian Bayesian Network (CGBN)</strong> is a
+probabilistic graphical model that integrates <strong>discrete</strong>
+and <strong>continuous</strong> variables within a unified Bayesian
+framework, making it particularly suitable for <strong>mixed-type
+(mixture) data</strong>.</p>
+<p><strong>RSNet</strong> implements a resampling-based structure
+learning framework for CGBNs, supporting four resampling strategies to
+improve the stability and robustness of inferred network structures:</p>
+<ol style="list-style-type: decimal">
+<li>Bootstrap.</li>
+<li>Sub-sampling.</li>
+<li>Stratified bootstrap.</li>
+<li>Stratified sub-sampling.</li>
+</ol>
+<p><strong>IMPORTANT NOTE</strong>: The Conditional Gaussian Bayesian
+Network functionalities <code>ensemble_cgbn</code> and
+<code>consensus_net_cgbn</code> are optional in <strong>RSNet</strong>
+and require the <code>RHugin</code> package. Installation instructions
+for <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>,
+<a href="https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html" class="external-link">windows</a>,
+and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" class="external-link">Linux</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
+</h2>
 <p><font color="#000000"></font></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/montilab/RSNet" class="external-link">RSNet</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/montilab/RSNet" class="external-link">RSNet</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RHugin</span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level2">
-<h2 id="section"></h2>
+<h2 id="load-a-toy-dataset">Load a toy dataset<a class="anchor" aria-label="anchor" href="#load-a-toy-dataset"></a>
+</h2>
+<p>To illustrate the workflow, we use a simulated toy dataset containing
+<strong>20 continuous</strong> and <strong>5 discrete
+variables</strong>, representing a mixed-type dataset suitable for
+conditional Gaussian Bayesian network analysis.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"toy_cgbn"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="run-and-learn-an-ensemble-of-networks-from-resampled-datasets">Run and learn an ensemble of networks from resampled datasets<a class="anchor" aria-label="anchor" href="#run-and-learn-an-ensemble-of-networks-from-resampled-datasets"></a>
+</h2>
+<p>In this example, we use the simulated dataset as input and perform
+bootstrap resampling (<code>boot = TRUE</code>) with 3 iterations
+(<code>num_iteration = 5</code>). The column names of the discrete
+variables must be specified as a character vector in the
+<code>discrete_variable</code> argument.</p>
+<p>To perform <strong>subsampling</strong> instead of
+<strong>bootstrapping</strong>, set <code>boot = FALS</code>E and
+specify the sampling proportion using the <code>sub_ratio</code>
+argument (a value between 0 and 1).</p>
+<p>The function <code><a href="../reference/ensemble_cgbn.html">ensemble_cgbn()</a></code> also supports parallel
+computing.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ensemble_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ensemble_cgbn.html">ensemble_cgbn</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">toy_cgbn</span>, <span class="co"># A n x p dataframe</span></span>
+<span>                              discrete_variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"D%d"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, <span class="co"># Column names of the discreate variables</span></span>
+<span>                              num_iteration <span class="op">=</span> <span class="fl">3</span>, <span class="co"># Number of resampling iteration</span></span>
+<span>                              sample_class <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Optional: for stratified sampling</span></span>
+<span>                              boot <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If FALSE, perform sub-sampling</span></span>
+<span>                              sub_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Subsampling ratio (0–1)</span></span>
+<span>                              n_cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># Number of cores for parallel computing</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="construct-the-consensus-network">Construct the consensus network<a class="anchor" aria-label="anchor" href="#construct-the-consensus-network"></a>
+</h2>
+<p>The construction of the <strong>consensus network</strong> for
+conditional Gaussian Bayesian networks (CGBNs) supports two
+complementary approaches:</p>
+<ol style="list-style-type: decimal">
+<li><p><code>method = "all"</code>: Computes the selection frequency of
+each edge (i.e., the proportion of resampling iterations in which the
+edge is identified) with respect to a reference network (typically
+inferred using all samples). The resulting consensus network retains its
+directed structure.</p></li>
+<li><p><code>method = "average"</code>: Computes the selection frequency
+of each edge based on Markov blanket relationships between the two
+incident nodes. The resulting consensus network is undirected,
+representing stable dependency patterns rather than
+directionality.</p></li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Directed consensus network (method = "all")</span></span>
+<span><span class="co">## A simple way to generate a reference network is to set: num_iteration = 1, boot = FALSE, sub_ratio = 1</span></span>
+<span><span class="va">reference_network</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ensemble_cgbn.html">ensemble_cgbn</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">toy_cgbn</span>, </span>
+<span>                                   discrete_variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"D%d"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, </span>
+<span>                                   num_iteration <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                                   sample_class <span class="op">=</span> <span class="cn">NULL</span>, </span>
+<span>                                   boot <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>                                   sub_ratio <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                                   n_cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">directed_cons_net</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensus_net_cgbn.html">consensus_net_cgbn</a></span><span class="op">(</span><span class="va">ensemble_toy</span><span class="op">$</span><span class="va">ig_networks</span>, <span class="co"># A list of igraph objects</span></span>
+<span>                                        reference_network <span class="op">=</span> <span class="va">reference_network</span><span class="op">$</span><span class="va">ig_networks</span><span class="op">$</span><span class="va">iter_1</span>, <span class="co"># An igraph object</span></span>
+<span>                                        method<span class="op">=</span><span class="st">"all"</span>, <span class="co"># Integration method</span></span>
+<span>                                        cut <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="co"># Edge weight threshold</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Markov blanket-based undirected consensus network, set `method="average" </span></span>
+<span><span class="va">undirected_cons_net</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensus_net_cgbn.html">consensus_net_cgbn</a></span><span class="op">(</span><span class="va">ensemble_toy</span><span class="op">$</span><span class="va">ig_networks</span>, <span class="co"># A list of igraph objects</span></span>
+<span>                                          reference_network <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Not required for method = "average"</span></span>
+<span>                                          method<span class="op">=</span><span class="st">"average"</span>, <span class="co"># Integration method</span></span>
+<span>                                          cut <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="co"># Edge weight threshold</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="section"></h3>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
