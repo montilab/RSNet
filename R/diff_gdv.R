@@ -210,11 +210,11 @@ diff_gdv <- function(obs_networks,
 
   # Unsigned GDV distance
   gdvm_list <- lapply(paired_networks, gdvm_gcm,  level="4", include_gcm=FALSE)
-  gdv_dist  <- paired_gdv_dist(gdvm_list[[1]], gdvm_list[[2]])  # named numeric vector
+  gdv_dist  <- paired_gdv_distance(gdvm_list[[1]], gdvm_list[[2]])  # named numeric vector
 
   if (sign) {
     signed_gdvm_list <- lapply(paired_networks, signed_gdvm_gcm,  n_cores =  n_cores, include_gcm=FALSE)
-    signed_gdv_dist <- paired_gdv_dist(signed_gdvm_list[[1]], signed_gdvm_list[[2]]) # named vector
+    signed_gdv_dist <- paired_gdv_distance(signed_gdvm_list[[1]], signed_gdvm_list[[2]]) # named vector
     mat <- .combine_named_vectors(gdv_dist, signed_gdv_dist)  # p x 2
   } else {
     # p x 1 matrix with rownames from the vector names
