@@ -12,10 +12,10 @@
 #' }
 #'
 #' @param dat data.frame; p numeric feature columns + one label column.
+#' @param group_col character; name of the label column (default \code{"phenotype"}).
 #' @param inference_method one of \code{c("D-S_NW_SL", "B_NW_SL")}.
 #' @param shuffle_method character; one of \code{c("permutation","bootstrap")}.
 #' @param shuffle_iter integer; number of null resamples (default 100).
-#' @param group_col character; name of the label column (default \code{"phenotype"}).
 #' @param balanced logical; only used when \code{shuffle_method = "permutation"}.
 #'   If \code{TRUE}, downsample to equal group sizes before permutation.
 #' @param filter character; one of \code{c("pval","fdr","none")}.
@@ -29,10 +29,10 @@
 #' @importFrom parallel mclapply detectCores
 #' @export
 null_ggm <- function(dat,
+                     group_col = "phenotype",
                      inference_method = c("D-S_NW_SL", "B_NW_SL"),
                      shuffle_method = c("permutation", "bootstrap"),
                      shuffle_iter = 100,
-                     group_col = "phenotype",
                      balanced = FALSE,
                      filter = c("pval", "fdr", "none"),
                      threshold = 0.05,
@@ -41,6 +41,7 @@ null_ggm <- function(dat,
 
   stopifnot(is.data.frame(dat))
   stopifnot(group_col %in% names(dat))
+  if (shuffle_iter < 1L) stop("No null replicates provided.")
 
   inference_method <- match.arg(inference_method)
   shuffle_method   <- match.arg(shuffle_method)
@@ -80,7 +81,10 @@ null_ggm <- function(dat,
   }
 
   idx <- seq_len(shuffle_iter)
-  return(parallel::mclapply(idx, run_one, mc.cores = cores, mc.set.seed = TRUE))
+  res <- parallel::mclapply(idx, run_one, mc.cores = cores, mc.set.seed = TRUE)
+
+  return(list(null_networks = res,
+              tag = "null_ggm"))
 }
 
 #' Run SILGGM and build an igraph with edge attributes

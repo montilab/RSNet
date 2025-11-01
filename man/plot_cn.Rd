@@ -8,8 +8,8 @@ plot_cn(
   ig,
   query = NULL,
   order = 1,
-  vertex_symbol = "symbol",
-  edge_label = NULL,
+  vertex_symbol = "name",
+  edge_label = "pcor",
   edge_width = NULL,
   CI_show = FALSE,
   main = "Title",
@@ -25,37 +25,39 @@ plot_cn(
 \arguments{
 \item{ig}{an igraph object}
 
-\item{query}{query nodes for subgraph}
+\item{query}{character vector of node names/symbols to center the subgraph on}
 
-\item{order}{the order of neighbors of the queried nodes}
+\item{order}{neighborhood order around the query nodes}
 
-\item{vertex_symbol}{the node attribute that represents the symbol}
+\item{vertex_symbol}{vertex attribute to use as node label/symbol}
 
-\item{edge_label}{the edge attributes that represents the edge label}
+\item{edge_label}{edge attribute to show as label; default is "pcor"}
 
-\item{edge_width}{the edge attributes that represents the edge width}
+\item{edge_width}{optional edge attribute for edge thickness}
 
-\item{CI_show}{if TRUE, plot the confidence interval}
+\item{CI_show}{logical; if TRUE, show CI **only** when edge_label = "pcor"
+and both "lower_quantile" and "upper_quantile" are available}
 
 \item{main}{title}
 
-\item{query_color}{the color of queried nodes}
+\item{query_color}{color for queried nodes}
 
-\item{neighbor_color}{the color of the neighbors of queries nodes}
+\item{neighbor_color}{color for neighbor nodes}
 
-\item{all_color}{the color for all nodes in the network}
+\item{all_color}{color for all nodes when no query is given}
 
-\item{hover}{a logical argument}
+\item{hover}{logical}
 
-\item{stabilization}{a logical argument}
+\item{stabilization}{logical}
 
-\item{igraph_layout}{the layout being used}
+\item{igraph_layout}{layout name to pass to visIgraphLayout}
 
-\item{layout_seed}{the random seed of the layout}
+\item{layout_seed}{random seed for layout}
 }
 \value{
-a list containing a visNetwork object
+list with p (visNetwork object) and data (nodes/edges)
 }
 \description{
-Plot Consensus Network
+Visualizes a consensus network using visNetwork, with optional query-based
+subsetting and optional confidence-interval display for partial correlations.
 }

@@ -35,8 +35,9 @@ reference:
       - gdvm_gcm
       - signed_gdvm_gcm
       - gdv_distance
+      - intra_gdv_distance
+      - paired_gdv_distance
       - gcm_distance
-      - pgdv_distance
 
   - title: Community Detection Methods
     contents:
@@ -53,7 +54,7 @@ reference:
       - null_ggm
       - permutation_diffanal
       - bootstrap_diffanal
-      - bootBCStats
+      - diff_centrality
 
   - title: Plot Methods
     contents:
@@ -67,7 +68,7 @@ reference:
       - model_sbm
       - model_sw
       - model_sim
-      - sim_fam_data    # <-- removed stray space/backtick
+      - sim_fam_data
 
   - title: Data Objects
     contents:
@@ -81,9 +82,7 @@ reference:
       - colorize_community
       - ggempty
       - jaccard_similarity
-
-
-
+      - capture_all
 
 
 
@@ -94,14 +93,12 @@ navbar:
       href: index.html
     - text: "Documentation"
       menu:
-        - text: "Markov Network Structure Learning"
-          href: articles/structure_learning_ggm.html
-        - text: "Conditional Gaussian Bayesian Network Structure Learning"
-          href: articles/structure_learning_cgbn.html
-        - text: "Graphlet-based Analysis"
+        - text: "Conditional Gaussian Bayesian Networks Structure Learning"
+          href: articles/cgbn.html
+        - text: "Graphlet"
           href: articles/graphlet.html
-        - text: "Community Detection"
-          href: articles/community_detection.html
+        - text: "Markov Networks-based Differential Connectivity Analysis"
+          href: articles/differential_connectivity_analysis.html
     - text: "Reference"
       href: reference/index.html
   right:

@@ -38,6 +38,8 @@ Suggests:
     graph, 
     Rgraphviz,
     tidyverse,
+    DT,
+    proxy,
     devtools,
     rmarkdown,
     knitr,

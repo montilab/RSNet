@@ -6,10 +6,10 @@
 \usage{
 null_ggm(
   dat,
+  group_col = "phenotype",
   inference_method = c("D-S_NW_SL", "B_NW_SL"),
   shuffle_method = c("permutation", "bootstrap"),
   shuffle_iter = 100,
-  group_col = "phenotype",
   balanced = FALSE,
   filter = c("pval", "fdr", "none"),
   threshold = 0.05,
@@ -20,13 +20,13 @@ null_ggm(
 \arguments{
 \item{dat}{data.frame; p numeric feature columns + one label column.}
 
+\item{group_col}{character; name of the label column (default \code{"phenotype"}).}
+
 \item{inference_method}{one of \code{c("D-S_NW_SL", "B_NW_SL")}.}
 
 \item{shuffle_method}{character; one of \code{c("permutation","bootstrap")}.}
 
 \item{shuffle_iter}{integer; number of null resamples (default 100).}
-
-\item{group_col}{character; name of the label column (default \code{"phenotype"}).}
 
 \item{balanced}{logical; only used when \code{shuffle_method = "permutation"}.
 If \code{TRUE}, downsample to equal group sizes before permutation.}

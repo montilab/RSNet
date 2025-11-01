@@ -11,3 +11,20 @@
 #' @return A list object
 #'
 "toy_er"
+
+
+#' Toy dataset from LOAD study
+#'
+#' A data frame containing LOAD and Control subjects
+#'
+#' @docType data
+#'
+#' @usage data(toy_load)
+#'
+#' @format A data frame object
+#'
+#' @return A data frame object
+#' @references Zhang, Bin, et al.
+#' "Integrated systems approach identifies genetic nodes and networks in late-onset Alzheimer’s disease."
+#' Cell 153.3 (2013): 707-720.
+"toy_load"
