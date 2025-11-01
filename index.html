@@ -126,10 +126,10 @@
 <p>We then integrate the ensemble of inferred networks to construct a consensus network, designed to filter out spurious edges introduced by noise and to facilitate downstream analyses. The <code><a href="reference/consensus_net_ggm.html">consensus_net_ggm()</a></code> function takes the output of <code>ensemble_ggm</code> as its primary input, while the optional <code><a href="reference/consensus_net_cgbn.html">consensus_net_cgbn()</a></code> function operates on the output of <code><a href="reference/ensemble_cgbn.html">ensemble_cgbn()</a></code>.</p>
 <p>Edges in the consensus network can be filtered based on their significance using the filter parameter: nominal p-value (<code>filter = "pval"</code>), Benjamini–Hochberg adjusted p-value (<code>filter = "fdr"</code>), or no filtering (<code>filter = "none"</code>). If <code>estimate_CI = TRUE</code> was specified in the <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code> step, edges whose confidence intervals include zero are automatically excluded.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">consensus_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/consensus_net_ggm.html">consensus_net_ggm</a></span><span class="op">(</span>ggm_networks <span class="op">=</span> <span class="va">ensemble_er</span>,</span>
-<span>                                  CI <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>                                  filter <span class="op">=</span> <span class="st">"pval"</span>,</span>
-<span>                                  threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">consensus_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/consensus_net_ggm.html">consensus_net_ggm</a></span><span class="op">(</span>ggm_networks <span class="op">=</span> <span class="va">ensemble_er</span>, <span class="co"># the output of "ensemble_ggm()"</span></span>
+<span>                                  CI <span class="op">=</span> <span class="fl">0.95</span>, <span class="co"># confidence interval</span></span>
+<span>                                  filter <span class="op">=</span> <span class="st">"pval"</span>, <span class="co"># filter method</span></span>
+<span>                                  threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="co"># significant level of the selected filter</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="v-interactive-visualization">(v) Interactive visualization<a class="anchor" aria-label="anchor" href="#v-interactive-visualization"></a>
@@ -143,12 +143,12 @@
 <li><p>Both <code>lower_quantile</code> and <code>upper_quantile</code> are included in the edge attributes</p></li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_cn.html">plot_cn</a></span><span class="op">(</span>ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>, </span>
-<span>             query <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>             order <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>             edge_label <span class="op">=</span> <span class="st">"pcor"</span>,</span>
-<span>             CI_show <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>             main <span class="op">=</span> <span class="st">"Example"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_cn.html">plot_cn</a></span><span class="op">(</span>ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>, <span class="co"># an "igraph" object</span></span>
+<span>             query <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># node of interests, NULL or a character vector</span></span>
+<span>             order <span class="op">=</span> <span class="fl">1</span>, <span class="co"># order of neighbors</span></span>
+<span>             edge_label <span class="op">=</span> <span class="st">"pcor"</span>, <span class="co"># the edge attribute to be shown</span></span>
+<span>             CI_show <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># show empirical confidence interval</span></span>
+<span>             main <span class="op">=</span> <span class="st">"Example"</span><span class="op">)</span> <span class="co"># title</span></span>
 <span></span>
 <span></span>
 <span><span class="va">p</span><span class="op">$</span><span class="va">p</span></span></code></pre></div>
