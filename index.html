@@ -35,10 +35,9 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-documentation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Documentation</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-documentation">
-<li><a class="dropdown-item" href="articles/structure_learning_ggm.html">Markov Network Structure Learning</a></li>
-    <li><a class="dropdown-item" href="articles/structure_learning_cgbn.html">Conditional Gaussian Bayesian Network Structure Learning</a></li>
-    <li><a class="dropdown-item" href="articles/graphlet.html">Graphlet-based Analysis</a></li>
-    <li><a class="dropdown-item" href="articles/community_detection.html">Community Detection</a></li>
+<li><a class="dropdown-item" href="articles/cgbn.html">Conditional Gaussian Bayesian Networks Structure Learning</a></li>
+    <li><a class="dropdown-item" href="articles/graphlet.html">Graphlet</a></li>
+    <li><a class="dropdown-item" href="articles/differential_connectivity_analysis.html">Markov Networks-based Differential Connectivity Analysis</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
@@ -57,6 +56,22 @@
 <div class="page-header"><h1 id="rsnet">RSNet<a class="anchor" aria-label="anchor" href="#rsnet"></a>
 </h1></div>
 <p><img src="https://img.shields.io/gitter/room/montilab/RSNet" alt="Gitter"><img src="https://img.shields.io/github/issues/montilab/RSNet" alt="GitHub issues"><img src="https://img.shields.io/github/last-commit/montilab/RSNet" alt="GitHub last commit"></p>
+<p><strong>RSNet</strong> is an R package that implements a resampling-based framework for structure learning and analysis of Markov and conditional Gaussian Bayesian (optional) networks.</p>
+<p>To enhance the stability and reliability of inferred network structures, <strong>RSNet</strong> incorporates multiple resampling strategies. For both Markov and conditional Gaussian Bayesian networks, the framework supports four general approaches:</p>
+<p><strong>RSNet</strong> supports multiple resampling strategies to improve the stability and reliability of inferred network structures. For both Markov and conditional Gaussian Bayesian networks, the framework implements four general approaches:</p>
+<ol style="list-style-type: decimal">
+<li>Bootstrap.</li>
+<li>Sub-sampling.</li>
+<li>Stratified bootstrap.</li>
+<li>Stratified sub-sampling.</li>
+</ol>
+<p>For Markov networks, <strong>RSNet</strong> further provides cluster-based sampling options specifically designed to accommodate correlated or family-based data, including:</p>
+<ol style="list-style-type: decimal">
+<li>Cluster-based bootstrap.</li>
+<li>Fractional cluster-based bootstrap.</li>
+</ol>
+<p>Beyond structure learning, <strong>RSNet</strong> includes a suite of network analysis tools containing standard network metrics, graphlet-based analysis, and differential connectivity analysis.</p>
+<p>Please see our <a href="https://montilab.github.io/RSNet/">documentation</a> for additional examples.</p>
 </div>
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -71,13 +86,93 @@
 <div class="section level1">
 <h1 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h1>
-<p>The Conditional Gaussian Bayesian Network (CGBN) functionalities <code>ensemble_cgbn</code> and <code>consensus_net_cgbn</code> are optional and require the <code>RHugin</code> package. Installation instructions for <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>, <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html" class="external-link">windows</a>, and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" class="external-link">Linux</a>.</p>
+<p><strong>IMPORTANT NOTE</strong>: The Conditional Gaussian Bayesian Network functionalities <code>ensemble_cgbn</code> and <code>consensus_net_cgbn</code> are optional and require the <code>RHugin</code> package. Installation instructions for <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>, <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html" class="external-link">windows</a>, and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" class="external-link">Linux</a>.</p>
+<p>The following example demonstrates the usage of <strong>RSNet</strong> with a synthetic dataset.</p>
 <div class="section level2">
 <h2 id="i-load-r-packages">(i) Load R packages<a class="anchor" aria-label="anchor" href="#i-load-r-packages"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/montilab/RSNet" class="external-link">RSNet</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/montilab/RSNet" class="external-link">RSNet</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/DT" class="external-link">DT</a></span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="ii-prepare-input-dataset">(ii) Prepare input dataset<a class="anchor" aria-label="anchor" href="#ii-prepare-input-dataset"></a>
+</h2>
+<p>The core functions, <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code> and the optional <code><a href="reference/ensemble_cgbn.html">ensemble_cgbn()</a></code>, accept an <em>n × p</em> data frame or matrix with both row and column names, where <em>n</em> represents the number of observations (samples) and <em>p</em> denotes the number of features. In the following example, we illustrate the workflow using a simulated toy dataset containing 100 observations and 20 features.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">data</span>(toy_er)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">dim</span>(toy_er<span class="sc">$</span>dat))</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">100</span>  <span class="dv">20</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="iii-run-and-learn-an-ensemble-of-networks-from-resampled-datasets">(iii) Run and learn an ensemble of networks from resampled datasets<a class="anchor" aria-label="anchor" href="#iii-run-and-learn-an-ensemble-of-networks-from-resampled-datasets"></a>
+</h2>
+<p>In this example, we use the simulated dataset as input and perform bootstrap resampling (<code>boot = TRUE</code>) with 100 iterations (<code>num_iteration = 100</code>). To estimate empirical confidence intervals for each edge, set <code>estimate_CI = TRUE</code>; for improved memory efficiency, this option can be disabled (<code>estimate_CI = FALSE</code>). Both <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code> and the optional <code><a href="reference/ensemble_cgbn.html">ensemble_cgbn()</a></code> functions support parallel computation through the <code>n_cores</code> parameter.</p>
+<p>The wrapper function <code><a href="reference/capture_all.html">capture_all()</a></code> can be used to suppress messages generated during the execution of <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ensemble_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/capture_all.html">capture_all</a></span><span class="op">(</span><span class="fu"><a href="reference/ensemble_ggm.html">ensemble_ggm</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">toy_er</span><span class="op">$</span><span class="va">dat</span>, <span class="co"># A n x p dataframe/matrix</span></span>
+<span>                                          num_iteration <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Number of resampling iteration</span></span>
+<span>                                          boot <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If FALSE, perform sub-sampling</span></span>
+<span>                                          sub_ratio <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Between 0 and 1, indicating the sub-sampling ratio</span></span>
+<span>                                          sample_class <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># If provided, then stratified sampling is performed</span></span>
+<span>                                          correlated <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># If TRUE, then clusted-based resampling is performed</span></span>
+<span>                                          cluster_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Used only when `correlated = TRUE`</span></span>
+<span>                                          estimate_CI <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If TRUE, estimate the empirical confidence interval</span></span>
+<span>                                          method <span class="op">=</span> <span class="st">"D-S_NW_SL"</span>, <span class="co"># Inference method</span></span>
+<span>                                          n_cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="co"># number of cores for parallel computing</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="iv-construct-the-consensus-network">(iv) Construct the consensus network<a class="anchor" aria-label="anchor" href="#iv-construct-the-consensus-network"></a>
+</h2>
+<p>We then integrate the ensemble of inferred networks to construct a consensus network, designed to filter out spurious edges introduced by noise and to facilitate downstream analyses. The <code><a href="reference/consensus_net_ggm.html">consensus_net_ggm()</a></code> function takes the output of <code>ensemble_ggm</code> as its primary input, while the optional <code><a href="reference/consensus_net_cgbn.html">consensus_net_cgbn()</a></code> function operates on the output of <code><a href="reference/ensemble_cgbn.html">ensemble_cgbn()</a></code>.</p>
+<p>Edges in the consensus network can be filtered based on their significance using the filter parameter: nominal p-value (<code>filter = "pval"</code>), Benjamini–Hochberg adjusted p-value (<code>filter = "fdr"</code>), or no filtering (<code>filter = "none"</code>). If <code>estimate_CI = TRUE</code> was specified in the <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code> step, edges whose confidence intervals include zero are automatically excluded.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">consensus_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/consensus_net_ggm.html">consensus_net_ggm</a></span><span class="op">(</span>ggm_networks <span class="op">=</span> <span class="va">ensemble_er</span>,</span>
+<span>                                  CI <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>                                  filter <span class="op">=</span> <span class="st">"pval"</span>,</span>
+<span>                                  threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="v-interactive-visualization">(v) Interactive visualization<a class="anchor" aria-label="anchor" href="#v-interactive-visualization"></a>
+</h2>
+<p><strong>RSNet</strong> supports interactive visualization for downstream analyses. Although the <code><a href="reference/plot_cn.html">plot_cn()</a></code> function is primarily designed to visualize consensus networks, it can accept any <code>igraph</code> object as its first argument. The function generates an interactive network plot along with a list object containing node and edge attributes.</p>
+<p>Additionally, by specifying the <code>query</code> argument as a character vector, users can visualize the subgraph induced by the queried nodes and their neighbors up to the specified order (via the <code>order</code> parameter).</p>
+<p>Confidence interval visualization is available only when the following conditions are met:</p>
+<ol style="list-style-type: decimal">
+<li><p><code>CI_show = TRUE</code></p></li>
+<li><p><code>edge_label == "pcor"</code></p></li>
+<li><p>Both <code>lower_quantile</code> and <code>upper_quantile</code> are included in the edge attributes</p></li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_cn.html">plot_cn</a></span><span class="op">(</span>ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>, </span>
+<span>             query <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>             order <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>             edge_label <span class="op">=</span> <span class="st">"pcor"</span>,</span>
+<span>             CI_show <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>             main <span class="op">=</span> <span class="st">"Example"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">p</span><span class="op">$</span><span class="va">p</span></span></code></pre></div>
+<p><img src="./reference/figures/unnamed-chunk-6-1.png"><!-- --></p>
+</div>
+<div class="section level2">
+<h2 id="vi-centrality-analysis">(vi) Centrality analysis<a class="anchor" aria-label="anchor" href="#vi-centrality-analysis"></a>
+</h2>
+<p><strong>Centrality analysis</strong> is a classical approach in network analysis used to quantify the relative importance or influence of individual nodes within a network. RSNet implements this functionality through the <code><a href="reference/centrality.html">centrality()</a></code> function, which computes several commonly used centrality measures, including <strong>degree</strong>, <strong>strength</strong>, <strong>eigenvector</strong>, <strong>betweenness</strong>, <strong>closeness</strong>, and <strong>PageRank</strong> centralities, using an igraph object as input. For weighted networks, users can specify the <code>weight</code> parameter to indicate the edge attribute representing the desired weighting scheme.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/centrality.html">centrality</a></span><span class="op">(</span>ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>,</span>
+<span>           weight <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">.</span>, <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
+<p><img src="./reference/figures/unnamed-chunk-7-1.png"><!-- --></p>
+</div>
+</div>
+<div class="section level1">
+<h1 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+</h1>
+<p>This project is funded by</p>
 </div>
 
   </main><aside class="col-md-3"><div class="links">

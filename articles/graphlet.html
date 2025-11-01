@@ -33,10 +33,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-documentation" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Documentation</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-documentation">
-<li><a class="dropdown-item" href="../articles/structure_learning_ggm.html">Markov Network Structure Learning</a></li>
-    <li><a class="dropdown-item" href="../articles/structure_learning_cgbn.html">Conditional Gaussian Bayesian Network Structure Learning</a></li>
-    <li><a class="dropdown-item" href="../articles/graphlet.html">Graphlet-based Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/community_detection.html">Community Detection</a></li>
+<li><a class="dropdown-item" href="../articles/cgbn.html">Conditional Gaussian Bayesian Networks Structure Learning</a></li>
+    <li><a class="dropdown-item" href="../articles/graphlet.html">Graphlet</a></li>
+    <li><a class="dropdown-item" href="../articles/differential_connectivity_analysis.html">Markov Networks-based Differential Connectivity Analysis</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
@@ -53,8 +52,12 @@
 
 
 
-
-<div class="row">
+<link href="graphlet_files/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="graphlet_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="graphlet_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="graphlet_files/datatables-binding-0.34.0/datatables.js"></script><link href="graphlet_files/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="graphlet_files/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="graphlet_files/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="graphlet_files/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="graphlet_files/crosstalk-1.2.2/js/crosstalk.min.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Graphlet</h1>
@@ -69,11 +72,286 @@ Huang</h4>
 
     
     
+<div class="section level2">
+<h2 id="introduction-of-graphlets-and-orbits">Introduction of graphlets and orbits<a class="anchor" aria-label="anchor" href="#introduction-of-graphlets-and-orbits"></a>
+</h2>
+<p>Graphlets are small, connected, non-isomorphic induced subgraphs of a
+larger network. For graphlets consisting of 2–4 nodes, there are eight
+distinct graphlets and fifteen corresponding automorphism orbits.
+Importantly, incorporating orbit information is critically useful,
+rather than using graphlet counts alone, as demonstrated by Apratim Das
+et al.<a href="https://dl.acm.org/doi/abs/10.1145/3341161.3343692?casa_token=_MCpkDptH0gAAAAA:wEsOwBRKqU9MIsHInlobhZd5kGlJNhqiYckJcrmWl8mU8m-XMfybUWsR8nu3JHlwtorebh7kd7W4" class="external-link">link</a></p>
+<p>This concept can be naturally extended to <strong>signed</strong> and
+<strong>directed</strong> networks. The current version of
+<strong>RSNet</strong> supports graphlet orbit counting for both
+unsigned and signed undirected networks.</p>
+<p>Here we use black lines to represent positive relationships and red
+lines for negative relationships. Notably, the number of unsigned
+graphlets of size up to four and their associated orbits is equivalent
+to the number of signed graphlets of size up to three and their
+corresponding orbits.</p>
+<p><img src="figs/4_node_graphlets.png" width="80%" height="80%"></p>
+<p><img src="figs/3_node_signed_graphlets.png" width="80%" height="80%"></p>
+</div>
+<div class="section level2">
+<h2 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
+</h2>
 <p><font color="#000000"></font></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/montilab/RSNet" class="external-link">RSNet</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/montilab/RSNet" class="external-link">RSNet</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.igraph.org/" class="external-link">igraph</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/DT" class="external-link">DT</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">proxy</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level2">
-<h2 id="section"></h2>
+<h2 id="construct-graphlet-degree-vector-matrix-gdvm">Construct graphlet degree vector matrix (GDVM)<a class="anchor" aria-label="anchor" href="#construct-graphlet-degree-vector-matrix-gdvm"></a>
+</h2>
+<p>Since there are eight graphlets and fifteen automorphism orbits for
+2–4-node graphlets, the local structural characteristics of a node
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mi>i</mi></msub><annotation encoding="application/x-tex">v_{i}</annotation></semantics></math>
+can be represented by a <strong>Graphlet Degree Vector (GDV)</strong> of
+length 15, where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>V</mi><msubsup><mi>D</mi><mi>j</mi><mi>i</mi></msubsup></mrow><annotation encoding="application/x-tex">GVD^{i}_{j}</annotation></semantics></math>
+denotes the frequency with which node
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+touches orbit
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>.
+Therefore,the entire network can be represented as an
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">n \times 15</annotation></semantics></math>
+matrix, where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+is the number of nodes in the network. This matrix is referred to as the
+<strong>Graphlet Degree Vector Matrix (GDVM)</strong>.</p>
+<div class="section level3">
+<h3 class="tabset" id="example-of-an-unsigned-network">Example of an unsigned network<a class="anchor" aria-label="anchor" href="#example-of-an-unsigned-network"></a>
+</h3>
+<p>Here, we use a dummy unsigned network to illustrate the concepts of
+the <strong>Graphlet Degree Vector (GDV)</strong> and the
+<strong>Graphlet Degree Vector Matrix (GDVM)</strong>.</p>
+<p>Given an <code>igraph</code> object, the function
+<code><a href="../reference/gdvm_gcm.html">gdvm_gcm()</a></code> computes the GDV for each node, producing a GDVM
+where rows correspond to nodes and columns represent orbit counts. The
+level parameter can take values “4” or “5”, where “4” specifies that the
+GDV is computed using 2–4-node graphlets.</p>
+<p>A key consideration is the <code>redundant_orbit</code> parameter.
+For demonstration purposes, we set it to <code>TRUE</code> in this
+example; however, it is generally recommended to set it to
+<code>FALSE</code> to exclude redundant orbit counts. Theoretical
+analyses have shown that certain orbit counts can be derived from
+others, classifying them as redundant orbits. Specifically, there are 11
+non-redundant orbits among the 4-node graphlets and 56 non-redundant
+orbits among the 5-node graphlets. Including redundant orbits may
+introduce noise, as demonstrated by Yaveroğlu, Ömer Nebil, et al <a href="https://www.nature.com/articles/srep04547" class="external-link">link</a>.</p>
+<p>For node <code>1</code> in this dummy network, the degree is 3,
+corresponding to three counts in orbit
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>O</mi><mn>0</mn></msub><annotation encoding="application/x-tex">O_{0}</annotation></semantics></math>.
+It also has five counts in orbit
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>O</mi><mn>1</mn></msub><annotation encoding="application/x-tex">O_{1}</annotation></semantics></math>,
+corresponding to the subgraphs 1–3–5, 1–3–4, 1–3–6, 1–2–4, and 1–7–6.
+Additionally, node <code>1</code>has three counts in orbit
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>O</mi><mn>2</mn></msub><annotation encoding="application/x-tex">O_{2}</annotation></semantics></math>,
+represented by the subgraphs 2–1–7, 2–1–6, and 7–1–3. The counts across
+all fifteen orbits associated with node <code>1</code> are recorded in
+the first row of the GDVM.</p>
+<div class="section level4">
+<h4 id="dummy-network">Dummy network<a class="anchor" aria-label="anchor" href="#dummy-network"></a>
+</h4>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ig</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/graph.html" class="external-link">graph</a></span><span class="op">(</span>edges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>, <span class="fl">1</span>,<span class="fl">3</span>, <span class="fl">1</span>,<span class="fl">7</span>, <span class="fl">2</span>,<span class="fl">4</span>, <span class="fl">3</span>,<span class="fl">4</span>, <span class="fl">3</span>,<span class="fl">5</span>, <span class="fl">3</span>,<span class="fl">6</span>, <span class="fl">4</span>,<span class="fl">5</span>, <span class="fl">5</span>,<span class="fl">6</span>, <span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span>, directed <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ig</span><span class="op">)</span></span></code></pre></div>
+<p><img src="graphlet_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="graphlet-degree-vector-matrix-gdvm">Graphlet degree vector matrix (GDVM)<a class="anchor" aria-label="anchor" href="#graphlet-degree-vector-matrix-gdvm"></a>
+</h4>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="../reference/gdvm_gcm.html">gdvm_gcm</a></span><span class="op">(</span><span class="va">ig</span>,</span>
+<span>                          level <span class="op">=</span> <span class="st">"4"</span>, </span>
+<span>                          redundant_orbit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                          include_gcm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">magrittr</span><span class="fu">::</span><span class="fu"><a href="https://magrittr.tidyverse.org/reference/aliases.html" class="external-link">set_rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://r.igraph.org/reference/gorder.html" class="external-link">vcount</a></span><span class="op">(</span><span class="va">ig</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],[3,2,4,3,3,3,2],[5,4,4,4,3,4,4],[3,1,4,2,1,2,1],[0,0,2,1,2,1,0],[2,5,0,4,4,4,5],[6,2,6,3,2,3,2],[1,1,1,1,0,1,1],[1,0,1,0,0,0,0],[2,1,2,1,0,1,1],[2,1,0,0,0,0,1],[0,0,2,1,4,1,0],[0,0,2,1,0,1,0],[0,0,0,1,0,1,0],[0,0,1,0,1,0,0],[0,0,0,0,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>O0<\/th>\n      <th>O1<\/th>\n      <th>O2<\/th>\n      <th>O3<\/th>\n      <th>O4<\/th>\n      <th>O5<\/th>\n      <th>O6<\/th>\n      <th>O7<\/th>\n      <th>O8<\/th>\n      <th>O9<\/th>\n      <th>O10<\/th>\n      <th>O11<\/th>\n      <th>O12<\/th>\n      <th>O13<\/th>\n      <th>O14<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"O0","targets":1},{"name":"O1","targets":2},{"name":"O2","targets":3},{"name":"O3","targets":4},{"name":"O4","targets":5},{"name":"O5","targets":6},{"name":"O6","targets":7},{"name":"O7","targets":8},{"name":"O8","targets":9},{"name":"O9","targets":10},{"name":"O10","targets":11},{"name":"O11","targets":12},{"name":"O12","targets":13},{"name":"O13","targets":14},{"name":"O14","targets":15}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="section level3">
+<h3 class="tabset" id="example-of-a-signed-network">Example of a signed network<a class="anchor" aria-label="anchor" href="#example-of-a-signed-network"></a>
+</h3>
+<p>The concept of the <strong>Graphlet Degree Vector (GDV)</strong> and
+and the corresponding <strong>Graphlet Degree Vector Matrix
+(GDVM)</strong> can be naturally extended to <strong>signed
+networks</strong>. However, this extension is computationally more
+demanding, and currently no R packages provide functionality for
+constructing GDVMs for signed networks.A brute-force enumeration
+approach has computational complexity exceeding
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>p</mi><mn>3</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(p^{3})</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+is the network size.</p>
+<p><strong>RSNet</strong> overcomes this limitation by integrating
+state-of-the-art graphlet counting algorithms with parallel computing,
+enabling efficient construction of signed GDVMs in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>∣</mo><mi>d</mi><mo>∣</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(∣d∣)</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∣</mo><mi>d</mi><mo>∣</mo></mrow><annotation encoding="application/x-tex">∣d∣</annotation></semantics></math>is
+the average degree, resulting near-constant time complexity for sparse
+networks.</p>
+<p>The function <code>signed_gdv_gcm()</code> takes an igraph object as
+input and computes the GDV of each node for graphlets of up to three
+nodes. Notably, in unsigned networks, the number of graphlets of size up
+to four and the number of associated orbits are equivalent to those of
+signed networks with graphlets of size up to three.</p>
+<p>Similarly, for demonstration purposes, we set the
+<code>redundant_orbit</code> parameter to <code>TRUE</code>. There are
+11 non-redundant orbits among the 3-node signed graphlets, which are
+equivalent to those in the 4-node unsigned graphlets.</p>
+<div class="section level4">
+<h4 id="dummy-network-1">Dummy network<a class="anchor" aria-label="anchor" href="#dummy-network-1"></a>
+</h4>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">signed_ig</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/graph.html" class="external-link">graph</a></span><span class="op">(</span>edges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>, <span class="fl">1</span>,<span class="fl">3</span>, <span class="fl">1</span>,<span class="fl">7</span>, <span class="fl">2</span>,<span class="fl">4</span>, <span class="fl">3</span>,<span class="fl">4</span>, <span class="fl">3</span>,<span class="fl">5</span>, <span class="fl">3</span>,<span class="fl">6</span>, <span class="fl">4</span>,<span class="fl">5</span>, <span class="fl">5</span>,<span class="fl">6</span>, <span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span>, directed <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">signed_ig</span><span class="op">)</span><span class="op">$</span><span class="va">sign</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">signed_ig</span><span class="op">)</span><span class="op">$</span><span class="va">lty</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">signed_ig</span><span class="op">)</span><span class="op">$</span><span class="va">sign</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1</span>, <span class="st">"dashed"</span>, <span class="st">"solid"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">signed_ig</span>, edge.lty <span class="op">=</span> <span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">signed_ig</span><span class="op">)</span><span class="op">$</span><span class="va">lty</span><span class="op">)</span></span></code></pre></div>
+<p><img src="graphlet_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="graphlet-degree-vector-matrix-gdvm-1">Graphlet degree vector matrix (GDVM)<a class="anchor" aria-label="anchor" href="#graphlet-degree-vector-matrix-gdvm-1"></a>
+</h4>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="../reference/signed_gdvm_gcm.html">signed_gdvm_gcm</a></span><span class="op">(</span><span class="va">signed_ig</span>,</span>
+<span>                 n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                 redundant <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                 include_gcm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">magrittr</span><span class="fu">::</span><span class="fu"><a href="https://magrittr.tidyverse.org/reference/aliases.html" class="external-link">set_rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://r.igraph.org/reference/gorder.html" class="external-link">vcount</a></span><span class="op">(</span><span class="va">signed_ig</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e5c8c404fe174e4c81bd" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],[1,1,3,2,3,2,0],[2,1,1,1,0,1,2],[2,1,0,1,2,2,0],[0,0,2,1,1,0,0],[1,1,3,1,1,1,0],[1,1,1,2,0,0,3],[2,1,2,1,0,2,0],[1,1,0,0,0,1,1],[1,0,0,0,0,0,1],[0,0,1,0,1,1,0],[0,0,0,0,1,0,0],[0,0,1,1,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>O0<\/th>\n      <th>O1<\/th>\n      <th>O2<\/th>\n      <th>O3<\/th>\n      <th>O4<\/th>\n      <th>O5<\/th>\n      <th>O6<\/th>\n      <th>O7<\/th>\n      <th>O8<\/th>\n      <th>O9<\/th>\n      <th>O10<\/th>\n      <th>O11<\/th>\n      <th>O12<\/th>\n      <th>O13<\/th>\n      <th>O14<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"O0","targets":1},{"name":"O1","targets":2},{"name":"O2","targets":3},{"name":"O3","targets":4},{"name":"O4","targets":5},{"name":"O5","targets":6},{"name":"O6","targets":7},{"name":"O7","targets":8},{"name":"O8","targets":9},{"name":"O9","targets":10},{"name":"O10","targets":11},{"name":"O11","targets":12},{"name":"O12","targets":13},{"name":"O13","targets":14},{"name":"O14","targets":15}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="graphlet-degree-vector-distance-between-vertices">Graphlet degree vector distance between vertices<a class="anchor" aria-label="anchor" href="#graphlet-degree-vector-distance-between-vertices"></a>
+</h2>
+<p>Once the <strong>Graphlet Degree Vector Matrix (GDVM)</strong> is
+computed, the <strong>Graphlet Degree Vector (GDV)</strong> distance
+between two nodes is obtained by calculating the distance between their
+corresponding rows in the GDVM. The detailed formulation of the GDV
+distance is described by Milenković, Tijana, et al <a href="https://journals.sagepub.com/doi/full/10.4137/CIN.S680" class="external-link">link</a>.
+Note that the GDV distance ranges from 0 to 1.</p>
+<p>The function <code><a href="../reference/gdv_distance.html">gdv_distance()</a></code> takes two GDVs as input and
+computes the GDV distance between the corresponding nodes. The function
+<code><a href="../reference/intra_gdv_distance.html">intra_gdv_distance()</a></code> takes a single GDVM as input and
+computes the pairwise GDV distances between all nodes within a network.
+In contrast, the function <code><a href="../reference/paired_gdv_distance.html">paired_gdv_distance()</a></code> accepts two
+paired GDVMs as input and computes the distance between corresponding
+nodes across the two networks.</p>
+<p>For demonstration purposes, we illustrate how to compute the GDV
+distance between nodes <code>1</code> and <code>3</code> in the unsigned
+dummy network.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Compute the unsigned GDVM</span></span>
+<span><span class="va">gdvm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="../reference/gdvm_gcm.html">gdvm_gcm</a></span><span class="op">(</span><span class="va">ig</span>,</span>
+<span>                         level <span class="op">=</span> <span class="st">"4"</span>, </span>
+<span>                         redundant_orbit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                         include_gcm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Compute the GDV distance between node 1 and node 3</span></span>
+<span><span class="va">dist_13</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gdv_distance.html">gdv_distance</a></span><span class="op">(</span><span class="va">gdvm</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, <span class="va">gdvm</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"The GDV distance between node 1 and 3 is :"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">dist_13</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "The GDV distance between node 1 and 3 is : 0.1788"</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="graphlet-correlation-matrix-gcm">Graphlet correlation matrix (GCM)<a class="anchor" aria-label="anchor" href="#graphlet-correlation-matrix-gcm"></a>
+</h2>
+<p>The <strong>Graphlet Correlation Matrix (GCM)</strong> is another key
+application of the <strong>Graphlet Degree Vector Matrix
+(GDVM)</strong>.Given an
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>O</mi></mrow><annotation encoding="application/x-tex">n \times O</annotation></semantics></math>
+GDVM, the GCM is constructed by computing the pairwise <strong>Spearman
+correlations</strong> between the columns of the GDVM. This produces an
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>×</mo><mi>O</mi></mrow><annotation encoding="application/x-tex">O \times O</annotation></semantics></math>
+matrix that captures the correlations between different orbits. The GCM
+is recognized as a state-of-the-art measure for quantifying
+<strong>topological distance</strong> between networks.</p>
+<p>The GCM can also be interpreted as a <strong>network embedding
+framework</strong>, encoding a network of arbitrary size into an
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo>×</mo><mi>O</mi></mrow><annotation encoding="application/x-tex">O \times O</annotation></semantics></math>
+matrix with entries ranging between –1 and 1. This representation
+enables the comparison of networks of different sizes on a common scale.
+Consequently, for any two networks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>,
+their distance is defined by taking he Euclidean distance of the upper
+triangle values of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>C</mi><msub><mi>M</mi><mi>G</mi></msub></mrow><annotation encoding="application/x-tex">GCM_{G}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>C</mi><msub><mi>M</mi><mi>H</mi></msub></mrow><annotation encoding="application/x-tex">GCM_{H}</annotation></semantics></math>.
+More details can be found in the work of Yaveroğlu et al.<a href="https://www.nature.com/articles/srep04547" class="external-link">link</a></p>
+<p>The GCM can be computed using the function <code><a href="../reference/gdvm_gcm.html">gdvm_gcm()</a></code>
+for <strong>unsigned networks</strong> and <code>signed_gdv_gcm()</code>
+for <strong>signed networks</strong>, by setting the argument
+<code>include_gcm = TRUE</code>.</p>
+<p>The GCM is computed using the function <code>gdvm_gcm</code> for
+unsighed network and <code>signed_gdv_gcm()</code> for signed network,
+respectively, by setting the argument <code>include_gcm</code> to be
+<code>TRUE</code>.</p>
+<p>In the following example, we demonstrate the use of GCM to quantify
+topological distances both within and across network models by
+generating three random networks using the <strong>Erdős–Rényi (ER)
+model</strong> and three scale-free networks using the
+<strong>Barabási–Albert (BA) model</strong> with varying parameters.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<span><span class="co">## Create 3 random networks with n = 100 with edge_density = 0.01, 0.015, 0.02</span></span>
+<span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>,<span class="fl">100</span>,<span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">e_probs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.015</span>, <span class="fl">0.02</span><span class="op">)</span></span>
+<span><span class="va">er_networks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">n</span>, <span class="va">p</span><span class="op">)</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/sample_gnp.html" class="external-link">sample_gnp</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">p</span>, directed <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, <span class="va">N</span>, <span class="va">e_probs</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create 3 scale-free networks with n = 100 with power = 1, 1.2, 1.5</span></span>
+<span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>,<span class="fl">100</span>,<span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">powers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.2</span>, <span class="fl">1.5</span><span class="op">)</span></span>
+<span><span class="va">sf_networks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">n</span>,<span class="va">power</span><span class="op">)</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/sample_pa.html" class="external-link">sample_pa</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">power</span>, directed <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, <span class="va">N</span>, <span class="va">powers</span>, SIMPLIFY <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Compute the GCMs of each networks and compute their pair-wise distance</span></span>
+<span></span>
+<span><span class="co">## igraph object -&gt; GCM -&gt; upper_triangle(GCM) &lt;- rbind each upper_triangle -&gt; pair-wise row distance</span></span>
+<span><span class="va">er_GCM_upper_tri_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">er_networks</span>, <span class="kw">function</span><span class="op">(</span><span class="va">er_net</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="../reference/gdvm_gcm.html">gdvm_gcm</a></span><span class="op">(</span><span class="va">er_net</span>,include_gcm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">gcm</span><span class="op">)</span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">.</span>, <span class="kw">function</span><span class="op">(</span><span class="va">GCM</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">GCM</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html" class="external-link">upper.tri</a></span><span class="op">(</span><span class="va">GCM</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>,<span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"er_001"</span>, <span class="st">"er_0015"</span>, <span class="st">"er_002"</span><span class="op">)</span>; <span class="va">.</span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">sf_GCM_upper_tri_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">sf_networks</span>, <span class="kw">function</span><span class="op">(</span><span class="va">sf_net</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="../reference/gdvm_gcm.html">gdvm_gcm</a></span><span class="op">(</span><span class="va">sf_net</span>, include_gcm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">gcm</span><span class="op">)</span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">.</span>, <span class="kw">function</span><span class="op">(</span><span class="va">GCM</span><span class="op">)</span><span class="op">{</span><span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">GCM</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html" class="external-link">upper.tri</a></span><span class="op">(</span><span class="va">GCM</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>,<span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sf_p1"</span>, <span class="st">"sf_p12"</span>, <span class="st">"sf_p15"</span><span class="op">)</span>; <span class="va">.</span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## row i = upper_triangle(GCM) of network i</span></span>
+<span><span class="va">GCM_upper_tri_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">er_GCM_upper_tri_mat</span>, <span class="va">sf_GCM_upper_tri_mat</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## MDS clustering</span></span>
+<span><span class="va">mds</span> <span class="op">&lt;-</span> <span class="va">GCM_upper_tri_mat</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">proxy</span><span class="fu">::</span><span class="fu">dist</span><span class="op">(</span><span class="va">.</span>, method <span class="op">=</span> <span class="st">"Euclidean"</span>, use <span class="op">=</span> <span class="st">"pairwise.complete.obs"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/cmdscale.html" class="external-link">cmdscale</a></span><span class="op">(</span><span class="va">.</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames_to_column</a></span><span class="op">(</span>var<span class="op">=</span><span class="st">'network'</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>class <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/startsWith.html" class="external-link">startsWith</a></span><span class="op">(</span><span class="va">network</span>, <span class="st">"er"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"random"</span>,</span>
+<span>                                  <span class="fu"><a href="https://rdrr.io/r/base/startsWith.html" class="external-link">startsWith</a></span><span class="op">(</span><span class="va">network</span>, <span class="st">"sf"</span><span class="op">)</span> <span class="op">~</span> <span class="st">"scale-free"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Visualization</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">V1</span>, y <span class="op">=</span> <span class="va">V2</span>, color <span class="op">=</span> <span class="va">network</span>, shape<span class="op">=</span><span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="graphlet_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<div class="section level3">
+<h3 id="section"></h3>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -1,24 +1,26 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://montilab.github.io/RSNet/404.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/LICENSE.html</loc></url>
-<url><loc>https://montilab.github.io/RSNet/articles/community_detection.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/articles/cgbn.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/articles/differential_connectivity_analysis.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/articles/graphlet.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/articles/index.html</loc></url>
-<url><loc>https://montilab.github.io/RSNet/articles/structure_learning_cgbn.html</loc></url>
-<url><loc>https://montilab.github.io/RSNet/articles/structure_learning_ggm.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/authors.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/index.html</loc></url>
-<url><loc>https://montilab.github.io/RSNet/reference/bootBCStats.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/bootstrap_diffanal.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/reference/capture_all.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/centrality.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/colorize.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/colorize_community.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/community_detection.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/consensus_net_cgbn.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/consensus_net_ggm.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/reference/diff_centrality.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/reference/diff_gdv.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/distinct_colors.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-CI_filter.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-abs_pcor_filter.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/reference/dot-bootBCStats.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-count_2star_orbits.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-count_tri_orbits.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/dot-diffanal_wrapper.html</loc></url>
@@ -44,6 +46,7 @@
 <url><loc>https://montilab.github.io/RSNet/reference/gdvm_gcm.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/ggempty.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/index.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/reference/intra_gdv_distance.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/jaccard_similarity.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/matrix_p_adjust.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/model_er.html</loc></url>
@@ -54,8 +57,8 @@
 <url><loc>https://montilab.github.io/RSNet/reference/model_sw.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/normalize_range.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/null_ggm.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/reference/paired_gdv_distance.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/permutation_diffanal.html</loc></url>
-<url><loc>https://montilab.github.io/RSNet/reference/pgdv_distance.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/plot_cn.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/remove_isolated.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/remove_small_community.html</loc></url>
@@ -64,6 +67,7 @@
 <url><loc>https://montilab.github.io/RSNet/reference/signed_gdvm_gcm.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/sim_fam_data.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/toy_er.html</loc></url>
+<url><loc>https://montilab.github.io/RSNet/reference/toy_load.html</loc></url>
 <url><loc>https://montilab.github.io/RSNet/reference/upper_tri_to_matrix.html</loc></url>
 </urlset>
 
