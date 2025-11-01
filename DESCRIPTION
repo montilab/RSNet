@@ -32,14 +32,14 @@ Imports:
     dplyr,
     tidyr,
     stats,
-    stringr
+    stringr,
+    DT,
+    proxy
 Suggests: 
     RHugin,
     graph, 
     Rgraphviz,
     tidyverse,
-    DT,
-    proxy,
     devtools,
     rmarkdown,
     knitr,
