@@ -19,9 +19,6 @@
 #' @importFrom igraph graph_from_adjacency_matrix as.undirected
 #' @importFrom parallel mclapply detectCores
 #' @export
-#' @examplesIf requireNamespace("RHugin", quietly = TRUE) && requireNamespace("graph", quietly = TRUE)
-#' # dat <- ...
-#' # out <- ensemble_cgbn(dat, discrete_variable = c("Group"))
 ensemble_cgbn <- function(dat,
                           discrete_variable = NULL,
                           num_iteration = 1,
@@ -249,22 +246,26 @@ ensemble_cgbn <- function(dat,
 # --- helpers ---------------------------------------------------------------
 
 #' Coerce an RHugin graph to an adjacency matrix
+#' @importFrom igraph graph_from_graphnel as_adjacency_matrix
+#' @noRd
 #' @keywords internal
 .hugin_to_adjmat <- function(network) {
+
   gobj <- RHugin::as.graph.RHuginDomain(network)
 
-  ## already a matrix?
-  if (is.matrix(gobj)) return(gobj)
+  # case 1: RHugin already returns a matrix
+  if (is.matrix(gobj)) {
+    return(gobj)
+  }
 
-  ## graphNEL -> matrix via Bioconductor 'graph'
+  # case 2: RHugin returns a 'graphNEL'
   if (inherits(gobj, "graphNEL")) {
-    if (!requireNamespace("graph", quietly = TRUE)) {
-      stop(
-        "Bioconductor package 'graph' is required to coerce RHugin graphs.\n",
-        "Install with: BiocManager::install('graph')"
-      )
+    if (!requireNamespace("igraph", quietly = TRUE)) {
+      stop("Package 'igraph' is required for adjacency conversion.", call. = FALSE)
     }
-    return(as.matrix(graph::adjacencyMatrix(gobj)))
+    ig <- igraph::graph_from_graphnel(gobj)
+    adj <- igraph::as_adjacency_matrix(ig, sparse = FALSE)
+    return(adj)
   }
 
   stop("Unrecognized object returned by RHugin::as.graph.RHuginDomain().")

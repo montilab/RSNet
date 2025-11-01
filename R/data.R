@@ -12,6 +12,20 @@
 #'
 "toy_er"
 
+#' Toy dataset of mixture data type
+#'
+#' A 50 x 25 data frame. with 20 continuous and 5 discrete variables
+#'
+#' @docType data
+#'
+#' @usage data(toy_cgbn)
+#'
+#' @format A data frame
+#'
+#' @return A data frame
+#'
+"toy_cgbn"
+
 
 #' Toy dataset from LOAD study
 #'

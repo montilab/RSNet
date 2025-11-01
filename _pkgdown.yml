@@ -74,6 +74,7 @@ reference:
   - title: Data Objects
     contents:
       - toy_er
+      - toy_cgbn
       - toy_load
 
   - title:  Miscellaneous
@@ -95,12 +96,12 @@ navbar:
       href: index.html
     - text: "Documentation"
       menu:
-        - text: "Conditional Gaussian Bayesian Networks Structure Learning"
-          href: articles/cgbn.html
         - text: "Graphlet"
           href: articles/graphlet.html
         - text: "Markov Networks-based Differential Connectivity Analysis"
           href: articles/differential_connectivity_analysis.html
+        - text: "Conditional Gaussian Bayesian Networks Structure Learning"
+          href: articles/cgbn.html
     - text: "Reference"
       href: reference/index.html
   right:

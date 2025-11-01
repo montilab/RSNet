@@ -13,7 +13,7 @@ License: GPL (>= 3)
 URL: https://github.com/montilab/RSNet
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports:
     methods,
     utils,
@@ -37,8 +37,6 @@ Imports:
     proxy
 Suggests: 
     RHugin,
-    graph, 
-    Rgraphviz,
     tidyverse,
     devtools,
     rmarkdown,

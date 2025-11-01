@@ -50,9 +50,3 @@ a list object
 \description{
 Resampling-based conditional Gaussian Bayesian Network
 }
-\examples{
-\dontshow{if (requireNamespace("RHugin", quietly = TRUE) && requireNamespace("graph", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-# dat <- ...
-# out <- ensemble_cgbn(dat, discrete_variable = c("Group"))
-\dontshow{\}) # examplesIf}
-}
