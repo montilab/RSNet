@@ -23,7 +23,7 @@
 #' paired_gdv_dist(gdvm1 = gdv1, gdvm2 = gdv2)
 #' }
 #' @export
-paired_gdv_dist <- function(gdvm1, gdvm2) {
+paired_gdv_distance <- function(gdvm1, gdvm2) {
 
   # --- Input validation -------------------------------------------------------
 
