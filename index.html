@@ -55,7 +55,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="rsnet">RSNet<a class="anchor" aria-label="anchor" href="#rsnet"></a>
 </h1></div>
-<p><img src="https://img.shields.io/gitter/room/montilab/RSNet" alt="Gitter"><img src="https://img.shields.io/github/issues/montilab/RSNet" alt="GitHub issues"><img src="https://img.shields.io/github/last-commit/montilab/RSNet" alt="GitHub last commit"></p>
+<p><img src="https://github.com/montilab/RSNet/workflows/rcmdcheck/badge.svg" alt="build"><img src="https://img.shields.io/gitter/room/montilab/RSNet" alt="Gitter"><img src="https://img.shields.io/github/issues/montilab/RSNet" alt="GitHub issues"><img src="https://img.shields.io/github/last-commit/montilab/RSNet" alt="GitHub last commit"></p>
 <p><strong>RSNet</strong> is an R package that implements a resampling-based framework for structure learning and analysis of Markov and conditional Gaussian Bayesian (optional) networks.</p>
 <p>To enhance the stability and reliability of inferred network structures, <strong>RSNet</strong> incorporates multiple resampling strategies. For both Markov and conditional Gaussian Bayesian networks, the framework supports four general approaches:</p>
 <p><strong>RSNet</strong> supports multiple resampling strategies to improve the stability and reliability of inferred network structures. For both Markov and conditional Gaussian Bayesian networks, the framework implements four general approaches:</p>
@@ -86,7 +86,7 @@
 <div class="section level1">
 <h1 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h1>
-<p><strong>IMPORTANT NOTE</strong>: The Conditional Gaussian Bayesian Network functionalities <code>ensemble_cgbn</code> and <code>consensus_net_cgbn</code> are optional and require the <code>RHugin</code> package. Installation instructions for <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>, <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html" class="external-link">windows</a>, and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" class="external-link">Linux</a>.</p>
+<p><strong>IMPORTANT NOTE</strong>: The Conditional Gaussian Bayesian Network functionalities <code>ensemble_cgbn</code> and <code>consensus_net_cgbn</code> are optional in <strong>RSNet</strong> and require the <code>RHugin</code> package. Installation instructions for <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>, <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html" class="external-link">windows</a>, and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" class="external-link">Linux</a>.</p>
 <p>The following example demonstrates the usage of <strong>RSNet</strong> with a synthetic dataset.</p>
 <div class="section level2">
 <h2 id="i-load-r-packages">(i) Load R packages<a class="anchor" aria-label="anchor" href="#i-load-r-packages"></a>
@@ -110,15 +110,15 @@
 <p>The wrapper function <code><a href="reference/capture_all.html">capture_all()</a></code> can be used to suppress messages generated during the execution of <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ensemble_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/capture_all.html">capture_all</a></span><span class="op">(</span><span class="fu"><a href="reference/ensemble_ggm.html">ensemble_ggm</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">toy_er</span><span class="op">$</span><span class="va">dat</span>, <span class="co"># A n x p dataframe/matrix</span></span>
-<span>                                          num_iteration <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Number of resampling iteration</span></span>
-<span>                                          boot <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If FALSE, perform sub-sampling</span></span>
-<span>                                          sub_ratio <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Between 0 and 1, indicating the sub-sampling ratio</span></span>
-<span>                                          sample_class <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># If provided, then stratified sampling is performed</span></span>
-<span>                                          correlated <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># If TRUE, then clusted-based resampling is performed</span></span>
-<span>                                          cluster_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Used only when `correlated = TRUE`</span></span>
-<span>                                          estimate_CI <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If TRUE, estimate the empirical confidence interval</span></span>
-<span>                                          method <span class="op">=</span> <span class="st">"D-S_NW_SL"</span>, <span class="co"># Inference method</span></span>
-<span>                                          n_cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="co"># number of cores for parallel computing</span></span></code></pre></div>
+<span>                                        num_iteration <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Number of resampling iteration</span></span>
+<span>                                        boot <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If FALSE, perform sub-sampling</span></span>
+<span>                                        sub_ratio <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Subsampling ratio (0–1)</span></span>
+<span>                                        sample_class <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Optional: for stratified sampling</span></span>
+<span>                                        correlated <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># If TRUE, then clusted-based resampling is performed</span></span>
+<span>                                        cluster_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Used only when `correlated = TRUE`</span></span>
+<span>                                        estimate_CI <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If TRUE, estimate the empirical confidence interval</span></span>
+<span>                                        method <span class="op">=</span> <span class="st">"D-S_NW_SL"</span>, <span class="co"># Inference method</span></span>
+<span>                                        n_cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="co"># Number of cores for parallel computing</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="iv-construct-the-consensus-network">(iv) Construct the consensus network<a class="anchor" aria-label="anchor" href="#iv-construct-the-consensus-network"></a>
@@ -126,10 +126,10 @@
 <p>We then integrate the ensemble of inferred networks to construct a consensus network, designed to filter out spurious edges introduced by noise and to facilitate downstream analyses. The <code><a href="reference/consensus_net_ggm.html">consensus_net_ggm()</a></code> function takes the output of <code>ensemble_ggm</code> as its primary input, while the optional <code><a href="reference/consensus_net_cgbn.html">consensus_net_cgbn()</a></code> function operates on the output of <code><a href="reference/ensemble_cgbn.html">ensemble_cgbn()</a></code>.</p>
 <p>Edges in the consensus network can be filtered based on their significance using the filter parameter: nominal p-value (<code>filter = "pval"</code>), Benjamini–Hochberg adjusted p-value (<code>filter = "fdr"</code>), or no filtering (<code>filter = "none"</code>). If <code>estimate_CI = TRUE</code> was specified in the <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code> step, edges whose confidence intervals include zero are automatically excluded.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">consensus_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/consensus_net_ggm.html">consensus_net_ggm</a></span><span class="op">(</span>ggm_networks <span class="op">=</span> <span class="va">ensemble_er</span>, <span class="co"># the output of "ensemble_ggm()"</span></span>
-<span>                                  CI <span class="op">=</span> <span class="fl">0.95</span>, <span class="co"># confidence interval</span></span>
-<span>                                  filter <span class="op">=</span> <span class="st">"pval"</span>, <span class="co"># filter method</span></span>
-<span>                                  threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="co"># significant level of the selected filter</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">consensus_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/consensus_net_ggm.html">consensus_net_ggm</a></span><span class="op">(</span>ggm_networks <span class="op">=</span> <span class="va">ensemble_er</span>, <span class="co"># The output of "ensemble_ggm()"</span></span>
+<span>                                  CI <span class="op">=</span> <span class="fl">0.95</span>, <span class="co"># Confidence interval</span></span>
+<span>                                  filter <span class="op">=</span> <span class="st">"pval"</span>, <span class="co"># Filter method</span></span>
+<span>                                  threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="co"># Significant level of the selected filter</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="v-interactive-visualization">(v) Interactive visualization<a class="anchor" aria-label="anchor" href="#v-interactive-visualization"></a>
@@ -143,12 +143,12 @@
 <li><p>Both <code>lower_quantile</code> and <code>upper_quantile</code> are included in the edge attributes</p></li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_cn.html">plot_cn</a></span><span class="op">(</span>ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>, <span class="co"># an "igraph" object</span></span>
-<span>             query <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># node of interests, NULL or a character vector</span></span>
-<span>             order <span class="op">=</span> <span class="fl">1</span>, <span class="co"># order of neighbors</span></span>
-<span>             edge_label <span class="op">=</span> <span class="st">"pcor"</span>, <span class="co"># the edge attribute to be shown</span></span>
-<span>             CI_show <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># show empirical confidence interval</span></span>
-<span>             main <span class="op">=</span> <span class="st">"Example"</span><span class="op">)</span> <span class="co"># title</span></span>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_cn.html">plot_cn</a></span><span class="op">(</span>ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>, <span class="co"># An "igraph" object</span></span>
+<span>             query <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Node of interests, NULL or a character vector</span></span>
+<span>             order <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Order of neighbors</span></span>
+<span>             edge_label <span class="op">=</span> <span class="st">"pcor"</span>, <span class="co"># The edge attribute to be shown</span></span>
+<span>             CI_show <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Show empirical confidence interval</span></span>
+<span>             main <span class="op">=</span> <span class="st">"Example"</span><span class="op">)</span> <span class="co"># Title</span></span>
 <span></span>
 <span></span>
 <span><span class="va">p</span><span class="op">$</span><span class="va">p</span></span></code></pre></div>
