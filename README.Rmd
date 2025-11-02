@@ -14,9 +14,11 @@ devtools::load_all(".")
 
 # RSNet
 
+![build](https://github.com/montilab/RSNet/workflows/rcmdcheck/badge.svg)
 ![Gitter](https://img.shields.io/gitter/room/montilab/RSNet)
 ![GitHub issues](https://img.shields.io/github/issues/montilab/RSNet)
 ![GitHub last commit](https://img.shields.io/github/last-commit/montilab/RSNet)
+
 
 
 **RSNet** is an R package that implements a resampling-based framework for structure learning and analysis of Markov and conditional Gaussian Bayesian (optional) networks.
