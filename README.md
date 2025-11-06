@@ -12,11 +12,6 @@ last commit](https://img.shields.io/github/last-commit/montilab/RSNet)
 for structure learning and analysis of Markov and conditional Gaussian
 Bayesian (optional) networks.
 
-To enhance the stability and reliability of inferred network structures,
-**RSNet** incorporates multiple resampling strategies. For both Markov
-and conditional Gaussian Bayesian networks, the framework supports four
-general approaches:
-
 **RSNet** supports multiple resampling strategies to improve the
 stability and reliability of inferred network structures. For both
 Markov and conditional Gaussian Bayesian networks, the framework
