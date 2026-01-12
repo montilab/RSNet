@@ -27,7 +27,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter mutate case_when
 #' @importFrom igraph vertex_attr_names edge_attr_names as_data_frame
-#'   neighborhood induced_subgraph vcount
+#'   neighborhood induced_subgraph vcount ecount
 #' @importFrom visNetwork visNetwork toVisNetworkData visGroups visOptions
 #'   visLegend visEdges visInteraction visPhysics visIgraphLayout visLayout
 #'
@@ -86,14 +86,27 @@ plot_cn <- function(ig,
     return(invisible(NULL))
   }
 
+  if (igraph::ecount(ig) == 0) {
+    message("The query graph is isolated (0 edge).")
+    return(invisible(NULL))
+  }
+
   vn_data <- visNetwork::toVisNetworkData(ig, idToLabel = FALSE)
+
+  node_cols <- colnames(vn_data$nodes)
+  match_col <- dplyr::case_when(
+    vertex_symbol %in% node_cols ~ vertex_symbol,  # e.g. "symbol"
+    "label" %in% node_cols        ~ "label",       # visNetwork default
+    TRUE                          ~ "id"           # fallback
+  )
+
 
   ## --- assign node groups
   if (!is.null(query)) {
     vn_data$nodes <- vn_data$nodes %>%
       dplyr::mutate(
         group = dplyr::case_when(
-          (id %in% query) | (!!as.name(vertex_symbol) %in% query) ~ "query",
+          (id %in% query) | (!!as.name(match_col) %in% query) ~ "query",
           TRUE ~ "neighbor"
         )
       )

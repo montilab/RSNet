@@ -1,9 +1,9 @@
-url: https://montilab.github.io/RSNet
+url: https://montilab.github.io/RSNet/
+destination: docs
 
-# Use Bootstrap 5; remove the old BS3 params block
 template:
   bootstrap: 5
-  bootswatch: cosmo   # optional: Bootswatch theme for BS5
+  bootswatch: cosmo
 
 development:
   mode: auto
@@ -17,7 +17,6 @@ authors:
 news:
   one_page: false
 
-# Start with a minimal, valid reference. Add more sections once it builds.
 reference:
   - title: Network Structure Inference Methods
     contents:
@@ -77,7 +76,7 @@ reference:
       - toy_cgbn
       - toy_load
 
-  - title:  Miscellaneous
+  - title: Miscellaneous
     contents:
       - distinct_colors
       - normalize_range
@@ -86,8 +85,6 @@ reference:
       - ggempty
       - jaccard_similarity
       - capture_all
-
-
 
 navbar:
   title: "RSNet"

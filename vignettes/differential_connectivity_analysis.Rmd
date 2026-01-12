@@ -39,7 +39,7 @@ data(toy_load)
 ```
 
 
-# Create observed networks
+# Estimate observed networks
 
 The observed networks are constructed by splitting the dataset into two groups based on the phenotype of interest, **LOAD** versus **Control**. Each subset of the data is then used as input to the resampling-based framework implemented in **RSNet**. The resulting networks derived from each group are stored as a named list object for downstream analyses.
 ```{r}
@@ -77,7 +77,7 @@ obs_networks <- list(ctrl = ctrl_obs,
 ```
 
 
-# Create the null distribution 
+# Estimate the null distribution 
 
 Accurate estimation of the null distribution is essential for assessing statistical significance. owever, for most network-based statistics, the null distribution is difficult to derive analytically. **RSNet** addresses this challenge by implementing **resampling-based null distribution generation** via **permutation** and **bootstrap** methods. These procedures are implemented in the `null_ggm()` function.
 
