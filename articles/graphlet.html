@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">RSNet</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,7 @@
 
 
 
-<link href="graphlet_files/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<link href="graphlet_files/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
 <script src="graphlet_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="graphlet_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
 <script src="graphlet_files/datatables-binding-0.34.0/datatables.js"></script><link href="graphlet_files/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="graphlet_files/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
@@ -90,15 +90,15 @@ lines for negative relationships. Notably, the number of unsigned
 graphlets of size up to four and their associated orbits is equivalent
 to the number of signed graphlets of size up to three and their
 corresponding orbits.</p>
-<p><img src="figs/4_node_graphlets.png" width="80%" height="80%"></p>
-<p><img src="figs/3_node_signed_graphlets.png" width="80%" height="80%"></p>
+<p><img src="figs/4_node_graphlets.png" class="r-plt" alt="" width="80%" height="80%"></p>
+<p><img src="figs/3_node_signed_graphlets.png" class="r-plt" alt="" width="80%" height="80%"></p>
 </div>
 <div class="section level2">
 <h2 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
 </h2>
 <p><font color="#000000"></font></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/montilab/RSNet" class="external-link">RSNet</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://montilab.github.io/RSNet/">RSNet</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.igraph.org/" class="external-link">igraph</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/DT" class="external-link">DT</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">proxy</span><span class="op">)</span></span>
@@ -161,7 +161,7 @@ the first row of the GDVM.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ig</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/graph.html" class="external-link">graph</a></span><span class="op">(</span>edges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>, <span class="fl">1</span>,<span class="fl">3</span>, <span class="fl">1</span>,<span class="fl">7</span>, <span class="fl">2</span>,<span class="fl">4</span>, <span class="fl">3</span>,<span class="fl">4</span>, <span class="fl">3</span>,<span class="fl">5</span>, <span class="fl">3</span>,<span class="fl">6</span>, <span class="fl">4</span>,<span class="fl">5</span>, <span class="fl">5</span>,<span class="fl">6</span>, <span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span>, directed <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ig</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphlet_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="graphlet_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="graphlet-degree-vector-matrix-gdvm">Graphlet degree vector matrix (GDVM)<a class="anchor" aria-label="anchor" href="#graphlet-degree-vector-matrix-gdvm"></a>
@@ -217,7 +217,7 @@ equivalent to those in the 4-node unsigned graphlets.</p>
 <span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">signed_ig</span><span class="op">)</span><span class="op">$</span><span class="va">sign</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">signed_ig</span><span class="op">)</span><span class="op">$</span><span class="va">lty</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">signed_ig</span><span class="op">)</span><span class="op">$</span><span class="va">sign</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1</span>, <span class="st">"dashed"</span>, <span class="st">"solid"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">signed_ig</span>, edge.lty <span class="op">=</span> <span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">signed_ig</span><span class="op">)</span><span class="op">$</span><span class="va">lty</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphlet_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="graphlet_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="graphlet-degree-vector-matrix-gdvm-1">Graphlet degree vector matrix (GDVM)<a class="anchor" aria-label="anchor" href="#graphlet-degree-vector-matrix-gdvm-1"></a>
@@ -348,7 +348,7 @@ model</strong> and three scale-free networks using the
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">V1</span>, y <span class="op">=</span> <span class="va">V2</span>, color <span class="op">=</span> <span class="va">network</span>, shape<span class="op">=</span><span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="graphlet_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="graphlet_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="700"></p>
 <div class="section level3">
 <h3 id="section"></h3>
 </div>
@@ -360,11 +360,11 @@ model</strong> and three scale-free networks using the
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://github.com/Ziwei-Huang-BU" class="external-link">Ziwei Huang</a>.</p>
+  <p>Developed by <a href="https://github.com/Ziwei-Huang-BU" class="external-link">Ziwei Huang</a>, <a href="https://github.com/tetomonti" class="external-link">Stefano Monti</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
