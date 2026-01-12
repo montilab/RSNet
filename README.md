@@ -12,11 +12,6 @@ last commit](https://img.shields.io/github/last-commit/montilab/RSNet)
 for structure learning and analysis of Markov and conditional Gaussian
 Bayesian (optional) networks.
 
-To enhance the stability and reliability of inferred network structures,
-**RSNet** incorporates multiple resampling strategies. For both Markov
-and conditional Gaussian Bayesian networks, the framework supports four
-general approaches:
-
 **RSNet** supports multiple resampling strategies to improve the
 stability and reliability of inferred network structures. For both
 Markov and conditional Gaussian Bayesian networks, the framework
@@ -100,16 +95,20 @@ The wrapper function `capture_all()` can be used to suppress messages
 generated during the execution of `ensemble_ggm()`.
 
 ``` r
-ensemble_er <- capture_all(ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
-                                        num_iteration = 100, # Number of resampling iteration
-                                        boot = TRUE, # If FALSE, perform sub-sampling
-                                        sub_ratio = NULL, # Subsampling ratio (0–1)
-                                        sample_class = NULL, # Optional: for stratified sampling
-                                        correlated = FALSE, # If TRUE, then clusted-based resampling is performed
-                                        cluster_ratio = 1, # Used only when `correlated = TRUE`
-                                        estimate_CI = TRUE, # If TRUE, estimate the empirical confidence interval
-                                        method = "D-S_NW_SL", # Inference method
-                                        n_cores = 1)) # Number of cores for parallel computing
+ensemble_er <- capture_all(
+  ensemble_ggm(
+    dat = toy_er$dat,     # A n x p dataframe/matrix
+    num_iteration = 100,  # Number of resampling iteration
+    boot = TRUE,          # If FALSE, perform sub-sampling
+    sub_ratio = NULL,     # Subsampling ratio (0–1)
+    sample_class = NULL,  # Optional: for stratified sampling
+    correlated = FALSE,   # If TRUE, then clusted-based resampling is performed
+    cluster_ratio = 1,    # Used only when `correlated = TRUE`
+    estimate_CI = TRUE,   # If TRUE, estimate the empirical confidence interval
+    method = "D-S_NW_SL", # Inference method
+    n_cores = 1           # Number of cores for parallel computing
+  )
+) 
 ```
 
 ## (iv) Construct the consensus network
@@ -129,10 +128,12 @@ significance using the filter parameter: nominal p-value
 whose confidence intervals include zero are automatically excluded.
 
 ``` r
-consensus_er <- consensus_net_ggm(ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
-                                  CI = 0.95, # Confidence interval
-                                  filter = "pval", # Filter method
-                                  threshold = 0.05) # Significant level of the selected filter
+consensus_er <- consensus_net_ggm(
+  ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
+  CI = 0.95,                  # Confidence interval
+  filter = "pval",            # Filter method
+  threshold = 0.05            # Significant level of the selected filter
+)
 ```
 
 ## (v) Interactive visualization
@@ -158,14 +159,14 @@ conditions are met:
     attributes
 
 ``` r
-p <- plot_cn(ig = consensus_er$consensus_network, # An "igraph" object
-             query = NULL, # Node of interests, NULL or a character vector
-             order = 1, # Order of neighbors
-             edge_label = "pcor", # The edge attribute to be shown
-             CI_show = TRUE, # Show empirical confidence interval
-             main = "Example") # Title
-
-
+p <- plot_cn(
+  ig = consensus_er$consensus_network, # An "igraph" object
+  query = NULL,        # Node of interests, NULL or a character vector
+  order = 1,           # Order of neighbors
+  edge_label = "pcor", # The edge attribute to be shown
+  CI_show = TRUE,      # Show empirical confidence interval
+  main = "Example"     # Title
+)
 p$p
 ```
 
@@ -184,12 +185,11 @@ igraph object as input. For weighted networks, users can specify the
 desired weighting scheme.
 
 ``` r
-centrality(ig = consensus_er$consensus_network,
-           weight = NULL) %>% 
-  as.matrix(.) %>% 
-  round(., 4) %>% 
-  as.data.frame(.) %>%
-  head(.) %>% 
+centrality(ig = consensus_er$consensus_network, weight = NULL) |>
+  as.matrix(.) |> 
+  round(., 4) |> 
+  as.data.frame(.) |>
+  head(.) |> 
   DT::datatable(.)
 ```
 
