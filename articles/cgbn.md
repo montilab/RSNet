@@ -12,7 +12,7 @@ CGBNs, supporting four resampling strategies to improve the stability
 and robustness of inferred network structures:
 
 1.  Bootstrap.
-2.  Sub-sampling.
+2.  Sub-sampling
 3.  Stratified bootstrap.
 4.  Stratified sub-sampling.
 
