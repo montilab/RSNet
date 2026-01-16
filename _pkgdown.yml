@@ -20,71 +20,71 @@ news:
 reference:
   - title: Network Structure Inference Methods
     contents:
-      - ensemble_ggm
-      - ensemble_cgbn
-      - consensus_net_ggm
-      - consensus_net_cgbn
-      - resample
-      - resample_cluster
-      - matrix_p_adjust
-      - upper_tri_to_matrix
+      - '`ensemble_ggm`'
+      - '`ensemble_cgbn`'
+      - '`consensus_net_ggm`'
+      - '`consensus_net_cgbn`'
+      - '`resample`'
+      - '`resample_cluster`'
+      - '`matrix_p_adjust`'
+      - '`upper_tri_to_matrix`'
 
   - title: Graphlet-based Methods
     contents:
-      - gdvm_gcm
-      - signed_gdvm_gcm
-      - gdv_distance
-      - intra_gdv_distance
-      - paired_gdv_distance
-      - gcm_distance
+      - '`gdvm_gcm`'
+      - '`signed_gdvm_gcm`'
+      - '`gdv_distance`'
+      - '`intra_gdv_distance`'
+      - '`paired_gdv_distance`'
+      - '`gcm_distance`'
 
   - title: Community Detection Methods
     contents:
-      - community_detection
-      - remove_isolated
-      - remove_small_community
+      - '`community_detection`'
+      - '`remove_isolated`'
+      - '`remove_small_community`'
 
   - title: Centrality Methods
     contents:
-      - centrality
+      - '`centrality`'
 
   - title: Differential Connectivity Methods
     contents:
-      - null_ggm
-      - permutation_diffanal
-      - bootstrap_diffanal
-      - diff_centrality
-      - diff_gdv
+      - '`null_ggm`'
+      - '`permutation_diffanal`'
+      - '`bootstrap_diffanal`'
+      - '`diff_centrality`'
+      - '`diff_gdv`'
 
   - title: Plot Methods
     contents:
-      - plot_cn
+      - '`plot_cn`'
 
   - title: Simulation Methods
     contents:
-      - model_er
-      - model_pa
-      - model_mpa
-      - model_sbm
-      - model_sw
-      - model_sim
-      - sim_fam_data
+      - '`model_er`'
+      - '`model_pa`'
+      - '`model_mpa`'
+      - '`model_sbm`'
+      - '`model_sw`'
+      - '`model_sim`'
+      - '`sim_fam_data`'
 
   - title: Data Objects
     contents:
-      - toy_er
-      - toy_cgbn
-      - toy_load
+      - '`toy_er`'
+      - '`toy_cgbn`'
+      - '`toy_load`'
 
   - title: Miscellaneous
     contents:
-      - distinct_colors
-      - normalize_range
-      - colorize
-      - colorize_community
-      - ggempty
-      - jaccard_similarity
-      - capture_all
+      - '`distinct_colors`'
+      - '`normalize_range`'
+      - '`colorize`'
+      - '`colorize_community`'
+      - '`ggempty`'
+      - '`jaccard_similarity`'
+      - '`capture_all`'
 
 navbar:
   title: "RSNet"
