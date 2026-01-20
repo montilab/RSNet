@@ -22,9 +22,13 @@ jobs:
 
       - uses: r-lib/actions/setup-r@v2
         with:
-          use-public-rspm: true   # binaries + system reqs resolved automatically
+          use-public-rspm: true
 
-      # Install only hard deps for checks (Depends/Imports/LinkingTo), plus tools we need.
+      # ---------------------------
+      # 1) R CMD check (DO NOT force Suggests)
+      #    - installs only hard deps (Depends/Imports/LinkingTo)
+      #    - RHugin (Suggests) will NOT be required
+      # ---------------------------
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
@@ -32,9 +36,8 @@ jobs:
             any::BiocManager
             any::testthat
             local::.
-          dependencies: '"hard"'
+          dependencies: hard
 
-      # Run R CMD check; Suggests are NOT forced (so RHugin won't be required)
       - name: R CMD check (skip Suggests)
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: "false"
@@ -42,18 +45,29 @@ jobs:
         run: |
           Rscript -e 'rcmdcheck::rcmdcheck(args = c("--no-manual","--as-cran"), error_on = "warning", check_dir = "check")'
 
-      # Install deps for website build (pkgdown + your package), still without Suggests
+      # ---------------------------
+      # 2) pkgdown site build (ALLOW Suggests)
+      #    - installs Suggests so vignettes/articles render
+      #    - does NOT affect the check step above
+      # ---------------------------
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
             any::pkgdown
+            any::DT
+            any::rmarkdown
+            any::knitr
             local::.
           needs: website
-          dependencies: '"hard"'
+          dependencies: all
 
       - name: Build pkgdown site
-        run: Rscript -e 'pkgdown::build_site_github_pages(new_process = TRUE, install = TRUE)'
+        run: |
+          Rscript -e 'pkgdown::build_site_github_pages(new_process = TRUE, install = TRUE)'
 
+      # ---------------------------
+      # 3) Deploy to gh-pages
+      # ---------------------------
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
