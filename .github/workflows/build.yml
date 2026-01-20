@@ -24,7 +24,9 @@ jobs:
         with:
           use-public-rspm: true
 
-      # 1) R CMD check: do NOT force Suggests
+      # ---------------------------
+      # 1) R CMD check (Suggests NOT forced; RHugin not required)
+      # ---------------------------
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
@@ -41,23 +43,26 @@ jobs:
         run: |
           Rscript -e 'rcmdcheck::rcmdcheck(args = c("--no-manual","--as-cran"), error_on = "warning", check_dir = "check")'
 
-      # 2) pkgdown build: allow Suggests (so vignettes render)
+      # ---------------------------
+      # 2) pkgdown site build (install enough to build vignettes, but avoid RHugin)
+      # ---------------------------
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
             any::pkgdown
-            any::DT
             any::rmarkdown
             any::knitr
             local::.
           needs: website
-          dependencies: '"all"'
+          dependencies: '"soft"'
 
       - name: Build pkgdown site
         run: |
           Rscript -e 'pkgdown::build_site_github_pages(new_process = TRUE, install = TRUE)'
 
-      # 3) Deploy
+      # ---------------------------
+      # 3) Deploy to gh-pages
+      # ---------------------------
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
