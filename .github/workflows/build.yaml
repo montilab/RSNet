@@ -1,0 +1,76 @@
+name: R-CMD-check + pkgdown (RHugin-safe)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    container: bioconductor/bioconductor_docker:devel
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Query dependencies (hard only; do NOT pull RHugin)
+        run: |
+          install.packages("remotes")
+          deps <- remotes::dev_package_deps(dependencies = c("Depends","Imports","LinkingTo"))
+          saveRDS(deps, ".github/depends.Rds", version = 2)
+        shell: Rscript {0}
+
+      - name: Cache R packages
+        if: runner.os != 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/R/site-library
+          key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-1-
+
+      - name: Install dependencies for R CMD check (skip Suggests; RHugin not required)
+        run: |
+          remotes::install_deps(dependencies = c("Depends","Imports","LinkingTo"),
+                                repos = BiocManager::repositories())
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
+
+      - name: R CMD check (Suggests NOT forced)
+        env:
+          _R_CHECK_CRAN_INCOMING_REMOTE_: "false"
+          _R_CHECK_FORCE_SUGGESTS_: "false"
+        run: |
+          rcmdcheck::rcmdcheck(args = c("--no-manual","--as-cran"),
+                               error_on = "warning",
+                               check_dir = "check")
+        shell: Rscript {0}
+
+      # ---------------------------
+      # pkgdown site build
+      # - install only the website/vignette tooling you actually need
+      # - DO NOT attempt to install RHugin
+      # ---------------------------
+      - name: Install dependencies for pkgdown (no RHugin)
+        run: |
+          remotes::install_cran(c("pkgdown","rmarkdown","knitr","DT"))
+        shell: Rscript {0}
+
+      - name: Build pkgdown site
+        run: |
+          Rscript -e 'pkgdown::build_site("."); if (dir.exists("README_files")) file.copy("README_files","docs",recursive=TRUE)'
+        shell: bash
+
+      - name: Install deploy dependencies
+        run: |
+          apt-get update
+          apt-get -y install rsync
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.BUILD_MY_TOKEN }}
+          branch: gh-pages
+          folder: docs
