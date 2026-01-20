@@ -24,6 +24,8 @@ marginally independent but become conditionally dependent upon
 conditioning on a third variable $`Z`$, as illustrating in the follow
 figure:
 
+Markov blanket
+
 **RSNet** implements a resampling-based structure learning framework for
 CGBNs, supporting four resampling strategies to improve the stability
 and robustness of inferred network structures:
