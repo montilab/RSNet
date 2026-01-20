@@ -93,6 +93,8 @@ navbar:
       href: index.html
     - text: "Documentation"
       menu:
+        - text: "Gaussian Networks"
+          href: articles/ggm.html
         - text: "Graphlet"
           href: articles/graphlet.html
         - text: "Markov Networks-based Differential Connectivity Analysis"

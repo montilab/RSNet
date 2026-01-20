@@ -19,12 +19,9 @@ devtools::load_all(".")
 ![GitHub issues](https://img.shields.io/github/issues/montilab/RSNet)
 ![GitHub last commit](https://img.shields.io/github/last-commit/montilab/RSNet)
 
+**RSNet** is an R package that implements a resampling-based framework for structure learning and analysis of partial correlation networks modeled as Gaussian networks, and conditional Gaussian Bayesian networks (optional) for mixed data types combining continuous and discrete variables.
 
-
-**RSNet** is an R package that implements a resampling-based framework for structure learning and analysis of Markov and conditional Gaussian Bayesian (optional) networks.
-
-
-To enhance the stability and reliability of inferred network structures, **RSNet** incorporates multiple resampling strategies. For both Markov and conditional Gaussian Bayesian networks, the framework supports four general approaches:
+To enhance the stability and reliability of inferred network structures, **RSNet** incorporates multiple resampling strategies. For both Gaussian and conditional Gaussian Bayesian networks, the framework supports four general approaches:
 
 **RSNet** supports multiple resampling strategies to improve the stability and reliability of inferred network structures. For both Markov and conditional Gaussian Bayesian networks, the framework implements four general approaches:
 
@@ -33,16 +30,19 @@ To enhance the stability and reliability of inferred network structures, **RSNet
   3. Stratified bootstrap.
   4. Stratified sub-sampling.
   
-For Markov networks, **RSNet** further provides cluster-based sampling options specifically designed to accommodate correlated or family-based data, including:
+For Gaussian networks, **RSNet** further provides cluster-based sampling options specifically designed to accommodate correlated or family-based data, including:
 
   1. Cluster-based bootstrap.
   2. Fractional cluster-based bootstrap.
-
-
+  
 Beyond structure learning, **RSNet** includes a suite of network analysis tools containing standard network metrics, graphlet-based analysis, and differential connectivity analysis.
 
-Please see our [documentation](https://montilab.github.io/RSNet/) for additional examples.
+The overall workflow is illustrated in the following diagram: 
+```{r echo=FALSE, out.height="80%", out.width="80%"}
+knitr::include_graphics("figs/flowchart.png")
+```
 
+Please see our [documentation](https://montilab.github.io/RSNet/) for additional examples.
 
 
 # Installation
@@ -84,7 +84,6 @@ In this example, we use the simulated dataset as input and perform bootstrap res
 The wrapper function `capture_all()` can be used to suppress messages generated during the execution of `ensemble_ggm()`.
 
 
-
 ```{r}
 ensemble_er <- capture_all(ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
                                         num_iteration = 100, # Number of resampling iteration
@@ -98,12 +97,12 @@ ensemble_er <- capture_all(ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/ma
                                         n_cores = 1)) # Number of cores for parallel computing
 ```
 
-## (iv) Construct the consensus network
+## (iv) Consensus network construction
 
 We then integrate the ensemble of inferred networks to construct a consensus network, designed to filter out spurious edges introduced by noise and to facilitate downstream analyses. The `consensus_net_ggm()` function takes the output of `ensemble_ggm` as its primary input, while the optional `consensus_net_cgbn()` function operates on the output of `ensemble_cgbn()`.
 
-Edges in the consensus network can be filtered based on their significance using the filter parameter: nominal p-value (`filter = "pval"`), Benjamini–Hochberg adjusted p-value (`filter = "fdr"`), or no filtering (`filter = "none"`). If `estimate_CI = TRUE` was specified in the `ensemble_ggm()` step, edges whose confidence intervals include zero are automatically excluded.
 
+Edges in the consensus network can be filtered based on their significance using the filter parameter: nominal p-value (`filter = "pval"`), Benjamini–Hochberg adjusted p-value (`filter = "fdr"`), or no filtering (`filter = "none"`). If `estimate_CI = TRUE` was specified in the `ensemble_ggm()` step, edges whose confidence intervals include zero are automatically excluded.
 
 ```{r}
 consensus_er <- consensus_net_ggm(ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
