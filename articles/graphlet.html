@@ -84,8 +84,8 @@ rather than using graphlet counts alone, as demonstrated by Apratim Das
 et al.<a href="https://dl.acm.org/doi/abs/10.1145/3341161.3343692?casa_token=_MCpkDptH0gAAAAA:wEsOwBRKqU9MIsHInlobhZd5kGlJNhqiYckJcrmWl8mU8m-XMfybUWsR8nu3JHlwtorebh7kd7W4" class="external-link">link</a></p>
 <p>This concept can be naturally extended to <strong>signed</strong> and
 <strong>directed</strong> networks. The current version of
-<strong>RSNet</strong> supports graphlet orbit counting for both
-unsigned and signed undirected networks.</p>
+<em>RSNet</em> supports graphlet orbit counting for both unsigned and
+signed undirected networks.</p>
 <p>Here we use black lines to represent positive relationships and red
 lines for negative relationships. Notably, the number of unsigned
 graphlets of size up to four and their associated orbits is equivalent
@@ -187,13 +187,13 @@ and the corresponding <strong>Graphlet Degree Vector Matrix
 (GDVM)</strong> can be naturally extended to <strong>signed
 networks</strong>. However, this extension is computationally more
 demanding, and currently no R packages provide functionality for
-constructing GDVMs for signed networks.A brute-force enumeration
+constructing GDVMs for signed networks. A brute-force enumeration
 approach has computational complexity exceeding
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>p</mi><mn>3</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(p^{3})</annotation></semantics></math>,
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 is the network size.</p>
-<p><strong>RSNet</strong> overcomes this limitation by integrating
+<p><em>RSNet</em> overcomes this limitation by integrating
 state-of-the-art graphlet counting algorithms with parallel computing,
 enabling efficient construction of signed GDVMs in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>∣</mo><mi>d</mi><mo>∣</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(∣d∣)</annotation></semantics></math>,
@@ -201,11 +201,12 @@ where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∣</mo><mi>d</mi><mo>∣</mo></mrow><annotation encoding="application/x-tex">∣d∣</annotation></semantics></math>is
 the average degree, resulting near-constant time complexity for sparse
 networks.</p>
-<p>The function <code>signed_gdv_gcm()</code> takes an igraph object as
-input and computes the GDV of each node for graphlets of up to three
-nodes. Notably, in unsigned networks, the number of graphlets of size up
-to four and the number of associated orbits are equivalent to those of
-signed networks with graphlets of size up to three.</p>
+<p>The function <code>signed_gdv_gcm()</code> takes an
+<code>igraph</code> object as input and computes the GDV of each node
+for graphlets of up to three nodes. Notably, in unsigned networks, the
+number of graphlets of size up to four and the number of associated
+orbits are equivalent to those of signed networks with graphlets of size
+up to three.</p>
 <p>Similarly, for demonstration purposes, we set the
 <code>redundant_orbit</code> parameter to <code>TRUE</code>. There are
 11 non-redundant orbits among the 3-node signed graphlets, which are
@@ -299,7 +300,7 @@ More details can be found in the work of Yaveroğlu et al.<a href="https://www.n
 for <strong>unsigned networks</strong> and <code>signed_gdv_gcm()</code>
 for <strong>signed networks</strong>, by setting the argument
 <code>include_gcm = TRUE</code>.</p>
-<p>The GCM is computed using the function <code>gdvm_gcm</code> for
+<p>The GCM is computed using the function <code><a href="../reference/gdvm_gcm.html">gdvm_gcm()</a></code> for
 unsighed network and <code>signed_gdv_gcm()</code> for signed network,
 respectively, by setting the argument <code>include_gcm</code> to be
 <code>TRUE</code>.</p>

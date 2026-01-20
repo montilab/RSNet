@@ -1,11 +1,28 @@
 # Conditional Gaussian Bayesian Networks Structure Learning
 
-## Conditional Gaussian Bayesian network (CGBN)
+## Introduction
 
 A **Conditional Gaussian Bayesian Network (CGBN)** is a probabilistic
 graphical model that integrates **discrete** and **continuous**
 variables within a unified Bayesian framework, making it particularly
-suitable for **mixed-type (mixture) data**.
+suitable for **mixed-type (mixture) data**. CGBNs are represented as
+**directed acyclic graphs (DAGs)**, where nodes correspond to random
+variables and directed edges encode conditional dependencies consistent
+with a joint probability distribution in which continuous variables
+follow Gaussian distributions conditional on their discrete parents.
+
+Structure learning in CGBNs is typically performed using
+**constraint-based methods**, which infer the network topology by
+testing conditional independence relationships implied by the data.
+Starting from a complete graph, edges are iteratively removed when
+conditional independence between variable pairs is detected given
+appropriate conditioning sets. A key step in orienting edges in the
+resulting partially directed graph is the identification of
+**v-structures**, of the form
+$\left. X\rightarrow Z\leftarrow Y \right.$. A v-structures is inferred
+when two variables $X$ and $Y$ are marginally independent but become
+conditionally dependent upon conditioning on a third variable $Z$, as
+illustrating in the follow figure:
 
 **RSNet** implements a resampling-based structure learning framework for
 CGBNs, supporting four resampling strategies to improve the stability
@@ -17,9 +34,12 @@ and robustness of inferred network structures:
 4.  Stratified sub-sampling.
 
 **IMPORTANT NOTE**: The Conditional Gaussian Bayesian Network
-functionalities `ensemble_cgbn` and `consensus_net_cgbn` are optional in
-**RSNet** and require the `RHugin` package. Installation instructions
-for
+functionalities
+[`ensemble_cgbn()`](https://montilab.github.io/RSNet/reference/ensemble_cgbn.md)
+and
+[`consensus_net_cgbn()`](https://montilab.github.io/RSNet/reference/consensus_net_cgbn.md)
+are optional in **RSNet** and require the *RHugin* package. Installation
+instructions for
 [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html),
 [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html),
 and
@@ -68,7 +88,7 @@ ensemble_toy <- ensemble_cgbn(dat = toy_cgbn, # A n x p dataframe
                               n_cores = 1) # Number of cores for parallel computing
 ```
 
-## Construct the consensus network
+## Consensus network construction
 
 The construction of the **consensus network** for conditional Gaussian
 Bayesian networks (CGBNs) supports two complementary approaches:
@@ -80,7 +100,7 @@ Bayesian networks (CGBNs) supports two complementary approaches:
     directed structure.
 
 2.  `method = "average"`: Computes the selection frequency of each edge
-    based on Markov blanket relationships between the two incident
+    based on **Markov blanket** relationships between the two incident
     nodes. The resulting consensus network is undirected, representing
     stable dependency patterns rather than directionality.
 

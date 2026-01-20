@@ -74,16 +74,33 @@ Huang</h4>
     
     
 <div class="section level2">
-<h2 id="differential-connectivity-analysis">Differential connectivity analysis<a class="anchor" aria-label="anchor" href="#differential-connectivity-analysis"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p><strong>Differential connectivity analysis</strong> is an important
-application in network-based studies, aimed at characterizing the
-<strong>rewiring patterns</strong> of molecular entities across
-different conditions or phenotypes. Unlike univariate analyses that
-evaluate each feature independently, this approach captures
+application in network-based studies, aimed at characterizing
+<strong>network rewiring patterns</strong> of interacting entities
+across different conditions or phenotypes. Unlike univariate analyses
+that evaluate features independently, this approach captures
 <strong>integrative, system-level</strong> signals arising from the
-collective behavior of molecular entities, thereby providing
-complementary insights into the underlying mechanisms</p>
+collective behavior of interacting entities, thereby providing
+complementary insights into underlying mechanisms.</p>
+<p><em>RSNet</em> supports differential connectivity analysis for
+datasets containing samples from two groups (e.g., young vs. old,
+disease vs. healthy) and enables statistical assessment of a wide range
+of network-based statistics, including centrality measures and graphlet
+degree vector (GDV)–based distances.The overall workflow is illustrated
+in the following figure. Briefly, the input dataset is partitioned into
+two mutually exclusive subsets corresponding to the groups of interest.
+Network structure inference is then performed separately for each
+subset, and the observed differences in network-based statistics are
+computed.</p>
+<p>To assess statistical significance, <em>RSNe</em>t constructs a
+<strong>resampling-based empirical null distribution</strong> by
+randomizing the original dataset using <strong>permutation</strong>
+and/or <strong>bootstrap</strong> procedures. The significance of the
+observed network differences is subsequently evaluated by comparing the
+observed statistics to the corresponding null distributions.</p>
+<p><img src="figs/diff_con.png" class="r-plt" alt="" width="80%" height="80%"></p>
 </div>
 <div class="section level2">
 <h2 id="load-packages">Load packages<a class="anchor" aria-label="anchor" href="#load-packages"></a>
@@ -101,9 +118,10 @@ complementary insights into the underlying mechanisms</p>
 disease (LOAD) study</a>.</p>
 <p>Here we used a real, and curated dataset derived from late-onset
 Alzheimer’s disease (LOAD) study<a href="https://pubmed.ncbi.nlm.nih.gov/23622250/" class="external-link">link</a>. The dataset
-includes 129 LOAD subjects and 101 control subjects. For demonstration
-and computational efficiency, we use only a subset of genes with the
-highest median absolute deviation (MAD).</p>
+includes 129 <strong>LOAD</strong> subjects and 101
+<strong>control</strong> subjects. For demonstration and computational
+efficiency, we use only a subset of genes with the highest median
+absolute deviation (MAD).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">toy_load</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -113,9 +131,9 @@ highest median absolute deviation (MAD).</p>
 <p>The observed networks are constructed by splitting the dataset into
 two groups based on the phenotype of interest, <strong>LOAD</strong>
 versus <strong>Control</strong>. Each subset of the data is then used as
-input to the resampling-based framework implemented in
-<strong>RSNet</strong>. The resulting networks derived from each group
-are stored as a named list object for downstream analyses.</p>
+input to the resampling-based framework implemented in <em>RSNet</em>.
+The resulting networks derived from each group are stored as a named
+list object for downstream analyses.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## split the data into two groups</span></span>
 <span><span class="va">ctrl_dat</span> <span class="op">&lt;-</span> <span class="va">toy_load</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -155,7 +173,7 @@ are stored as a named list object for downstream analyses.</p>
 <p>Accurate estimation of the null distribution is essential for
 assessing statistical significance. owever, for most network-based
 statistics, the null distribution is difficult to derive analytically.
-<strong>RSNet</strong> addresses this challenge by implementing
+<em>RSNet</em> addresses this challenge by implementing
 <strong>resampling-based null distribution generation</strong> via
 <strong>permutation</strong> and <strong>bootstrap</strong> methods.
 These procedures are implemented in the <code><a href="../reference/null_ggm.html">null_ggm()</a></code>
@@ -194,12 +212,11 @@ iterations.</p>
 <div class="section level2">
 <h2 id="differential-centralities">Differential centralities<a class="anchor" aria-label="anchor" href="#differential-centralities"></a>
 </h2>
-<p><strong>RSNet</strong> supports differential analysis of standard
-centrality measures, including degree, eigenvector, and betweenness
-centralities, etc. This functionality is implemented in the
+<p><em>RSNet</em> supports differential analysis of standard centrality
+measures, including degree, eigenvector, and betweenness centralities,
+etc. This functionality is implemented in the
 <code><a href="../reference/diff_centrality.html">diff_centrality()</a></code> function, which takes as input the
-observed networks (a named list of length two; see the <em>Create
-Observed Networks</em> section).</p>
+observed networks。</p>
 <p>Internally, <code><a href="../reference/diff_centrality.html">diff_centrality()</a></code> calls the
 <code><a href="../reference/null_ggm.html">null_ggm()</a></code> function to generate the null distribution. For
 improved memory efficiency, users can alternatively run
@@ -228,16 +245,16 @@ randomization procedures, and allows for <strong>one-sided</strong> or
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"filter":"none","vertical":false,"data":[["SERPINA3","S100A8","RGS1","S100A9","CRH","HSPA1A"],[2,0,-1,0,-1,0],[0.3333333333333333,1,0.5,1,0.5,1],[2,0,-1,0,-1,0],[0.3333333333333333,1,0.5,1,0.5,1],[0.9909297610655976,-1.634073591570194e-17,0.07848131795611482,-4.232584104334971e-17,-0.0168597317211577,-0.01355094690837054],[0.1666666666666667,0.8333333333333334,0.8333333333333334,0.8333333333333334,0.8333333333333334,1],[167.5,0,-36,0,-106,-36],[0.5,1,0.5,1,0.1666666666666667,0.5],[-0.00103319783197832,0,-0.02946428571428571,0,-0.002024035420619861,0.4961977186311787],[0.1666666666666667,1,0.1666666666666667,1,0.1666666666666667,0.1666666666666667],[0.002233784945799629,-0.0001436472024707331,-0.005770096546784848,-0.0001436472024707331,-0.005284093911369773,0.00499328462710906],[0.6666666666666666,1,0.3333333333333333,1,0.1666666666666667,0.5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>degree_diff<\/th>\n      <th>degree_pval<\/th>\n      <th>strength_diff<\/th>\n      <th>strength_pval<\/th>\n      <th>eigen_diff<\/th>\n      <th>eigen_pval<\/th>\n      <th>betweenness_diff<\/th>\n      <th>betweenness_pval<\/th>\n      <th>closeness_diff<\/th>\n      <th>closeness_pval<\/th>\n      <th>pagerank_diff<\/th>\n      <th>pagerank_pval<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"degree_diff","targets":1},{"name":"degree_pval","targets":2},{"name":"strength_diff","targets":3},{"name":"strength_pval","targets":4},{"name":"eigen_diff","targets":5},{"name":"eigen_pval","targets":6},{"name":"betweenness_diff","targets":7},{"name":"betweenness_pval","targets":8},{"name":"closeness_diff","targets":9},{"name":"closeness_pval","targets":10},{"name":"pagerank_diff","targets":11},{"name":"pagerank_pval","targets":12}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"filter":"none","vertical":false,"data":[["SERPINA3","S100A8","RGS1","S100A9","CRH","HSPA1A"],[2,0,-1,0,-1,0],[0.3333333333333333,1,0.5,1,0.5,1],[2,0,-1,0,-1,0],[0.3333333333333333,1,0.5,1,0.5,1],[0.9909297610655974,0,0.07848131795611485,0,-0.01685973172115828,-0.01355094690837081],[0.1666666666666667,1,0.8333333333333334,1,0.8333333333333334,1],[167.5,0,-36,0,-106,-36],[0.5,1,0.5,1,0.1666666666666667,0.5],[-0.00103319783197832,0,-0.02946428571428571,0,-0.002024035420619861,0.4961977186311787],[0.1666666666666667,1,0.1666666666666667,1,0.1666666666666667,0.1666666666666667],[0.002233784945799629,-0.0001436472024707331,-0.005770096546784848,-0.0001436472024707331,-0.005284093911369773,0.00499328462710906],[0.6666666666666666,1,0.3333333333333333,1,0.1666666666666667,0.5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>degree_diff<\/th>\n      <th>degree_pval<\/th>\n      <th>strength_diff<\/th>\n      <th>strength_pval<\/th>\n      <th>eigen_diff<\/th>\n      <th>eigen_pval<\/th>\n      <th>betweenness_diff<\/th>\n      <th>betweenness_pval<\/th>\n      <th>closeness_diff<\/th>\n      <th>closeness_pval<\/th>\n      <th>pagerank_diff<\/th>\n      <th>pagerank_pval<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"degree_diff","targets":1},{"name":"degree_pval","targets":2},{"name":"strength_diff","targets":3},{"name":"strength_pval","targets":4},{"name":"eigen_diff","targets":5},{"name":"eigen_pval","targets":6},{"name":"betweenness_diff","targets":7},{"name":"betweenness_pval","targets":8},{"name":"closeness_diff","targets":9},{"name":"closeness_pval","targets":10},{"name":"pagerank_diff","targets":11},{"name":"pagerank_pval","targets":12}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level2">
 <h2 id="differential-graphlet-degree-vectorgdv-based-distance">Differential graphlet degree vector(GDV)-based distance<a class="anchor" aria-label="anchor" href="#differential-graphlet-degree-vectorgdv-based-distance"></a>
 </h2>
 <p>In addition to differential analysis of standard centrality measures,
-<strong>RSNet</strong> also supports <strong>graphlet degree vector
-(GDV)-based distance</strong> analysis (see the <em>Graphlet</em> page
-for details). This functionality is implemented in the
-<code><a href="../reference/diff_gdv.html">diff_gdv()</a></code> function.</p>
+<em>RSNet</em> also supports <strong>graphlet degree vector (GDV)-based
+distance</strong> analysis (see the <em>Graphlet</em> page for details).
+This functionality is implemented in the <code><a href="../reference/diff_gdv.html">diff_gdv()</a></code>
+function.</p>
 <p>The arguments of <code><a href="../reference/diff_gdv.html">diff_gdv()</a></code> are similar to those of
 <code><a href="../reference/diff_centrality.html">diff_centrality()</a></code>. However, <code><a href="../reference/diff_gdv.html">diff_gdv()</a></code>
 currently supports only <strong>permutation-based</strong> randomization

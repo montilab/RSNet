@@ -70,13 +70,34 @@ Huang</h4>
     
     
 <div class="section level2">
-<h2 id="conditional-gaussian-bayesian-network-cgbn">Conditional Gaussian Bayesian network (CGBN)<a class="anchor" aria-label="anchor" href="#conditional-gaussian-bayesian-network-cgbn"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>A <strong>Conditional Gaussian Bayesian Network (CGBN)</strong> is a
 probabilistic graphical model that integrates <strong>discrete</strong>
 and <strong>continuous</strong> variables within a unified Bayesian
 framework, making it particularly suitable for <strong>mixed-type
-(mixture) data</strong>.</p>
+(mixture) data</strong>. CGBNs are represented as <strong>directed
+acyclic graphs (DAGs)</strong>, where nodes correspond to random
+variables and directed edges encode conditional dependencies consistent
+with a joint probability distribution in which continuous variables
+follow Gaussian distributions conditional on their discrete parents.</p>
+<p>Structure learning in CGBNs is typically performed using
+<strong>constraint-based methods</strong>, which infer the network
+topology by testing conditional independence relationships implied by
+the data. Starting from a complete graph, edges are iteratively removed
+when conditional independence between variable pairs is detected given
+appropriate conditioning sets. A key step in orienting edges in the
+resulting partially directed graph is the identification of
+<strong>v-structures</strong>, of the form
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>→</mo><mi>Z</mi><mo>←</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">X \rightarrow Z \leftarrow Y</annotation></semantics></math>.
+A v-structures is inferred when two variables
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+are marginally independent but become conditionally dependent upon
+conditioning on a third variable
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>,
+as illustrating in the follow figure:</p>
 <p><strong>RSNet</strong> implements a resampling-based structure
 learning framework for CGBNs, supporting four resampling strategies to
 improve the stability and robustness of inferred network structures:</p>
@@ -87,10 +108,10 @@ improve the stability and robustness of inferred network structures:</p>
 <li>Stratified sub-sampling.</li>
 </ol>
 <p><strong>IMPORTANT NOTE</strong>: The Conditional Gaussian Bayesian
-Network functionalities <code>ensemble_cgbn</code> and
-<code>consensus_net_cgbn</code> are optional in <strong>RSNet</strong>
-and require the <code>RHugin</code> package. Installation instructions
-for <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>,
+Network functionalities <code><a href="../reference/ensemble_cgbn.html">ensemble_cgbn()</a></code> and
+<code><a href="../reference/consensus_net_cgbn.html">consensus_net_cgbn()</a></code> are optional in <strong>RSNet</strong>
+and require the <em>RHugin</em> package. Installation instructions for
+<a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>,
 <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html" class="external-link">windows</a>,
 and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" class="external-link">Linux</a>.</p>
 </div>
@@ -136,7 +157,7 @@ computing.</p>
 <span>                              n_cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># Number of cores for parallel computing</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="construct-the-consensus-network">Construct the consensus network<a class="anchor" aria-label="anchor" href="#construct-the-consensus-network"></a>
+<h2 id="consensus-network-construction">Consensus network construction<a class="anchor" aria-label="anchor" href="#consensus-network-construction"></a>
 </h2>
 <p>The construction of the <strong>consensus network</strong> for
 conditional Gaussian Bayesian networks (CGBNs) supports two
@@ -148,9 +169,9 @@ edge is identified) with respect to a reference network (typically
 inferred using all samples). The resulting consensus network retains its
 directed structure.</p></li>
 <li><p><code>method = "average"</code>: Computes the selection frequency
-of each edge based on Markov blanket relationships between the two
-incident nodes. The resulting consensus network is undirected,
-representing stable dependency patterns rather than
+of each edge based on <strong>Markov blanket</strong> relationships
+between the two incident nodes. The resulting consensus network is
+undirected, representing stable dependency patterns rather than
 directionality.</p></li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">

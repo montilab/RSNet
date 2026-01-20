@@ -11,7 +11,7 @@ et
 al.[link](https://dl.acm.org/doi/abs/10.1145/3341161.3343692?casa_token=_MCpkDptH0gAAAAA:wEsOwBRKqU9MIsHInlobhZd5kGlJNhqiYckJcrmWl8mU8m-XMfybUWsR8nu3JHlwtorebh7kd7W4)
 
 This concept can be naturally extended to **signed** and **directed**
-networks. The current version of **RSNet** supports graphlet orbit
+networks. The current version of *RSNet* supports graphlet orbit
 counting for both unsigned and signed undirected networks.
 
 Here we use black lines to represent positive relationships and red
@@ -104,17 +104,17 @@ The concept of the **Graphlet Degree Vector (GDV)** and and the
 corresponding **Graphlet Degree Vector Matrix (GDVM)** can be naturally
 extended to **signed networks**. However, this extension is
 computationally more demanding, and currently no R packages provide
-functionality for constructing GDVMs for signed networks.A brute-force
+functionality for constructing GDVMs for signed networks. A brute-force
 enumeration approach has computational complexity exceeding
 $O\left( p^{3} \right)$, where $p$ is the network size.
 
-**RSNet** overcomes this limitation by integrating state-of-the-art
+*RSNet* overcomes this limitation by integrating state-of-the-art
 graphlet counting algorithms with parallel computing, enabling efficient
 construction of signed GDVMs in $O( \mid d \mid )$, where
 $\mid d \mid$is the average degree, resulting near-constant time
 complexity for sparse networks.
 
-The function `signed_gdv_gcm()` takes an igraph object as input and
+The function `signed_gdv_gcm()` takes an `igraph` object as input and
 computes the GDV of each node for graphlets of up to three nodes.
 Notably, in unsigned networks, the number of graphlets of size up to
 four and the number of associated orbits are equivalent to those of
@@ -210,9 +210,10 @@ The GCM can be computed using the function
 for **unsigned networks** and `signed_gdv_gcm()` for **signed
 networks**, by setting the argument `include_gcm = TRUE`.
 
-The GCM is computed using the function `gdvm_gcm` for unsighed network
-and `signed_gdv_gcm()` for signed network, respectively, by setting the
-argument `include_gcm` to be `TRUE`.
+The GCM is computed using the function
+[`gdvm_gcm()`](https://montilab.github.io/RSNet/reference/gdvm_gcm.md)
+for unsighed network and `signed_gdv_gcm()` for signed network,
+respectively, by setting the argument `include_gcm` to be `TRUE`.
 
 In the following example, we demonstrate the use of GCM to quantify
 topological distances both within and across network models by

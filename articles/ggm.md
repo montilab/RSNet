@@ -1,12 +1,5 @@
 # Gaussian Networks
 
-## Load R packages
-
-``` r
-library(RSNet)
-library(DT)
-```
-
 ## Introduction
 
 Gaussian networks, also known as **Gaussian graphical models (GGMs)**,
@@ -31,6 +24,13 @@ have led to the widespread adoption of Gaussian networks for inferring
 system-level dependency structures from high-dimensional data.
 
 ![](figs/ggm.png)
+
+## Load packages
+
+``` r
+library(RSNet)
+library(DT)
+```
 
 ## Resampling-based framework for Gaussian network inference
 
