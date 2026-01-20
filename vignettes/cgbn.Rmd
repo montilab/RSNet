@@ -25,17 +25,20 @@ v-structures is inferred when two variables $X$ and $Y$ are marginally independe
 knitr::include_graphics("figs/v_structure.png")
 ```
 
-Markov blanket
+An important concept in CGBNs is the **Markov blanket** of a node, defined as the minimal set of variables that renders the node conditionally independent of all other variables in the network. For a given node, its Markov blanket consists of its **parents**, its **children**, and its **spouses** (i.e., the other parents of its children). As illustrated in the following figure, we use **yellow**, **orange**, and **red** to denote the parents, spouses, and children of node $X$, respectively.
 
+```{r echo=FALSE, out.height="80%", out.width="80%"}
+knitr::include_graphics("figs/markov_blanket.png")
+```
 
-**RSNet** implements a resampling-based structure learning framework for CGBNs, supporting four resampling strategies to improve the stability and robustness of inferred network structures:
+*RSNet* implements a resampling-based structure learning framework for CGBNs, supporting four resampling strategies to improve the stability and robustness of inferred network structures:
   
   1. Bootstrap.
   2. Sub-sampling
   3. Stratified bootstrap.
   4. Stratified sub-sampling.
   
-**IMPORTANT NOTE**: The Conditional Gaussian Bayesian Network functionalities `ensemble_cgbn()` and `consensus_net_cgbn()` are optional in **RSNet** and require the *RHugin* package. Installation instructions for [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html), [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html), and [Linux](https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html).
+**IMPORTANT NOTE**: The Conditional Gaussian Bayesian Network functionalities `ensemble_cgbn()` and `consensus_net_cgbn()` are optional in *RSNet* and require the *RHugin* package. Installation instructions for [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html), [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html), and [Linux](https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html).
 
 
 # Load packages
@@ -82,7 +85,7 @@ ensemble_toy <- ensemble_cgbn(dat = toy_cgbn, # A n x p dataframe
 
 The construction of the **consensus network** for conditional Gaussian Bayesian networks (CGBNs) supports two complementary approaches:
 
-  1. `method = "all"`: Computes the selection frequency of each edge (i.e., the proportion of resampling iterations in which the edge is identified) with respect to a reference network (typically inferred using all samples). The resulting consensus network retains its directed structure.
+  1. `method = "all"`: Computes the **selection frequency** of each edge (i.e., the proportion of resampling iterations in which the edge is identified) with respect to a reference network (typically inferred using all samples). The resulting consensus network retains its directed structure.
 
   2. `method = "average"`: Computes the selection frequency of each edge based on **Markov blanket** relationships between the two incident nodes. The resulting consensus network is undirected, representing stable dependency patterns rather than directionality.
 

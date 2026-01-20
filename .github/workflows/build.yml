@@ -1,0 +1,66 @@
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    container: bioconductor/bioconductor_docker:devel
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Query dependencies
+        run: |
+          install.packages("remotes")
+          # RHugin is in Suggests and may not be available on CI; don't include Suggests here
+          saveRDS(
+            remotes::dev_package_deps(dependencies = c("Depends","Imports","LinkingTo")),
+            ".github/depends.Rds",
+            version = 2
+          )
+        shell: Rscript {0}
+
+      - name: Cache R packages
+        if: runner.os != 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/R/site-library
+          # bump the prefix if you need to bust the cache
+          key: ${{ runner.os }}-r-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-1-
+
+      - name: Install dependencies
+        run: |
+          install.packages("BiocManager")
+          # Install only hard deps so RHugin is not required
+          remotes::install_deps(
+            dependencies = c("Depends","Imports","LinkingTo"),
+            repos = BiocManager::repositories()
+          )
+          remotes::install_cran(c("rcmdcheck","pkgdown","rmarkdown","knitr"))
+        shell: Rscript {0}
+
+      - name: Check
+        env:
+          _R_CHECK_CRAN_INCOMING_REMOTE_: false
+          _R_CHECK_FORCE_SUGGESTS_: "false"
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: DevTest
+        run: |
+          PATH=$PATH:$HOME/bin/ Rscript -e 'pkgdown::build_site("."); if (dir.exists("README_files")) file.copy("README_files", "docs", recursive=TRUE)'
+
+      - name: Install deploy dependencies
+        run: |
+          apt-get update
+          apt-get -y install rsync
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          # Use the automatic GitHub token (no PAT needed)
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: docs
