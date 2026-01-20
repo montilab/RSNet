@@ -25,6 +25,8 @@ v-structures is inferred when two variables $X$ and $Y$ are marginally independe
 knitr::include_graphics("figs/v_structure.png")
 ```
 
+Markov blanket
+
 
 **RSNet** implements a resampling-based structure learning framework for CGBNs, supporting four resampling strategies to improve the stability and robustness of inferred network structures:
   
