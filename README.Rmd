@@ -99,7 +99,7 @@ ensemble_er <- capture_all(ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/ma
 
 ## (iv) Consensus network construction
 
-We then integrate the ensemble of inferred networks to construct a consensus network, designed to filter out spurious edges introduced by noise and to facilitate downstream analyses. The `consensus_net_ggm()` function takes the output of `ensemble_ggm` as its primary input, while the optional `consensus_net_cgbn()` function operates on the output of `ensemble_cgbn()`.
+We then integrate the ensemble of inferred networks to construct a consensus network, designed to filter out spurious edges introduced by noise and to facilitate downstream analyses. The `consensus_net_ggm()` function takes the output of `ensemble_ggm()` as its primary input, while the optional `consensus_net_cgbn()` function operates on the output of `ensemble_cgbn()`.
 
 
 Edges in the consensus network can be filtered based on their significance using the filter parameter: nominal p-value (`filter = "pval"`), Benjamini–Hochberg adjusted p-value (`filter = "fdr"`), or no filtering (`filter = "none"`). If `estimate_CI = TRUE` was specified in the `ensemble_ggm()` step, edges whose confidence intervals include zero are automatically excluded.
@@ -140,7 +140,7 @@ p$p
 
 ## (vi) Centrality analysis
 
-**Centrality analysis** is a classical approach in network analysis used to quantify the relative importance or influence of individual nodes within a network. RSNet implements this functionality through the `centrality()` function, which computes several commonly used centrality measures, including **degree**, **strength**, **eigenvector**, **betweenness**, **closeness**, and **PageRank** centralities, using an igraph object as input. For weighted networks, users can specify the `weight` parameter to indicate the edge attribute representing the desired weighting scheme.
+**Centrality analysis** is a classical approach in network analysis used to quantify the relative importance or influence of individual nodes within a network. *RSNet* implements this functionality through the `centrality()` function, which computes several commonly used centrality measures, including **degree**, **strength**, **eigenvector**, **betweenness**, **closeness**, and **PageRank** centralities, using an `igraph` object as input. For weighted networks, users can specify the `weight` parameter to indicate the edge attribute representing the desired weighting scheme.
 
 ```{r}
 centrality(ig = consensus_er$consensus_network,

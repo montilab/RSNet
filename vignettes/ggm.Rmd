@@ -13,12 +13,6 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-# Load R packages
-```{r, message=FALSE}
-library(RSNet)
-library(DT)
-```
-
 # Introduction
 
 Gaussian networks, also known as **Gaussian graphical models (GGMs)**, are a class of probabilistic graphical models that provide a natural, graph-based framework for characterizing conditional dependencies among interacting entities in complex systems. GGMs adopt an undirected Markov graph representation, where vertices correspond to random variables assumed to follow a multivariate Gaussian distribution, and edges represent conditional dependencies between pairs of variables, quantified through nonzero partial correlations.
@@ -29,6 +23,11 @@ In contrast to correlation-based networks, which model marginal dependencies, Ga
 knitr::include_graphics("figs/ggm.png")
 ```
 
+# Load packages
+```{r, message=FALSE}
+library(RSNet)
+library(DT)
+```
 
 # Resampling-based framework for Gaussian network inference
 

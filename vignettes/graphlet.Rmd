@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 Graphlets are small, connected, non-isomorphic induced subgraphs of a larger network. For graphlets consisting of 2–4 nodes, there are eight distinct graphlets and fifteen corresponding automorphism orbits. Importantly, incorporating orbit information is critically useful, rather than using graphlet counts alone, as demonstrated by Apratim Das et al.[link](https://dl.acm.org/doi/abs/10.1145/3341161.3343692?casa_token=_MCpkDptH0gAAAAA:wEsOwBRKqU9MIsHInlobhZd5kGlJNhqiYckJcrmWl8mU8m-XMfybUWsR8nu3JHlwtorebh7kd7W4)
 
-This concept can be naturally extended to **signed** and **directed** networks. The current version of **RSNet** supports graphlet orbit counting for both unsigned and signed undirected networks.
+This concept can be naturally extended to **signed** and **directed** networks. The current version of *RSNet* supports graphlet orbit counting for both unsigned and signed undirected networks.
 
 Here we use black lines to represent positive relationships and red lines for negative relationships. Notably, the number of unsigned graphlets of size up to four and their associated orbits is equivalent to the number of signed graphlets of size up to three and their corresponding orbits.
 
@@ -80,11 +80,11 @@ suppressWarnings(gdvm_gcm(ig,
 
 ## Example of a signed network {.tabset}
 
-The concept of the **Graphlet Degree Vector (GDV)** and and the corresponding **Graphlet Degree Vector Matrix (GDVM)** can be naturally extended to **signed networks**. However, this extension is computationally more demanding, and currently no R packages provide functionality for constructing GDVMs for signed networks.A brute-force enumeration approach has computational complexity exceeding $O(p^{3})$, where $p$ is the network size.
+The concept of the **Graphlet Degree Vector (GDV)** and and the corresponding **Graphlet Degree Vector Matrix (GDVM)** can be naturally extended to **signed networks**. However, this extension is computationally more demanding, and currently no R packages provide functionality for constructing GDVMs for signed networks. A brute-force enumeration approach has computational complexity exceeding $O(p^{3})$, where $p$ is the network size.
 
-**RSNet** overcomes this limitation by integrating state-of-the-art graphlet counting algorithms with parallel computing, enabling efficient construction of signed GDVMs in $O(∣d∣)$, where $∣d∣$is the average degree, resulting near-constant time complexity for sparse networks.
+*RSNet* overcomes this limitation by integrating state-of-the-art graphlet counting algorithms with parallel computing, enabling efficient construction of signed GDVMs in $O(∣d∣)$, where $∣d∣$is the average degree, resulting near-constant time complexity for sparse networks.
 
-The function `signed_gdv_gcm()` takes an igraph object as input and computes the GDV of each node for graphlets of up to three nodes. Notably, in unsigned networks, the number of graphlets of size up to four and the number of associated orbits are equivalent to those of signed networks with graphlets of size up to three.
+The function `signed_gdv_gcm()` takes an `igraph` object as input and computes the GDV of each node for graphlets of up to three nodes. Notably, in unsigned networks, the number of graphlets of size up to four and the number of associated orbits are equivalent to those of signed networks with graphlets of size up to three.
 
 Similarly, for demonstration purposes, we set the `redundant_orbit` parameter to `TRUE`. There are 11 non-redundant orbits among the 3-node signed graphlets, which are equivalent to those in the 4-node unsigned graphlets.
 
@@ -137,7 +137,7 @@ The GCM can also be interpreted as a **network embedding framework**, encoding a
 The GCM can be computed using the function `gdvm_gcm()` for **unsigned networks** and `signed_gdv_gcm()` for **signed networks**, by setting the argument `include_gcm = TRUE`.
 
 
-The GCM is computed using the function `gdvm_gcm` for unsighed network and `signed_gdv_gcm()` for signed network, respectively, by setting the argument `include_gcm` to be `TRUE`. 
+The GCM is computed using the function `gdvm_gcm()` for unsighed network and `signed_gdv_gcm()` for signed network, respectively, by setting the argument `include_gcm` to be `TRUE`. 
 
 In the following example, we demonstrate the use of GCM to quantify topological distances both within and across network models by generating three random networks using the **Erdős–Rényi (ER) model** and three scale-free networks using the **Barabási–Albert (BA) model** with varying parameters.
 
