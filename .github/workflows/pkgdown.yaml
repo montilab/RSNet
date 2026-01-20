@@ -28,20 +28,28 @@ jobs:
         with:
           use-public-rspm: true
 
+      # Install enough to build the website/vignettes, without forcing RHugin
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
             any::pkgdown
+            any::rmarkdown
+            any::knitr
             local::.
           needs: website
-          dependencies: '"hard"'
+          dependencies: '"soft"'
 
       - name: Build pkgdown site
         run: Rscript -e 'pkgdown::build_site_github_pages(new_process = TRUE, install = TRUE)'
 
-      - name: Deploy to gh-pages
+      - name: Install deploy dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install rsync
+
+      - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          token: ${{ secrets.BUILD_MY_TOKEN }}
           branch: gh-pages
           folder: docs
-          clean: true
