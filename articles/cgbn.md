@@ -24,9 +24,16 @@ marginally independent but become conditionally dependent upon
 conditioning on a third variable $`Z`$, as illustrating in the follow
 figure:
 
-Markov blanket
+An important concept in CGBNs is the **Markov blanket** of a node,
+defined as the minimal set of variables that renders the node
+conditionally independent of all other variables in the network. For a
+given node, its Markov blanket consists of its **parents**, its
+**children**, and its **spouses** (i.e., the other parents of its
+children). As illustrated in the following figure, we use **yellow**,
+**orange**, and **red** to denote the parents, spouses, and children of
+node $`X`$, respectively.
 
-**RSNet** implements a resampling-based structure learning framework for
+*RSNet* implements a resampling-based structure learning framework for
 CGBNs, supporting four resampling strategies to improve the stability
 and robustness of inferred network structures:
 
@@ -40,7 +47,7 @@ functionalities
 [`ensemble_cgbn()`](https://montilab.github.io/RSNet/reference/ensemble_cgbn.md)
 and
 [`consensus_net_cgbn()`](https://montilab.github.io/RSNet/reference/consensus_net_cgbn.md)
-are optional in **RSNet** and require the *RHugin* package. Installation
+are optional in *RSNet* and require the *RHugin* package. Installation
 instructions for
 [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html),
 [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html),
@@ -98,7 +105,7 @@ ensemble_toy <- ensemble_cgbn(dat = toy_cgbn, # A n x p dataframe
 The construction of the **consensus network** for conditional Gaussian
 Bayesian networks (CGBNs) supports two complementary approaches:
 
-1.  `method = "all"`: Computes the selection frequency of each edge
+1.  `method = "all"`: Computes the **selection frequency** of each edge
     (i.e., the proportion of resampling iterations in which the edge is
     identified) with respect to a reference network (typically inferred
     using all samples). The resulting consensus network retains its

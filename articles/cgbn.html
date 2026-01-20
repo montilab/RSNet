@@ -98,10 +98,20 @@ are marginally independent but become conditionally dependent upon
 conditioning on a third variable
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>,
 as illustrating in the follow figure:</p>
-<p>Markov blanket</p>
-<p><strong>RSNet</strong> implements a resampling-based structure
-learning framework for CGBNs, supporting four resampling strategies to
-improve the stability and robustness of inferred network structures:</p>
+<p>An important concept in CGBNs is the <strong>Markov blanket</strong>
+of a node, defined as the minimal set of variables that renders the node
+conditionally independent of all other variables in the network. For a
+given node, its Markov blanket consists of its <strong>parents</strong>,
+its <strong>children</strong>, and its <strong>spouses</strong> (i.e.,
+the other parents of its children). As illustrated in the following
+figure, we use <strong>yellow</strong>, <strong>orange</strong>, and
+<strong>red</strong> to denote the parents, spouses, and children of
+node
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>,
+respectively.</p>
+<p><em>RSNet</em> implements a resampling-based structure learning
+framework for CGBNs, supporting four resampling strategies to improve
+the stability and robustness of inferred network structures:</p>
 <ol style="list-style-type: decimal">
 <li>Bootstrap.</li>
 <li>Sub-sampling</li>
@@ -110,9 +120,8 @@ improve the stability and robustness of inferred network structures:</p>
 </ol>
 <p><strong>IMPORTANT NOTE</strong>: The Conditional Gaussian Bayesian
 Network functionalities <code><a href="../reference/ensemble_cgbn.html">ensemble_cgbn()</a></code> and
-<code><a href="../reference/consensus_net_cgbn.html">consensus_net_cgbn()</a></code> are optional in <strong>RSNet</strong>
-and require the <em>RHugin</em> package. Installation instructions for
-<a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>,
+<code><a href="../reference/consensus_net_cgbn.html">consensus_net_cgbn()</a></code> are optional in <em>RSNet</em> and
+require the <em>RHugin</em> package. Installation instructions for <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>,
 <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html" class="external-link">windows</a>,
 and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" class="external-link">Linux</a>.</p>
 </div>
@@ -164,11 +173,11 @@ computing.</p>
 conditional Gaussian Bayesian networks (CGBNs) supports two
 complementary approaches:</p>
 <ol style="list-style-type: decimal">
-<li><p><code>method = "all"</code>: Computes the selection frequency of
-each edge (i.e., the proportion of resampling iterations in which the
-edge is identified) with respect to a reference network (typically
-inferred using all samples). The resulting consensus network retains its
-directed structure.</p></li>
+<li><p><code>method = "all"</code>: Computes the <strong>selection
+frequency</strong> of each edge (i.e., the proportion of resampling
+iterations in which the edge is identified) with respect to a reference
+network (typically inferred using all samples). The resulting consensus
+network retains its directed structure.</p></li>
 <li><p><code>method = "average"</code>: Computes the selection frequency
 of each edge based on <strong>Markov blanket</strong> relationships
 between the two incident nodes. The resulting consensus network is
