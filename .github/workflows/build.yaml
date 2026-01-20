@@ -33,6 +33,8 @@ jobs:
 
       - name: Install dependencies for R CMD check (skip Suggests; RHugin not required)
         run: |
+          install.packages("remotes")
+          install.packages("BiocManager")
           remotes::install_deps(dependencies = c("Depends","Imports","LinkingTo"),
                                 repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
@@ -48,13 +50,9 @@ jobs:
                                check_dir = "check")
         shell: Rscript {0}
 
-      # ---------------------------
-      # pkgdown site build
-      # - install only the website/vignette tooling you actually need
-      # - DO NOT attempt to install RHugin
-      # ---------------------------
       - name: Install dependencies for pkgdown (no RHugin)
         run: |
+          install.packages("remotes")
           remotes::install_cran(c("pkgdown","rmarkdown","knitr","DT"))
         shell: Rscript {0}
 
@@ -65,12 +63,12 @@ jobs:
 
       - name: Install deploy dependencies
         run: |
-          apt-get update
-          apt-get -y install rsync
+          sudo apt-get update
+          sudo apt-get -y install rsync
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          token: ${{ secrets.BUILD_MY_TOKEN }}
           branch: gh-pages
           folder: docs
+          token: ${{ secrets.GITHUB_TOKEN }}
