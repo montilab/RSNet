@@ -37,7 +37,7 @@ jobs:
           dependencies: '"hard"'
 
       - name: Build pkgdown site
-        run: Rscript -e 'pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)'
+        run: Rscript -e 'pkgdown::build_site_github_pages(new_process = FALSE, install = TRUE)'
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
