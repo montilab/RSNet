@@ -24,11 +24,7 @@ jobs:
         with:
           use-public-rspm: true
 
-      # ---------------------------
-      # 1) R CMD check (DO NOT force Suggests)
-      #    - installs only hard deps (Depends/Imports/LinkingTo)
-      #    - RHugin (Suggests) will NOT be required
-      # ---------------------------
+      # 1) R CMD check: do NOT force Suggests
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
@@ -36,7 +32,7 @@ jobs:
             any::BiocManager
             any::testthat
             local::.
-          dependencies: hard
+          dependencies: '"hard"'
 
       - name: R CMD check (skip Suggests)
         env:
@@ -45,11 +41,7 @@ jobs:
         run: |
           Rscript -e 'rcmdcheck::rcmdcheck(args = c("--no-manual","--as-cran"), error_on = "warning", check_dir = "check")'
 
-      # ---------------------------
-      # 2) pkgdown site build (ALLOW Suggests)
-      #    - installs Suggests so vignettes/articles render
-      #    - does NOT affect the check step above
-      # ---------------------------
+      # 2) pkgdown build: allow Suggests (so vignettes render)
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
@@ -59,15 +51,13 @@ jobs:
             any::knitr
             local::.
           needs: website
-          dependencies: all
+          dependencies: '"all"'
 
       - name: Build pkgdown site
         run: |
           Rscript -e 'pkgdown::build_site_github_pages(new_process = TRUE, install = TRUE)'
 
-      # ---------------------------
-      # 3) Deploy to gh-pages
-      # ---------------------------
+      # 3) Deploy
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
