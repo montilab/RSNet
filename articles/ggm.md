@@ -28,6 +28,7 @@ system-level dependency structures from high-dimensional data.
 ## Load packages
 
 ``` r
+
 library(RSNet)
 library(DT)
 ```
@@ -73,6 +74,7 @@ this option can be disabled (`estimate_CI = FALSE`). The function
 parallel computation through the `n_cores` parameter.
 
 ``` r
+
 data(toy_er)
 ensemble_toy <- ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
                              num_iteration = 100, # Number of resampling iteration
@@ -89,20 +91,20 @@ ensemble_toy <- ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
 ## Consensus network construction
 
 We illustrate the consensus network construction at the **single-edge
-level**. Let $e_{ij}^{(k)}$ denote the inferred edge between variables
-$i$ and $j$ in the $k^{th}$ resampling iteration. Each edge
-$e_{ij}^{(k)}$ is associated with a precision (or partial correlation)
-estimate $\omega_{ij}^{(k)}$ and its corresponding z-score
-$z_{ij}^{(k)}$.
+level**. Let $`e_{ij}^{(k)}`$ denote the inferred edge between variables
+$`i`$ and $`j`$ in the $`k^{th}`$ resampling iteration. Each edge
+$`e_{ij}^{(k)}`$ is associated with a precision (or partial correlation)
+estimate $`\omega_{ij}^{(k)}`$ and its corresponding z-score
+$`z_{ij}^{(k)}`$.
 
-The statistical significance of edge $e_{ij}$ in the consensus network
-is assessed using the **average z-score across $m$ resampling
+The statistical significance of edge $`e_{ij}`$ in the consensus network
+is assessed using the **average z-score across $`m`$ resampling
 iterations**,from which a two-sided p-value is computed. When the
 argument `estimate_CI = TRUE`is enabled in
 [`ensemble_ggm()`](https://montilab.github.io/RSNet/reference/ensemble_ggm.md),
-the values $\omega_{ij}^{(k)}$ and $z_{ij}^{(k)}$ are retained for each
-resampling iteration, thereby enabling the estimation of **empirical
-confidence intervals**.
+the values $`\omega_{ij}^{(k)}`$ and $`z_{ij}^{(k)}`$ are retained for
+each resampling iteration, thereby enabling the estimation of
+**empirical confidence intervals**.
 
 ![](figs/ggm_consensus.png)
 
@@ -120,6 +122,7 @@ step, edges whose empirical confidence intervals include zero are
 automatically excluded from the consensus network.
 
 ``` r
+
 consensus_tou <- consensus_net_ggm(ggm_networks = ensemble_toy, # The output of "ensemble_ggm()"
                                    CI = 0.95, # Confidence interval
                                    filter = "pval", # Filter method

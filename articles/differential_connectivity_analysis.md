@@ -33,6 +33,7 @@ distributions.
 ## Load packages
 
 ``` r
+
 library(RSNet)
 library(igraph)
 library(DT)
@@ -51,6 +52,7 @@ demonstration and computational efficiency, we use only a subset of
 genes with the highest median absolute deviation (MAD).
 
 ``` r
+
 data(toy_load)
 ```
 
@@ -63,6 +65,7 @@ framework implemented in *RSNet*. The resulting networks derived from
 each group are stored as a named list object for downstream analyses.
 
 ``` r
+
 ## split the data into two groups
 ctrl_dat <- toy_load %>% 
   dplyr::filter(phenotype == "ctrl") %>% 
@@ -115,6 +118,7 @@ In the following example, we generate two null distributions, one using
 permutation and one using bootstrap, each with five iterations.
 
 ``` r
+
 shuffle_iter <- 5
 
 null_permutation <- capture_all(null_ggm(dat = toy_load, # a n x (p+1) data frame with p numeric feature columns + one label column.
@@ -164,6 +168,7 @@ randomization procedures, and allows for **one-sided** or **two-sided**
 hypothesis testing.
 
 ``` r
+
 diff_centrality_res <- capture_all(diff_centrality(obs_networks = obs_networks,
                                        dat = toy_load,
                                        group_col = "phenotype",
@@ -203,6 +208,7 @@ and performs **one-sided** hypothesis testing, consistent with the
 statistical characteristics of the GDV distance measure.
 
 ``` r
+
 diff_gdv_res <- capture_all(diff_gdv(obs_networks = obs_networks,
                          dat = toy_load,
                          group_col = "phenotype",

@@ -18,11 +18,11 @@ Starting from a complete graph, edges are iteratively removed when
 conditional independence between variable pairs is detected given
 appropriate conditioning sets. A key step in orienting edges in the
 resulting partially directed graph is the identification of
-**v-structures**, of the form
-$\left. X\rightarrow Z\leftarrow Y \right.$. A v-structures is inferred
-when two variables $X$ and $Y$ are marginally independent but become
-conditionally dependent upon conditioning on a third variable $Z$, as
-illustrating in the follow figure:
+**v-structures**, of the form $`X \rightarrow Z \leftarrow Y`$. A
+v-structures is inferred when two variables $`X`$ and $`Y`$ are
+marginally independent but become conditionally dependent upon
+conditioning on a third variable $`Z`$, as illustrating in the follow
+figure:
 
 **RSNet** implements a resampling-based structure learning framework for
 CGBNs, supporting four resampling strategies to improve the stability
@@ -48,6 +48,7 @@ and
 ## Load packages
 
 ``` r
+
 library(RSNet)
 library(RHugin)
 ```
@@ -60,6 +61,7 @@ mixed-type dataset suitable for conditional Gaussian Bayesian network
 analysis.
 
 ``` r
+
 data("toy_cgbn")
 ```
 
@@ -79,6 +81,7 @@ The function
 also supports parallel computing.
 
 ``` r
+
 ensemble_toy <- ensemble_cgbn(dat = toy_cgbn, # A n x p dataframe
                               discrete_variable = sprintf("D%d",1:5), # Column names of the discreate variables
                               num_iteration = 3, # Number of resampling iteration
@@ -105,6 +108,7 @@ Bayesian networks (CGBNs) supports two complementary approaches:
     stable dependency patterns rather than directionality.
 
 ``` r
+
 ## Directed consensus network (method = "all")
 ## A simple way to generate a reference network is to set: num_iteration = 1, boot = FALSE, sub_ratio = 1
 reference_network <- ensemble_cgbn(dat = toy_cgbn, 

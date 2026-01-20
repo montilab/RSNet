@@ -37,6 +37,7 @@ additional examples.
 - Using `devtools` package
 
 ``` r
+
 library(devtools)
 devtools::install_github("montilab/RSNet")
 ```
@@ -58,6 +59,7 @@ synthetic dataset.
 ## (i) Load R packages
 
 ``` r
+
 library(RSNet)
 library(DT)
 ```
@@ -98,6 +100,7 @@ can be used to suppress messages generated during the execution of
 [`ensemble_ggm()`](https://montilab.github.io/RSNet/reference/ensemble_ggm.md).
 
 ``` r
+
 ensemble_er <- capture_all(
   ensemble_ggm(
     dat = toy_er$dat,     # A n x p dataframe/matrix
@@ -136,6 +139,7 @@ step, edges whose confidence intervals include zero are automatically
 excluded.
 
 ``` r
+
 consensus_er <- consensus_net_ggm(
   ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
   CI = 0.95,                  # Confidence interval
@@ -169,6 +173,7 @@ conditions are met:
     attributes
 
 ``` r
+
 p <- plot_cn(
   ig = consensus_er$consensus_network, # An "igraph" object
   query = NULL,        # Node of interests, NULL or a character vector
@@ -196,6 +201,7 @@ to indicate the edge attribute representing the desired weighting
 scheme.
 
 ``` r
+
 centrality(ig = consensus_er$consensus_network, weight = NULL) |>
   as.matrix(.) |> 
   round(., 4) |> 

@@ -189,14 +189,14 @@ networks</strong>. However, this extension is computationally more
 demanding, and currently no R packages provide functionality for
 constructing GDVMs for signed networks. A brute-force enumeration
 approach has computational complexity exceeding
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>p</mi><mn>3</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(p^{3})</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mn>3</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(p^{3})</annotation></semantics></math>,
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 is the network size.</p>
 <p><em>RSNet</em> overcomes this limitation by integrating
 state-of-the-art graphlet counting algorithms with parallel computing,
 enabling efficient construction of signed GDVMs in
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>∣</mo><mi>d</mi><mo>∣</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(∣d∣)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mo>∣</mo><mi>d</mi><mo>∣</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(∣d∣)</annotation></semantics></math>,
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∣</mo><mi>d</mi><mo>∣</mo></mrow><annotation encoding="application/x-tex">∣d∣</annotation></semantics></math>is
 the average degree, resulting near-constant time complexity for sparse
