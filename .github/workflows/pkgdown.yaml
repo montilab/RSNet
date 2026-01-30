@@ -41,7 +41,7 @@ jobs:
           ## 🔑 pkgdown + local package only
           extra-packages: any::pkgdown, local::.
           needs: website
-          dependencies: hard
+          dependencies: '"hard"'
 
       - name: Build site
         run: pkgdown::build_site_github_pages(

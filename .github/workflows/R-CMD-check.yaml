@@ -35,7 +35,7 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
-          dependencies: hard
+          dependencies: '"hard"'
 
       - name: Run R CMD check
         if: github.event_name != 'pull_request'
