@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -57,4 +57,4 @@ jobs:
           token: ${{ secrets.GH_DOCS }}
           branch: gh-pages
           folder: .
-          clean: false
+          clean: true
