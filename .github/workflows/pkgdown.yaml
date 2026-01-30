@@ -2,15 +2,6 @@
 on:
   push:
     branches: [master]
-    paths:
-      - '.github/workflows/pkgdown.yaml'
-      - 'vignettes/**'
-      - 'man/**.Rd'
-      - 'README.md'
-      - 'DESCRIPTION'
-      - 'LICENSE'
-      - 'NEWS.md'
-      - '_pkgdown.yml'
   pull_request:
     branches: [master]
   release:
