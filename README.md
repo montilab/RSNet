@@ -9,20 +9,22 @@ issues](https://img.shields.io/github/issues/montilab/RSNet) ![GitHub
 last commit](https://img.shields.io/github/last-commit/montilab/RSNet)
 
 **RSNet** is an R package that implements a resampling-based framework
-for structure learning and analysis of Markov and conditional Gaussian
-Bayesian (optional) networks.
+for structure learning and analysis of partial correlation networks
+modeled as Gaussian networks, and conditional Gaussian Bayesian networks
+(optional) for mixed data types combining continuous and discrete
+variables.
 
-**RSNet** supports multiple resampling strategies to improve the
-stability and reliability of inferred network structures. For both
-Markov and conditional Gaussian Bayesian networks, the framework
-implements four general approaches:
+To enhance the stability and reliability of inferred network structures,
+**RSNet** incorporates multiple resampling strategies. For both Gaussian
+and conditional Gaussian Bayesian networks, the framework supports four
+general approaches:
 
 1.  Bootstrap.
 2.  Sub-sampling.
 3.  Stratified bootstrap.
 4.  Stratified sub-sampling.
 
-For Markov networks, **RSNet** further provides cluster-based sampling
+For Gaussian networks, **RSNet** further provides cluster-based sampling
 options specifically designed to accommodate correlated or family-based
 data, including:
 
@@ -32,6 +34,9 @@ data, including:
 Beyond structure learning, **RSNet** includes a suite of network
 analysis tools containing standard network metrics, graphlet-based
 analysis, and differential connectivity analysis.
+
+The overall workflow is illustrated in the following diagram:
+<img src="vignettes/figs/flowchart.png" width="80%" height="80%" />
 
 Please see our [documentation](https://montilab.github.io/RSNet/) for
 additional examples.
@@ -95,30 +100,26 @@ The wrapper function `capture_all()` can be used to suppress messages
 generated during the execution of `ensemble_ggm()`.
 
 ``` r
-ensemble_er <- capture_all(
-  ensemble_ggm(
-    dat = toy_er$dat,     # A n x p dataframe/matrix
-    num_iteration = 100,  # Number of resampling iteration
-    boot = TRUE,          # If FALSE, perform sub-sampling
-    sub_ratio = NULL,     # Subsampling ratio (0–1)
-    sample_class = NULL,  # Optional: for stratified sampling
-    correlated = FALSE,   # If TRUE, then clusted-based resampling is performed
-    cluster_ratio = 1,    # Used only when `correlated = TRUE`
-    estimate_CI = TRUE,   # If TRUE, estimate the empirical confidence interval
-    method = "D-S_NW_SL", # Inference method
-    n_cores = 1           # Number of cores for parallel computing
-  )
-) 
+ensemble_er <- capture_all(ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
+                                        num_iteration = 100, # Number of resampling iteration
+                                        boot = TRUE, # If FALSE, perform sub-sampling
+                                        sub_ratio = NULL, # Subsampling ratio (0–1)
+                                        sample_class = NULL, # Optional: for stratified sampling
+                                        correlated = FALSE, # If TRUE, then clusted-based resampling is performed
+                                        cluster_ratio = 1, # Used only when `correlated = TRUE`
+                                        estimate_CI = TRUE, # If TRUE, estimate the empirical confidence interval
+                                        method = "D-S_NW_SL", # Inference method
+                                        n_cores = 1)) # Number of cores for parallel computing
 ```
 
-## (iv) Construct the consensus network
+## (iv) Consensus network construction
 
 We then integrate the ensemble of inferred networks to construct a
 consensus network, designed to filter out spurious edges introduced by
 noise and to facilitate downstream analyses. The `consensus_net_ggm()`
-function takes the output of `ensemble_ggm` as its primary input, while
-the optional `consensus_net_cgbn()` function operates on the output of
-`ensemble_cgbn()`.
+function takes the output of `ensemble_ggm()` as its primary input,
+while the optional `consensus_net_cgbn()` function operates on the
+output of `ensemble_cgbn()`.
 
 Edges in the consensus network can be filtered based on their
 significance using the filter parameter: nominal p-value
@@ -128,12 +129,10 @@ significance using the filter parameter: nominal p-value
 whose confidence intervals include zero are automatically excluded.
 
 ``` r
-consensus_er <- consensus_net_ggm(
-  ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
-  CI = 0.95,                  # Confidence interval
-  filter = "pval",            # Filter method
-  threshold = 0.05            # Significant level of the selected filter
-)
+consensus_er <- consensus_net_ggm(ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
+                                  CI = 0.95, # Confidence interval
+                                  filter = "pval", # Filter method
+                                  threshold = 0.05) # Significant level of the selected filter
 ```
 
 ## (v) Interactive visualization
@@ -159,42 +158,39 @@ conditions are met:
     attributes
 
 ``` r
-p <- plot_cn(
-  ig = consensus_er$consensus_network, # An "igraph" object
-  query = NULL,        # Node of interests, NULL or a character vector
-  order = 1,           # Order of neighbors
-  edge_label = "pcor", # The edge attribute to be shown
-  CI_show = TRUE,      # Show empirical confidence interval
-  main = "Example"     # Title
-)
+p <- plot_cn(ig = consensus_er$consensus_network, # An "igraph" object
+             query = NULL, # Node of interests, NULL or a character vector
+             order = 1, # Order of neighbors
+             edge_label = "pcor", # The edge attribute to be shown
+             CI_show = TRUE, # Show empirical confidence interval
+             main = "Example") # Title
+
+
 p$p
 ```
 
-![](./man/figures/unnamed-chunk-6-1.png)<!-- -->
+![](./man/figures/unnamed-chunk-7-1.png)<!-- -->
 
 ## (vi) Centrality analysis
 
 **Centrality analysis** is a classical approach in network analysis used
 to quantify the relative importance or influence of individual nodes
-within a network. RSNet implements this functionality through the
+within a network. **RSNet** implements this functionality through the
 `centrality()` function, which computes several commonly used centrality
 measures, including **degree**, **strength**, **eigenvector**,
 **betweenness**, **closeness**, and **PageRank** centralities, using an
-igraph object as input. For weighted networks, users can specify the
+`igraph` object as input. For weighted networks, users can specify the
 `weight` parameter to indicate the edge attribute representing the
 desired weighting scheme.
 
 ``` r
-centrality(ig = consensus_er$consensus_network, weight = NULL) |>
-  as.matrix(.) |> 
-  round(., 4) |> 
-  as.data.frame(.) |>
-  head(.) |> 
+centrality(ig = consensus_er$consensus_network,
+           weight = NULL) %>% 
+  as.matrix(.) %>% 
+  round(., 4) %>% 
+  as.data.frame(.) %>%
+  head(.) %>% 
   DT::datatable(.)
 ```
 
-![](./man/figures/unnamed-chunk-7-1.png)<!-- -->
-
-# Acknowledgements
-
-This project is funded by
+![](./man/figures/unnamed-chunk-8-1.png)<!-- -->
