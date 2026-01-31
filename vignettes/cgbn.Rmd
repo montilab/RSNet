@@ -101,18 +101,19 @@ reference_network <- ensemble_cgbn(
   n_cores = 1
 )
 
-directed_cons_net <- consensus_net_cgbn(ensemble_toy$ig_networks, # A list of igraph objects
+directed_cons_net <- consensus_net_cgbn(
+  ensemble_toy$ig_networks, # A list of igraph objects
   reference_network = reference_network$ig_networks$iter_1, # An igraph object
-  method = "all", # Integration method
-  cut = 0.5       # Edge weight threshold
+  method = "all",           # Integration method
+  cut = 0.5                 # Edge weight threshold
 ) 
 
-
 ## Markov blanket-based undirected consensus network, set `method="average"
-undirected_cons_net <- consensus_net_cgbn(ensemble_toy$ig_networks, # A list of igraph objects
+undirected_cons_net <- consensus_net_cgbn(
+  ensemble_toy$ig_networks, # A list of igraph objects
   reference_network = NULL, # Not required for method = "average"
-  method = "average", # Integration method
-  cut = 0.5 # Edge weight threshold
+  method = "average",       # Integration method
+  cut = 0.5                 # Edge weight threshold
 )
 ```
 
