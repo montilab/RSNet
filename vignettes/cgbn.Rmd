@@ -10,16 +10,17 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      eval = requireNamespace(c("RHugin"), quietly = TRUE))
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
+
 
 # Introduction
 
-A **Conditional Gaussian Bayesian Network (CGBN)** is a probabilistic graphical model that integrates **discrete** and **continuous** variables within a unified Bayesian framework, making it particularly suitable for **mixed-type (mixture) data**. CGBNs are represented as **directed acyclic graphs (DAGs)**, where nodes correspond to random variables and directed edges encode conditional dependencies consistent with a joint probability distribution in which continuous variables follow Gaussian distributions conditional on their discrete parents.
+A **Conditional Gaussian Bayesian Network (CGBN)** is a probabilistic graphical model that integrates **discrete** and **continuous** variables within a unified Bayesian framework, making it particularly suitable for **mixed-type data**. CGBNs are represented as **directed acyclic graphs (DAGs)**, where nodes correspond to random variables and directed edges encode conditional dependencies consistent with a joint probability distribution in which continuous variables follow Gaussian distributions conditional on their discrete parents.
 
 Structure learning in CGBNs is typically performed using **constraint-based methods**, which infer the network topology by testing conditional independence relationships implied by the data. Starting from a complete graph, edges are iteratively removed when conditional independence between variable pairs is detected given appropriate conditioning sets. A key step in orienting edges in the resulting partially directed graph is the identification of **v-structures**, of the form $X \rightarrow Z \leftarrow Y$. A 
-v-structures is inferred when two variables $X$ and $Y$ are marginally independent but become conditionally dependent upon conditioning on a third variable $Z$, as illustrating in the follow figure:
+v-structure is inferred when two variables $X$ and $Y$ are marginally independent but become conditionally dependent upon conditioning on a third variable $Z$, as illustrated in the following figure:
+
 
 ```{r echo=FALSE, out.height="80%", out.width="80%"}
 knitr::include_graphics("figs/v_structure.png")
@@ -47,7 +48,6 @@ knitr::include_graphics("figs/markov_blanket.png")
 
 ```{r,message=FALSE}
 library(RSNet)
-library(RHugin)
 ```
 
 
@@ -62,16 +62,16 @@ data("toy_cgbn")
 
 # Run and learn an ensemble of networks from resampled datasets
 
-In this example, we use the simulated dataset as input and perform bootstrap resampling (`boot = TRUE`) with 3 iterations (`num_iteration = 5`). The column names of the discrete variables must be specified as a character vector in the `discrete_variable` argument.
+In this example, we use the simulated dataset as input and perform bootstrap resampling (`boot = TRUE`) with 5 iterations (`num_iteration = 5`). The column names of the discrete variables must be specified as a character vector in the `discrete_variable` argument.
 
 To perform **subsampling** instead of **bootstrapping**, set `boot = FALSE` and specify the sampling proportion using the `sub_ratio` argument (a value between 0 and 1).
 
 The function `ensemble_cgbn()` also supports parallel computing.
 
-```{r}
+```{r,eval=FALSE}
 ensemble_toy <- ensemble_cgbn(dat = toy_cgbn, # A n x p dataframe
-                              discrete_variable = sprintf("D%d",1:5), # Column names of the discreate variables
-                              num_iteration = 3, # Number of resampling iteration
+                              discrete_variable = sprintf("D%d",1:5), # Column names of the discrete variables
+                              num_iteration = 5, # Number of resampling iteration
                               sample_class = NULL, # Optional: for stratified sampling
                               boot = TRUE, # If FALSE, perform sub-sampling
                               sub_ratio = 1, # Subsampling ratio (0–1)
@@ -89,7 +89,7 @@ The construction of the **consensus network** for conditional Gaussian Bayesian 
 
   2. `method = "average"`: Computes the selection frequency of each edge based on **Markov blanket** relationships between the two incident nodes. The resulting consensus network is undirected, representing stable dependency patterns rather than directionality.
 
-```{r}
+```{r,eval=FALSE}
 ## Directed consensus network (method = "all")
 ## A simple way to generate a reference network is to set: num_iteration = 1, boot = FALSE, sub_ratio = 1
 reference_network <- ensemble_cgbn(dat = toy_cgbn, 
