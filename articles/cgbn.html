@@ -76,11 +76,11 @@ Huang</h4>
 probabilistic graphical model that integrates <strong>discrete</strong>
 and <strong>continuous</strong> variables within a unified Bayesian
 framework, making it particularly suitable for <strong>mixed-type
-(mixture) data</strong>. CGBNs are represented as <strong>directed
-acyclic graphs (DAGs)</strong>, where nodes correspond to random
-variables and directed edges encode conditional dependencies consistent
-with a joint probability distribution in which continuous variables
-follow Gaussian distributions conditional on their discrete parents.</p>
+data</strong>. CGBNs are represented as <strong>directed acyclic graphs
+(DAGs)</strong>, where nodes correspond to random variables and directed
+edges encode conditional dependencies consistent with a joint
+probability distribution in which continuous variables follow Gaussian
+distributions conditional on their discrete parents.</p>
 <p>Structure learning in CGBNs is typically performed using
 <strong>constraint-based methods</strong>, which infer the network
 topology by testing conditional independence relationships implied by
@@ -90,14 +90,15 @@ appropriate conditioning sets. A key step in orienting edges in the
 resulting partially directed graph is the identification of
 <strong>v-structures</strong>, of the form
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>→</mo><mi>Z</mi><mo>←</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">X \rightarrow Z \leftarrow Y</annotation></semantics></math>.
-A v-structures is inferred when two variables
+A v-structure is inferred when two variables
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
 are marginally independent but become conditionally dependent upon
 conditioning on a third variable
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>,
-as illustrating in the follow figure:</p>
+as illustrated in the following figure:</p>
+<p><img src="figs/v_structure.png" class="r-plt" alt="" width="80%" height="80%"></p>
 <p>An important concept in CGBNs is the <strong>Markov blanket</strong>
 of a node, defined as the minimal set of variables that renders the node
 conditionally independent of all other variables in the network. For a
@@ -109,6 +110,7 @@ figure, we use <strong>yellow</strong>, <strong>orange</strong>, and
 node
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>,
 respectively.</p>
+<p><img src="figs/markov_blanket.png" class="r-plt" alt="" width="80%" height="80%"></p>
 <p><strong>RSNet</strong> implements a resampling-based structure
 learning framework for CGBNs, supporting four resampling strategies to
 improve the stability and robustness of inferred network structures:</p>
@@ -131,8 +133,7 @@ and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" cl
 </h2>
 <p><font color="#000000"></font></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://montilab.github.io/RSNet/">RSNet</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RHugin</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://montilab.github.io/RSNet/">RSNet</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="load-a-toy-dataset">Load a toy dataset<a class="anchor" aria-label="anchor" href="#load-a-toy-dataset"></a>
@@ -148,7 +149,7 @@ conditional Gaussian Bayesian network analysis.</p>
 <h2 id="run-and-learn-an-ensemble-of-networks-from-resampled-datasets">Run and learn an ensemble of networks from resampled datasets<a class="anchor" aria-label="anchor" href="#run-and-learn-an-ensemble-of-networks-from-resampled-datasets"></a>
 </h2>
 <p>In this example, we use the simulated dataset as input and perform
-bootstrap resampling (<code>boot = TRUE</code>) with 3 iterations
+bootstrap resampling (<code>boot = TRUE</code>) with 5 iterations
 (<code>num_iteration = 5</code>). The column names of the discrete
 variables must be specified as a character vector in the
 <code>discrete_variable</code> argument.</p>
@@ -160,8 +161,8 @@ argument (a value between 0 and 1).</p>
 computing.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ensemble_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ensemble_cgbn.html">ensemble_cgbn</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">toy_cgbn</span>, <span class="co"># A n x p dataframe</span></span>
-<span>                              discrete_variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"D%d"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, <span class="co"># Column names of the discreate variables</span></span>
-<span>                              num_iteration <span class="op">=</span> <span class="fl">3</span>, <span class="co"># Number of resampling iteration</span></span>
+<span>                              discrete_variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"D%d"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, <span class="co"># Column names of the discrete variables</span></span>
+<span>                              num_iteration <span class="op">=</span> <span class="fl">5</span>, <span class="co"># Number of resampling iteration</span></span>
 <span>                              sample_class <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Optional: for stratified sampling</span></span>
 <span>                              boot <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If FALSE, perform sub-sampling</span></span>
 <span>                              sub_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Subsampling ratio (0–1)</span></span>

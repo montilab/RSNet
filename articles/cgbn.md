@@ -5,11 +5,11 @@
 A **Conditional Gaussian Bayesian Network (CGBN)** is a probabilistic
 graphical model that integrates **discrete** and **continuous**
 variables within a unified Bayesian framework, making it particularly
-suitable for **mixed-type (mixture) data**. CGBNs are represented as
-**directed acyclic graphs (DAGs)**, where nodes correspond to random
-variables and directed edges encode conditional dependencies consistent
-with a joint probability distribution in which continuous variables
-follow Gaussian distributions conditional on their discrete parents.
+suitable for **mixed-type data**. CGBNs are represented as **directed
+acyclic graphs (DAGs)**, where nodes correspond to random variables and
+directed edges encode conditional dependencies consistent with a joint
+probability distribution in which continuous variables follow Gaussian
+distributions conditional on their discrete parents.
 
 Structure learning in CGBNs is typically performed using
 **constraint-based methods**, which infer the network topology by
@@ -19,10 +19,12 @@ conditional independence between variable pairs is detected given
 appropriate conditioning sets. A key step in orienting edges in the
 resulting partially directed graph is the identification of
 **v-structures**, of the form
-$\left. X\rightarrow Z\leftarrow Y \right.$. A v-structures is inferred
+$\left. X\rightarrow Z\leftarrow Y \right.$. A v-structure is inferred
 when two variables $X$ and $Y$ are marginally independent but become
 conditionally dependent upon conditioning on a third variable $Z$, as
-illustrating in the follow figure:
+illustrated in the following figure:
+
+![](figs/v_structure.png)
 
 An important concept in CGBNs is the **Markov blanket** of a node,
 defined as the minimal set of variables that renders the node
@@ -32,6 +34,8 @@ given node, its Markov blanket consists of its **parents**, its
 children). As illustrated in the following figure, we use **yellow**,
 **orange**, and **red** to denote the parents, spouses, and children of
 node $X$, respectively.
+
+![](figs/markov_blanket.png)
 
 **RSNet** implements a resampling-based structure learning framework for
 CGBNs, supporting four resampling strategies to improve the stability
@@ -58,7 +62,6 @@ and
 
 ``` r
 library(RSNet)
-library(RHugin)
 ```
 
 ## Load a toy dataset
@@ -75,7 +78,7 @@ data("toy_cgbn")
 ## Run and learn an ensemble of networks from resampled datasets
 
 In this example, we use the simulated dataset as input and perform
-bootstrap resampling (`boot = TRUE`) with 3 iterations
+bootstrap resampling (`boot = TRUE`) with 5 iterations
 (`num_iteration = 5`). The column names of the discrete variables must
 be specified as a character vector in the `discrete_variable` argument.
 
@@ -89,8 +92,8 @@ also supports parallel computing.
 
 ``` r
 ensemble_toy <- ensemble_cgbn(dat = toy_cgbn, # A n x p dataframe
-                              discrete_variable = sprintf("D%d",1:5), # Column names of the discreate variables
-                              num_iteration = 3, # Number of resampling iteration
+                              discrete_variable = sprintf("D%d",1:5), # Column names of the discrete variables
+                              num_iteration = 5, # Number of resampling iteration
                               sample_class = NULL, # Optional: for stratified sampling
                               boot = TRUE, # If FALSE, perform sub-sampling
                               sub_ratio = 1, # Subsampling ratio (0–1)
