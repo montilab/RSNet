@@ -32,7 +32,7 @@ analysis tools containing standard network metrics, graphlet-based
 analysis, and differential connectivity analysis.
 
 The overall workflow is illustrated in the following diagram:
-![](articles/figs/flowchart.png)
+![](reference/figures/flowchart.png)
 
 Please see our [documentation](https://montilab.github.io/RSNet/) for
 additional examples.
