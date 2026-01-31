@@ -101,7 +101,7 @@ generated during the execution of `ensemble_ggm()`.
 
 ``` r
 ensemble_er <- capture_all(
-  ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
+  ensemble_ggm(dat = toy_er$dat,     # A n x p dataframe/matrix
                num_iteration = 100,  # Number of resampling iteration
                boot = TRUE,          # If FALSE, perform sub-sampling
                sub_ratio = NULL,     # Subsampling ratio (0–1)
@@ -131,10 +131,12 @@ significance using the filter parameter: nominal p-value
 whose confidence intervals include zero are automatically excluded.
 
 ``` r
-consensus_er <- consensus_net_ggm(ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
-                                  CI = 0.95, # Confidence interval
-                                  filter = "pval", # Filter method
-                                  threshold = 0.05) # Significant level of the selected filter
+consensus_er <- consensus_net_ggm(
+  ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
+  CI = 0.95,                  # Confidence interval
+  filter = "pval",            # Filter method
+  threshold = 0.05            # Significant level of the selected filter
+) 
 ```
 
 ## (v) Interactive visualization
@@ -160,13 +162,14 @@ conditions are met:
     attributes
 
 ``` r
-p <- plot_cn(ig = consensus_er$consensus_network, # An "igraph" object
-             query = NULL, # Node of interests, NULL or a character vector
-             order = 1, # Order of neighbors
-             edge_label = "pcor", # The edge attribute to be shown
-             CI_show = TRUE, # Show empirical confidence interval
-             main = "Example") # Title
-
+p <- plot_cn(
+  ig = consensus_er$consensus_network, # An "igraph" object
+  query = NULL,                        # Node of interests, NULL or a character vector
+  order = 1,                           # Order of neighbors
+  edge_label = "pcor",                 # The edge attribute to be shown
+  CI_show = TRUE,                      # Show empirical confidence interval
+  main = "Example"                     # Title
+) 
 
 p$p
 ```
@@ -186,12 +189,14 @@ measures, including **degree**, **strength**, **eigenvector**,
 desired weighting scheme.
 
 ``` r
-centrality(ig = consensus_er$consensus_network,
-           weight = NULL) %>% 
-  as.matrix(.) %>% 
-  round(., 4) %>% 
+centrality(
+  ig = consensus_er$consensus_network,
+  weight = NULL
+) %>%
+  as.matrix(.) %>%
+  round(., 4) %>%
   as.data.frame(.) %>%
-  head(.) %>% 
+  head(.) %>%
   DT::datatable(.)
 ```
 
