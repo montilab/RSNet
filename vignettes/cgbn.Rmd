@@ -31,14 +31,14 @@ An important concept in CGBNs is the **Markov blanket** of a node, defined as th
 knitr::include_graphics("figs/markov_blanket.png")
 ```
 
-*RSNet* implements a resampling-based structure learning framework for CGBNs, supporting four resampling strategies to improve the stability and robustness of inferred network structures:
+**RSNet** implements a resampling-based structure learning framework for CGBNs, supporting four resampling strategies to improve the stability and robustness of inferred network structures:
   
   1. Bootstrap.
   2. Sub-sampling
   3. Stratified bootstrap.
   4. Stratified sub-sampling.
   
-**IMPORTANT NOTE**: The Conditional Gaussian Bayesian Network functionalities `ensemble_cgbn()` and `consensus_net_cgbn()` are optional in *RSNet* and require the *RHugin* package. Installation instructions for [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html), [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html), and [Linux](https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html).
+**IMPORTANT NOTE**: The Conditional Gaussian Bayesian Network functionalities `ensemble_cgbn()` and `consensus_net_cgbn()` are optional in **RSNet** and require the `RHugin` package. Installation instructions for [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html), [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html), and [Linux](https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html).
 
 
 # Load packages
@@ -53,7 +53,7 @@ library(RHugin)
 
 # Load a toy dataset
 
-To illustrate the workflow, we use a simulated toy dataset containing **20 continuous** and **5 discrete variables**, representing a mixed-type dataset suitable for conditional Gaussian Bayesian network analysis.
+To illustrate the workflow, we use a synthetic toy dataset containing **20 continuous** and **5 discrete variables**, representing a mixed-type dataset suitable for conditional Gaussian Bayesian network analysis.
 
 ```{r}
 data("toy_cgbn")
@@ -64,7 +64,7 @@ data("toy_cgbn")
 
 In this example, we use the simulated dataset as input and perform bootstrap resampling (`boot = TRUE`) with 3 iterations (`num_iteration = 5`). The column names of the discrete variables must be specified as a character vector in the `discrete_variable` argument.
 
-To perform **subsampling** instead of **bootstrapping**, set `boot = FALS`E and specify the sampling proportion using the `sub_ratio` argument (a value between 0 and 1).
+To perform **subsampling** instead of **bootstrapping**, set `boot = FALSE` and specify the sampling proportion using the `sub_ratio` argument (a value between 0 and 1).
 
 The function `ensemble_cgbn()` also supports parallel computing.
 

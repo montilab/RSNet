@@ -53,9 +53,9 @@ devtools::install_github("montilab/RSNet")
 # Usage
 
 **IMPORTANT NOTE**: The Conditional Gaussian Bayesian Network
-functionalities `ensemble_cgbn` and `consensus_net_cgbn` are optional in
-**RSNet** and require the `RHugin` package. Installation instructions
-for
+functionalities `ensemble_cgbn()` and `consensus_net_cgbn()` are
+optional in **RSNet** and require the `RHugin` package. Installation
+instructions for
 [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html),
 [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html),
 and
@@ -77,7 +77,7 @@ The core functions, `ensemble_ggm()` and the optional `ensemble_cgbn()`,
 accept an *n × p* data frame or matrix with both row and column names,
 where *n* represents the number of observations (samples) and *p*
 denotes the number of features. In the following example, we illustrate
-the workflow using a simulated toy dataset containing 100 observations
+the workflow using a synthetic toy dataset containing 100 observations
 and 20 features.
 
 ``` r

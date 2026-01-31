@@ -31,7 +31,7 @@ library(DT)
 
 # Resampling-based framework for Gaussian network inference
 
-*RSNet* implements multiple resampling strategies to enhance the stability and reliability of inferred network structures. For Gaussian networks, users can choose among four general resampling approaches: (1) unstratified bootstrap, (2) unstratified subsampling, (3) stratified bootstrap, and (4) stratified subsampling, depending on data characteristics and study design. In addition, RSNet supports cluster-based resampling methods specifically designed for correlated or family-based datasets, including (1) cluster bootstrap, which samples entire clusters with replacement to preserve intra-cluster dependencies, and (2) fractional cluster bootstrap, which samples only a subset of clusters with replacement.
+**RSNet** implements multiple resampling strategies to enhance the stability and reliability of inferred network structures. For Gaussian networks, users can choose among four general resampling approaches: (1) unstratified bootstrap, (2) unstratified subsampling, (3) stratified bootstrap, and (4) stratified subsampling, depending on data characteristics and study design. In addition, **RSNet** supports cluster-based resampling methods specifically designed for correlated or family-based datasets, including (1) cluster bootstrap, which samples entire clusters with replacement to preserve intra-cluster dependencies, and (2) fractional cluster bootstrap, which samples only a subset of clusters with replacement.
 
 The overall workflow is illustrated in the following figures. Briefly, a feature-by-sample dataset is provided as input and subjected to a user-specified resampling strategy over a specified number of iterations, yielding an ensemble of resampled datasets. Each resampled dataset is then used for network structure inference, producing an ensemble of inferred networks. Finally, these networks are integrated to construct a single consensus network that serves as the basis for downstream analyses.
 
@@ -39,9 +39,9 @@ The overall workflow is illustrated in the following figures. Briefly, a feature
 knitr::include_graphics("figs/ggm_resampling.png")
 ```
 
-These procedures are implemented in the function `ensemble_ggm()`, which leverages structure inference algorithms from the *SILGGM* package. The resampling module supports parallel computing, enabling efficient large-scale network inference and ensuring scalability for high-dimensional datasets.
+These procedures are implemented in the function `ensemble_ggm()`, which leverages structure inference algorithms from the `SILGGM` package. The resampling module supports parallel computing, enabling efficient large-scale network inference and ensuring scalability for high-dimensional datasets.
 
-In the following example, we use a simulated dataset as input and perform bootstrap resampling (`boot = TRUE`) with 100 iterations (`num_iteration = 100`). To estimate empirical confidence intervals for each edge, set `estimate_CI = TRUE`; for improved memory efficiency, this option can be disabled (`estimate_CI = FALSE`). The function `ensemble_ggm()`support parallel computation through the `n_cores` parameter.
+In the following example, we use a synthetic dataset as input and perform bootstrap resampling (`boot = TRUE`) with 100 iterations (`num_iteration = 100`). To estimate empirical confidence intervals for each edge, set `estimate_CI = TRUE`; for improved memory efficiency, this option can be disabled (`estimate_CI = FALSE`). The function `ensemble_ggm()`support parallel computation through the `n_cores` parameter.
 
 ```{r, eval=FALSE}
 data(toy_er)
@@ -71,7 +71,7 @@ The construction of the consensus network is implemented in the function `consen
 p-value (`filter = "fdr"`), or no filtering (`filter = "none"`). When `estimate_CI = TRUE` is specified during the `ensemble_ggm()` step, edges whose empirical confidence intervals include zero are automatically excluded from the consensus network.
 
 ```{r,eval=FALSE}
-consensus_tou <- consensus_net_ggm(ggm_networks = ensemble_toy, # The output of "ensemble_ggm()"
+consensus_toy <- consensus_net_ggm(ggm_networks = ensemble_toy, # The output of "ensemble_ggm()"
                                    CI = 0.95, # Confidence interval
                                    filter = "pval", # Filter method
                                    threshold = 0.05) # Significant level of the selected filter
