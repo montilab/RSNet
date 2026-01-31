@@ -37,7 +37,7 @@ Beyond structure learning, **RSNet** includes a suite of network analysis tools 
 
 The overall workflow is illustrated in the following diagram: 
 ```{r echo=FALSE, out.height="80%", out.width="80%"}
-knitr::include_graphics("vignettes/figs/flowchart.png")
+knitr::include_graphics("man/figures/flowchart.png")
 ```
 
 Please see our [documentation](https://montilab.github.io/RSNet/) for additional examples.
