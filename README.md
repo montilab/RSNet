@@ -100,16 +100,18 @@ The wrapper function `capture_all()` can be used to suppress messages
 generated during the execution of `ensemble_ggm()`.
 
 ``` r
-ensemble_er <- capture_all(ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
-                                        num_iteration = 100, # Number of resampling iteration
-                                        boot = TRUE, # If FALSE, perform sub-sampling
-                                        sub_ratio = NULL, # Subsampling ratio (0–1)
-                                        sample_class = NULL, # Optional: for stratified sampling
-                                        correlated = FALSE, # If TRUE, then clusted-based resampling is performed
-                                        cluster_ratio = 1, # Used only when `correlated = TRUE`
-                                        estimate_CI = TRUE, # If TRUE, estimate the empirical confidence interval
-                                        method = "D-S_NW_SL", # Inference method
-                                        n_cores = 1)) # Number of cores for parallel computing
+ensemble_er <- capture_all(
+  ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
+               num_iteration = 100,  # Number of resampling iteration
+               boot = TRUE,          # If FALSE, perform sub-sampling
+               sub_ratio = NULL,     # Subsampling ratio (0–1)
+               sample_class = NULL,  # Optional: for stratified sampling
+               correlated = FALSE,   # If TRUE, then clusted-based resampling is performed
+               cluster_ratio = 1,    # Used only when `correlated = TRUE`
+               estimate_CI = TRUE,   # If TRUE, estimate the empirical confidence interval
+               method = "D-S_NW_SL", # Inference method
+               n_cores = 1)          # Number of cores for parallel computing
+  )
 ```
 
 ## (iv) Consensus network construction
