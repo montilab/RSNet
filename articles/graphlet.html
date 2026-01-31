@@ -80,12 +80,12 @@ Huang</h4>
 larger network. For graphlets consisting of 2–4 nodes, there are eight
 distinct graphlets and fifteen corresponding automorphism orbits.
 Importantly, incorporating orbit information is critically useful,
-rather than using graphlet counts alone, as demonstrated by Apratim Das
-et al.<a href="https://dl.acm.org/doi/abs/10.1145/3341161.3343692?casa_token=_MCpkDptH0gAAAAA:wEsOwBRKqU9MIsHInlobhZd5kGlJNhqiYckJcrmWl8mU8m-XMfybUWsR8nu3JHlwtorebh7kd7W4" class="external-link">link</a></p>
+rather than using graphlet counts alone, as demonstrated by <a href="https://dl.acm.org/doi/abs/10.1145/3341161.3343692?casa_token=_MCpkDptH0gAAAAA:wEsOwBRKqU9MIsHInlobhZd5kGlJNhqiYckJcrmWl8mU8m-XMfybUWsR8nu3JHlwtorebh7kd7W4" class="external-link">Apratim
+Das et al</a>.</p>
 <p>This concept can be naturally extended to <strong>signed</strong> and
 <strong>directed</strong> networks. The current version of
-<em>RSNet</em> supports graphlet orbit counting for both unsigned and
-signed undirected networks.</p>
+<strong>RSNet</strong> supports graphlet orbit counting for both
+unsigned and signed undirected networks.</p>
 <p>Here we use black lines to represent positive relationships and red
 lines for negative relationships. Notably, the number of unsigned
 graphlets of size up to four and their associated orbits is equivalent
@@ -144,7 +144,8 @@ analyses have shown that certain orbit counts can be derived from
 others, classifying them as redundant orbits. Specifically, there are 11
 non-redundant orbits among the 4-node graphlets and 56 non-redundant
 orbits among the 5-node graphlets. Including redundant orbits may
-introduce noise, as demonstrated by Yaveroğlu, Ömer Nebil, et al <a href="https://www.nature.com/articles/srep04547" class="external-link">link</a>.</p>
+introduce noise, as demonstrated by <a href="https://www.nature.com/articles/srep04547" class="external-link">Yaveroğlu, Ömer Nebil,
+et al</a>.</p>
 <p>For node <code>1</code> in this dummy network, the degree is 3,
 corresponding to three counts in orbit
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>O</mi><mn>0</mn></msub><annotation encoding="application/x-tex">O_{0}</annotation></semantics></math>.
@@ -189,14 +190,14 @@ networks</strong>. However, this extension is computationally more
 demanding, and currently no R packages provide functionality for
 constructing GDVMs for signed networks. A brute-force enumeration
 approach has computational complexity exceeding
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mn>3</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(p^{3})</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>p</mi><mn>3</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(p^{3})</annotation></semantics></math>,
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 is the network size.</p>
-<p><em>RSNet</em> overcomes this limitation by integrating
+<p><strong>RSNet</strong> overcomes this limitation by integrating
 state-of-the-art graphlet counting algorithms with parallel computing,
 enabling efficient construction of signed GDVMs in
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false" form="prefix">(</mo><mo>∣</mo><mi>d</mi><mo>∣</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">O(∣d∣)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>∣</mo><mi>d</mi><mo>∣</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(∣d∣)</annotation></semantics></math>,
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∣</mo><mi>d</mi><mo>∣</mo></mrow><annotation encoding="application/x-tex">∣d∣</annotation></semantics></math>is
 the average degree, resulting near-constant time complexity for sparse
@@ -244,8 +245,8 @@ equivalent to those in the 4-node unsigned graphlets.</p>
 computed, the <strong>Graphlet Degree Vector (GDV)</strong> distance
 between two nodes is obtained by calculating the distance between their
 corresponding rows in the GDVM. The detailed formulation of the GDV
-distance is described by Milenković, Tijana, et al <a href="https://journals.sagepub.com/doi/full/10.4137/CIN.S680" class="external-link">link</a>.
-Note that the GDV distance ranges from 0 to 1.</p>
+distance is described by <a href="https://journals.sagepub.com/doi/full/10.4137/CIN.S680" class="external-link">Milenković,
+Tijana, et al</a>. Note that the GDV distance ranges from 0 to 1.</p>
 <p>The function <code><a href="../reference/gdv_distance.html">gdv_distance()</a></code> takes two GDVs as input and
 computes the GDV distance between the corresponding nodes. The function
 <code><a href="../reference/intra_gdv_distance.html">intra_gdv_distance()</a></code> takes a single GDVM as input and
@@ -295,7 +296,8 @@ triangle values of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>C</mi><msub><mi>M</mi><mi>G</mi></msub></mrow><annotation encoding="application/x-tex">GCM_{G}</annotation></semantics></math>
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mi>C</mi><msub><mi>M</mi><mi>H</mi></msub></mrow><annotation encoding="application/x-tex">GCM_{H}</annotation></semantics></math>.
-More details can be found in the work of Yaveroğlu et al.<a href="https://www.nature.com/articles/srep04547" class="external-link">link</a></p>
+More details can be found in the work of <a href="https://www.nature.com/articles/srep04547" class="external-link">Yaveroğlu et
+al</a>.</p>
 <p>The GCM can be computed using the function <code><a href="../reference/gdvm_gcm.html">gdvm_gcm()</a></code>
 for <strong>unsigned networks</strong> and <code>signed_gdv_gcm()</code>
 for <strong>signed networks</strong>, by setting the argument
@@ -309,8 +311,20 @@ topological distances both within and across network models by
 generating three random networks using the <strong>Erdős–Rényi (ER)
 model</strong> and three scale-free networks using the
 <strong>Barabási–Albert (BA) model</strong> with varying parameters.</p>
+<p>We compare (i) network-level distances among networks within the same
+model class but with different parameters (e.g., ER networks with
+different edge densities), and (ii) distances between networks from
+different model classes (e.g., ER versus BA networks). In total, six
+networks are generated, and all pairwise <strong>GCM-based Euclidean
+distances</strong> are computed, followed by <strong>multidimensional
+scaling (MDS)</strong> for visualization. We observe that GCM-based
+distances effectively separate networks both across different model
+classes and within the same class under varying parameters. Notably,
+distances between networks from different classes are substantially
+larger than those between networks within the same class, highlighting
+the discriminative power of the GCM.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">66</span><span class="op">)</span></span>
 <span><span class="co">## Create 3 random networks with n = 100 with edge_density = 0.01, 0.015, 0.02</span></span>
 <span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>,<span class="fl">100</span>,<span class="fl">100</span><span class="op">)</span></span>
 <span><span class="va">e_probs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.015</span>, <span class="fl">0.02</span><span class="op">)</span></span>

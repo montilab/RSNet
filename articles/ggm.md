@@ -28,19 +28,18 @@ system-level dependency structures from high-dimensional data.
 ## Load packages
 
 ``` r
-
 library(RSNet)
 library(DT)
 ```
 
 ## Resampling-based framework for Gaussian network inference
 
-*RSNet* implements multiple resampling strategies to enhance the
+**RSNet** implements multiple resampling strategies to enhance the
 stability and reliability of inferred network structures. For Gaussian
 networks, users can choose among four general resampling approaches: (1)
 unstratified bootstrap, (2) unstratified subsampling, (3) stratified
 bootstrap, and (4) stratified subsampling, depending on data
-characteristics and study design. In addition, RSNet supports
+characteristics and study design. In addition, **RSNet** supports
 cluster-based resampling methods specifically designed for correlated or
 family-based datasets, including (1) cluster bootstrap, which samples
 entire clusters with replacement to preserve intra-cluster dependencies,
@@ -60,12 +59,12 @@ downstream analyses.
 
 These procedures are implemented in the function
 [`ensemble_ggm()`](https://montilab.github.io/RSNet/reference/ensemble_ggm.md),
-which leverages structure inference algorithms from the *SILGGM*
+which leverages structure inference algorithms from the `SILGGM`
 package. The resampling module supports parallel computing, enabling
 efficient large-scale network inference and ensuring scalability for
 high-dimensional datasets.
 
-In the following example, we use a simulated dataset as input and
+In the following example, we use a synthetic dataset as input and
 perform bootstrap resampling (`boot = TRUE`) with 100 iterations
 (`num_iteration = 100`). To estimate empirical confidence intervals for
 each edge, set `estimate_CI = TRUE`; for improved memory efficiency,
@@ -74,7 +73,6 @@ this option can be disabled (`estimate_CI = FALSE`). The function
 parallel computation through the `n_cores` parameter.
 
 ``` r
-
 data(toy_er)
 ensemble_toy <- ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
                              num_iteration = 100, # Number of resampling iteration
@@ -91,20 +89,20 @@ ensemble_toy <- ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
 ## Consensus network construction
 
 We illustrate the consensus network construction at the **single-edge
-level**. Let $`e_{ij}^{(k)}`$ denote the inferred edge between variables
-$`i`$ and $`j`$ in the $`k^{th}`$ resampling iteration. Each edge
-$`e_{ij}^{(k)}`$ is associated with a precision (or partial correlation)
-estimate $`\omega_{ij}^{(k)}`$ and its corresponding z-score
-$`z_{ij}^{(k)}`$.
+level**. Let $e_{ij}^{(k)}$ denote the inferred edge between variables
+$i$ and $j$ in the $k^{th}$ resampling iteration. Each edge
+$e_{ij}^{(k)}$ is associated with a precision (or partial correlation)
+estimate $\omega_{ij}^{(k)}$ and its corresponding z-score
+$z_{ij}^{(k)}$.
 
-The statistical significance of edge $`e_{ij}`$ in the consensus network
-is assessed using the **average z-score across $`m`$ resampling
+The statistical significance of edge $e_{ij}$ in the consensus network
+is assessed using the **average z-score across $m$ resampling
 iterations**,from which a two-sided p-value is computed. When the
 argument `estimate_CI = TRUE`is enabled in
 [`ensemble_ggm()`](https://montilab.github.io/RSNet/reference/ensemble_ggm.md),
-the values $`\omega_{ij}^{(k)}`$ and $`z_{ij}^{(k)}`$ are retained for
-each resampling iteration, thereby enabling the estimation of
-**empirical confidence intervals**.
+the values $\omega_{ij}^{(k)}$ and $z_{ij}^{(k)}$ are retained for each
+resampling iteration, thereby enabling the estimation of **empirical
+confidence intervals**.
 
 ![](figs/ggm_consensus.png)
 
@@ -122,8 +120,7 @@ step, edges whose empirical confidence intervals include zero are
 automatically excluded from the consensus network.
 
 ``` r
-
-consensus_tou <- consensus_net_ggm(ggm_networks = ensemble_toy, # The output of "ensemble_ggm()"
+consensus_toy <- consensus_net_ggm(ggm_networks = ensemble_toy, # The output of "ensemble_ggm()"
                                    CI = 0.95, # Confidence interval
                                    filter = "pval", # Filter method
                                    threshold = 0.05) # Significant level of the selected filter

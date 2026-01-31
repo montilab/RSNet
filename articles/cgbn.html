@@ -109,9 +109,9 @@ figure, we use <strong>yellow</strong>, <strong>orange</strong>, and
 node
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>,
 respectively.</p>
-<p><em>RSNet</em> implements a resampling-based structure learning
-framework for CGBNs, supporting four resampling strategies to improve
-the stability and robustness of inferred network structures:</p>
+<p><strong>RSNet</strong> implements a resampling-based structure
+learning framework for CGBNs, supporting four resampling strategies to
+improve the stability and robustness of inferred network structures:</p>
 <ol style="list-style-type: decimal">
 <li>Bootstrap.</li>
 <li>Sub-sampling</li>
@@ -120,8 +120,9 @@ the stability and robustness of inferred network structures:</p>
 </ol>
 <p><strong>IMPORTANT NOTE</strong>: The Conditional Gaussian Bayesian
 Network functionalities <code><a href="../reference/ensemble_cgbn.html">ensemble_cgbn()</a></code> and
-<code><a href="../reference/consensus_net_cgbn.html">consensus_net_cgbn()</a></code> are optional in <em>RSNet</em> and
-require the <em>RHugin</em> package. Installation instructions for <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>,
+<code><a href="../reference/consensus_net_cgbn.html">consensus_net_cgbn()</a></code> are optional in <strong>RSNet</strong>
+and require the <code>RHugin</code> package. Installation instructions
+for <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html" class="external-link">macOS</a>,
 <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html" class="external-link">windows</a>,
 and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" class="external-link">Linux</a>.</p>
 </div>
@@ -136,7 +137,7 @@ and <a href="https://rhugin.r-forge.r-project.org/InstallingRHuginLinux.html" cl
 <div class="section level2">
 <h2 id="load-a-toy-dataset">Load a toy dataset<a class="anchor" aria-label="anchor" href="#load-a-toy-dataset"></a>
 </h2>
-<p>To illustrate the workflow, we use a simulated toy dataset containing
+<p>To illustrate the workflow, we use a synthetic toy dataset containing
 <strong>20 continuous</strong> and <strong>5 discrete
 variables</strong>, representing a mixed-type dataset suitable for
 conditional Gaussian Bayesian network analysis.</p>
@@ -152,7 +153,7 @@ bootstrap resampling (<code>boot = TRUE</code>) with 3 iterations
 variables must be specified as a character vector in the
 <code>discrete_variable</code> argument.</p>
 <p>To perform <strong>subsampling</strong> instead of
-<strong>bootstrapping</strong>, set <code>boot = FALS</code>E and
+<strong>bootstrapping</strong>, set <code>boot = FALSE</code> and
 specify the sampling proportion using the <code>sub_ratio</code>
 argument (a value between 0 and 1).</p>
 <p>The function <code><a href="../reference/ensemble_cgbn.html">ensemble_cgbn()</a></code> also supports parallel

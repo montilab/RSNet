@@ -18,11 +18,11 @@ Starting from a complete graph, edges are iteratively removed when
 conditional independence between variable pairs is detected given
 appropriate conditioning sets. A key step in orienting edges in the
 resulting partially directed graph is the identification of
-**v-structures**, of the form $`X \rightarrow Z \leftarrow Y`$. A
-v-structures is inferred when two variables $`X`$ and $`Y`$ are
-marginally independent but become conditionally dependent upon
-conditioning on a third variable $`Z`$, as illustrating in the follow
-figure:
+**v-structures**, of the form
+$\left. X\rightarrow Z\leftarrow Y \right.$. A v-structures is inferred
+when two variables $X$ and $Y$ are marginally independent but become
+conditionally dependent upon conditioning on a third variable $Z$, as
+illustrating in the follow figure:
 
 An important concept in CGBNs is the **Markov blanket** of a node,
 defined as the minimal set of variables that renders the node
@@ -31,9 +31,9 @@ given node, its Markov blanket consists of its **parents**, its
 **children**, and its **spouses** (i.e., the other parents of its
 children). As illustrated in the following figure, we use **yellow**,
 **orange**, and **red** to denote the parents, spouses, and children of
-node $`X`$, respectively.
+node $X$, respectively.
 
-*RSNet* implements a resampling-based structure learning framework for
+**RSNet** implements a resampling-based structure learning framework for
 CGBNs, supporting four resampling strategies to improve the stability
 and robustness of inferred network structures:
 
@@ -47,7 +47,7 @@ functionalities
 [`ensemble_cgbn()`](https://montilab.github.io/RSNet/reference/ensemble_cgbn.md)
 and
 [`consensus_net_cgbn()`](https://montilab.github.io/RSNet/reference/consensus_net_cgbn.md)
-are optional in *RSNet* and require the *RHugin* package. Installation
+are optional in **RSNet** and require the `RHugin` package. Installation
 instructions for
 [macOS](https://rhugin.r-forge.r-project.org/InstallingRHuginMacOSX.html),
 [windows](https://rhugin.r-forge.r-project.org/InstallingRHuginWindows.html),
@@ -57,20 +57,18 @@ and
 ## Load packages
 
 ``` r
-
 library(RSNet)
 library(RHugin)
 ```
 
 ## Load a toy dataset
 
-To illustrate the workflow, we use a simulated toy dataset containing
+To illustrate the workflow, we use a synthetic toy dataset containing
 **20 continuous** and **5 discrete variables**, representing a
 mixed-type dataset suitable for conditional Gaussian Bayesian network
 analysis.
 
 ``` r
-
 data("toy_cgbn")
 ```
 
@@ -82,7 +80,7 @@ bootstrap resampling (`boot = TRUE`) with 3 iterations
 be specified as a character vector in the `discrete_variable` argument.
 
 To perform **subsampling** instead of **bootstrapping**, set
-`boot = FALS`E and specify the sampling proportion using the `sub_ratio`
+`boot = FALSE` and specify the sampling proportion using the `sub_ratio`
 argument (a value between 0 and 1).
 
 The function
@@ -90,7 +88,6 @@ The function
 also supports parallel computing.
 
 ``` r
-
 ensemble_toy <- ensemble_cgbn(dat = toy_cgbn, # A n x p dataframe
                               discrete_variable = sprintf("D%d",1:5), # Column names of the discreate variables
                               num_iteration = 3, # Number of resampling iteration
@@ -117,7 +114,6 @@ Bayesian networks (CGBNs) supports two complementary approaches:
     stable dependency patterns rather than directionality.
 
 ``` r
-
 ## Directed consensus network (method = "all")
 ## A simple way to generate a reference network is to set: num_iteration = 1, boot = FALSE, sub_ratio = 1
 reference_network <- ensemble_cgbn(dat = toy_cgbn, 
