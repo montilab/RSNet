@@ -184,6 +184,7 @@ diff_gdv_res <- capture_all(
 )
 
 diff_gdv_res %>% 
+#  dplyr::mutate(across(where(is.numeric), \(x) signif(x, digits = 3))) %>%
   head(.) %>% 
   DT::datatable(.)
 ```
