@@ -40,10 +40,7 @@ library(DT)
 
 ## Load LOAD dataset
 
-Here, we use a curated dataset derived from a [late-onset Alzheimer’s
-disease (LOAD) study](https://pubmed.ncbi.nlm.nih.gov/23622250/).
-
-Here we used a real, and curated dataset derived from [late-onset
+Here we analyze a curated transcriptomics dataset from a [late-onset
 Alzheimer’s disease (LOAD)
 study](https://pubmed.ncbi.nlm.nih.gov/23622250/). The dataset includes
 129 **LOAD** subjects and 101 **control** subjects. For demonstration
@@ -74,19 +71,21 @@ load_dat <- toy_load %>%
 
 
 ## Infer observed networks from each group
-ctrl_obs <- capture_all(ensemble_ggm(dat = ctrl_dat,
-                         num_iteration = 1,
-                         sub_ratio = 1,
-                         method = "D-S_NW_SL",
-                         n_cores = 1)) %>% 
+ctrl_obs <- capture_all(
+  ensemble_ggm(dat = ctrl_dat,
+               num_iteration = 1,
+               sub_ratio = 1,
+               method = "D-S_NW_SL",
+               n_cores = 1)) %>% 
   consensus_net_ggm(., filter = "pval", threshold = 0.05) %>% 
   { .[["consensus_network"]] }
 
-load_obs <- capture_all(ensemble_ggm(dat = load_dat,
-                         num_iteration = 1,
-                         sub_ratio = 1,
-                         method = "D-S_NW_SL",
-                         n_cores = 1)) %>% 
+load_obs <- capture_all(
+  ensemble_ggm(dat = load_dat,
+               num_iteration = 1,
+               sub_ratio = 1,
+               method = "D-S_NW_SL",
+               n_cores = 1)) %>% 
   consensus_net_ggm(., filter = "pval", threshold = 0.05) %>% 
   { .[["consensus_network"]] }
 
@@ -99,8 +98,8 @@ obs_networks <- list(ctrl = ctrl_obs,
 ## Estimate the null distribution
 
 Accurate estimation of the null distribution is essential for assessing
-statistical significance. owever, for most network-based statistics, the
-null distribution is difficult to derive analytically. **RSNet**
+statistical significance. However, for most network-based statistics,
+the null distribution is difficult to derive analytically. **RSNet**
 addresses this challenge by implementing **resampling-based null
 distribution generation** via **permutation** and **bootstrap** methods.
 These procedures are implemented in the
@@ -117,23 +116,31 @@ permutation and one using bootstrap, each with five iterations.
 ``` r
 shuffle_iter <- 5
 
-null_permutation <- capture_all(null_ggm(dat = toy_load, # a n x (p+1) data frame with p numeric feature columns + one label column.
-                             group_col = "phenotype", # name of the label (phenotype) column
-                             inference_method = "D-S_NW_SL", # the inference method
-                             shuffle_method = "permutation", # shuffling method
-                             shuffle_iter = shuffle_iter, # number of iteration
-                             filter = "pval", # filter criteria, support "pval", "fdr", and "none"
-                             threshold = 0.05, # the significance level
-                             n_cores = 1)) # number of cores for parallel computing
+null_permutation <- capture_all(
+  null_ggm(
+    dat = toy_load,                 # n x (p+1) data frame with p numeric feature columns + one label column
+    group_col = "phenotype",        # name of the label (phenotype) column
+    inference_method = "D-S_NW_SL", # the inference method
+    shuffle_method = "permutation", # shuffling method
+    shuffle_iter = shuffle_iter,    # number of iterations
+    filter = "pval",                # filter criteria, support "pval", "fdr", and "none"
+    threshold = 0.05,               # the significance level
+    n_cores = 1                     # number of cores for parallel computing
+  )
+) 
 
-null_bootstrap <- capture_all(null_ggm(dat = toy_load,
-                           group_col = "phenotype",
-                           inference_method = "D-S_NW_SL",
-                           shuffle_method = "bootstrap",
-                           shuffle_iter = shuffle_iter,
-                           filter = "pval",
-                           threshold = 0.05,
-                           n_cores = 1))
+null_bootstrap <- capture_all(
+  null_ggm(
+    dat = toy_load,
+    group_col = "phenotype",
+    inference_method = "D-S_NW_SL",
+    shuffle_method = "bootstrap",
+    shuffle_iter = shuffle_iter,
+    filter = "pval",
+    threshold = 0.05,
+    n_cores = 1
+  )
+)
 
 ## A list of length "shuffle_iter"; each element is a named list (by group labels) of igraph objects
 stopifnot(length(null_permutation$null_networks) == shuffle_iter)
@@ -164,21 +171,26 @@ randomization procedures, and allows for **one-sided** or **two-sided**
 hypothesis testing.
 
 ``` r
-diff_centrality_res <- capture_all(diff_centrality(obs_networks = obs_networks,
-                                       dat = toy_load,
-                                       group_col = "phenotype",
-                                       null_networks = NULL,
-                                       alternative = "two.sided",
-                                       inference_method = "D-S_NW_SL",
-                                       shuffle_method = "permutation",
-                                       shuffle_iter = 5,
-                                       balanced = FALSE,
-                                       filter = "pval",
-                                       threshold = 0.05,
-                                       n_cores =  1,
-                                       seed = 42))
+diff_centrality_res <- capture_all(
+  diff_centrality(
+    obs_networks = obs_networks,
+    dat = toy_load,
+    group_col = "phenotype",
+    null_networks = NULL,
+    alternative = "two.sided",
+    inference_method = "D-S_NW_SL",
+    shuffle_method = "permutation",
+    shuffle_iter = 5,
+    balanced = FALSE,
+    filter = "pval",
+    threshold = 0.05,
+    n_cores = 1,
+    seed = 42
+  )
+)
 
 diff_centrality_res %>% 
+#  dplyr::mutate(across(where(is.numeric), \(x) signif(x, digits = 3))) %>%
   head(.) %>% 
   DT::datatable(.)
 ```
@@ -203,21 +215,26 @@ and performs **one-sided** hypothesis testing, consistent with the
 statistical characteristics of the GDV distance measure.
 
 ``` r
-diff_gdv_res <- capture_all(diff_gdv(obs_networks = obs_networks,
-                         dat = toy_load,
-                         group_col = "phenotype",
-                         null_networks = NULL,
-                         sign = TRUE,
-                         inference_method = "D-S_NW_SL",
-                         shuffle_method = "permutation",
-                         shuffle_iter = 5,
-                         balanced = FALSE,
-                         filter = "pval",
-                         threshold = 0.05,
-                         n_cores =  1,
-                         seed = 42))
+diff_gdv_res <- capture_all(
+  diff_gdv(
+    obs_networks = obs_networks,
+    dat = toy_load,
+    group_col = "phenotype",
+    null_networks = NULL,
+    sign = TRUE,
+    inference_method = "D-S_NW_SL",
+    shuffle_method = "permutation",
+    shuffle_iter = 5,
+    balanced = FALSE,
+    filter = "pval",
+    threshold = 0.05,
+    n_cores = 1,
+    seed = 42
+  )
+)
 
 diff_gdv_res %>% 
+#  dplyr::mutate(across(where(is.numeric), \(x) signif(x, digits = 3))) %>%
   head(.) %>% 
   DT::datatable(.)
 ```

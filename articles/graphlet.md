@@ -89,12 +89,15 @@ plot(ig)
 #### Graphlet degree vector matrix (GDVM)
 
 ``` r
-suppressWarnings(gdvm_gcm(ig,
-                          level = "4", 
-                          redundant_orbit = TRUE,
-                          include_gcm = FALSE)) %>% 
-  as.data.frame() %>% 
-  magrittr::set_rownames(seq(1:vcount(ig))) %>% 
+suppressWarnings(
+  gdvm_gcm(ig,
+    level = "4",
+    redundant_orbit = TRUE,
+    include_gcm = FALSE
+  )
+) %>%
+  as.data.frame() %>%
+  magrittr::set_rownames(seq(1:vcount(ig))) %>%
   DT::datatable(.)
 ```
 
@@ -139,12 +142,15 @@ plot(signed_ig, edge.lty = E(signed_ig)$lty)
 #### Graphlet degree vector matrix (GDVM)
 
 ``` r
-suppressWarnings(signed_gdvm_gcm(signed_ig,
-                 n_cores = 1,
-                 redundant = TRUE,
-                 include_gcm = FALSE)) %>% 
-  as.data.frame() %>% 
-  magrittr::set_rownames(seq(1:vcount(signed_ig))) %>% 
+suppressWarnings(
+  signed_gdvm_gcm(signed_ig,
+    n_cores = 1,
+    redundant = TRUE,
+    include_gcm = FALSE
+  )
+) %>%
+  as.data.frame() %>%
+  magrittr::set_rownames(seq(1:vcount(signed_ig))) %>%
   DT::datatable(.)
 ```
 
@@ -174,11 +180,13 @@ distance between nodes `1` and `3` in the unsigned dummy network.
 
 ``` r
 ## Compute the unsigned GDVM
-gdvm <- suppressWarnings(gdvm_gcm(ig,
-                         level = "4", 
-                         redundant_orbit = TRUE,
-                         include_gcm = FALSE))
-
+gdvm <- suppressWarnings(
+  gdvm_gcm(ig,
+    level = "4",
+    redundant_orbit = TRUE,
+    include_gcm = FALSE
+  )
+)
 ## Compute the GDV distance between node 1 and node 3
 dist_13 <- gdv_distance(gdvm[1,], gdvm[2,])
 print(paste("The GDV distance between node 1 and 3 is :", round(dist_13, 4)))
@@ -263,13 +271,15 @@ sf_GCM_upper_tri_mat <- lapply(sf_networks, function(sf_net){return(gdvm_gcm(sf_
 GCM_upper_tri_mat <- rbind(er_GCM_upper_tri_mat, sf_GCM_upper_tri_mat)
 
 ## MDS clustering
-mds <- GCM_upper_tri_mat %>% 
-  proxy::dist(., method = "Euclidean", use = "pairwise.complete.obs") %>% 
-  cmdscale(., k = 2) %>% 
-  as.data.frame() %>% 
-  tibble::rownames_to_column(var='network') %>% 
-  dplyr::mutate(class = case_when(startsWith(network, "er") ~ "random",
-                                  startsWith(network, "sf") ~ "scale-free"))
+mds <- GCM_upper_tri_mat %>%
+  proxy::dist(., method = "Euclidean", use = "pairwise.complete.obs") %>%
+  cmdscale(., k = 2) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var = "network") %>%
+  dplyr::mutate(class = case_when(
+    startsWith(network, "er") ~ "random",
+    startsWith(network, "sf") ~ "scale-free"
+  ))
 
 # Visualization
 ggplot(mds, aes(x = V1, y = V2, color = network, shape=class)) +

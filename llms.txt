@@ -106,16 +106,18 @@ can be used to suppress messages generated during the execution of
 [`ensemble_ggm()`](https://montilab.github.io/RSNet/reference/ensemble_ggm.md).
 
 ``` r
-ensemble_er <- capture_all(ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
-                                        num_iteration = 100, # Number of resampling iteration
-                                        boot = TRUE, # If FALSE, perform sub-sampling
-                                        sub_ratio = NULL, # Subsampling ratio (0–1)
-                                        sample_class = NULL, # Optional: for stratified sampling
-                                        correlated = FALSE, # If TRUE, then clusted-based resampling is performed
-                                        cluster_ratio = 1, # Used only when `correlated = TRUE`
-                                        estimate_CI = TRUE, # If TRUE, estimate the empirical confidence interval
-                                        method = "D-S_NW_SL", # Inference method
-                                        n_cores = 1)) # Number of cores for parallel computing
+ensemble_er <- capture_all(
+  ensemble_ggm(dat = toy_er$dat,     # A n x p dataframe/matrix
+               num_iteration = 100,  # Number of resampling iteration
+               boot = TRUE,          # If FALSE, perform sub-sampling
+               sub_ratio = NULL,     # Subsampling ratio (0–1)
+               sample_class = NULL,  # Optional: for stratified sampling
+               correlated = FALSE,   # If TRUE, then clusted-based resampling is performed
+               cluster_ratio = 1,    # Used only when `correlated = TRUE`
+               estimate_CI = TRUE,   # If TRUE, estimate the empirical confidence interval
+               method = "D-S_NW_SL", # Inference method
+               n_cores = 1)          # Number of cores for parallel computing
+  )
 ```
 
 ## (iv) Consensus network construction
@@ -141,10 +143,12 @@ step, edges whose confidence intervals include zero are automatically
 excluded.
 
 ``` r
-consensus_er <- consensus_net_ggm(ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
-                                  CI = 0.95, # Confidence interval
-                                  filter = "pval", # Filter method
-                                  threshold = 0.05) # Significant level of the selected filter
+consensus_er <- consensus_net_ggm(
+  ggm_networks = ensemble_er, # The output of "ensemble_ggm()"
+  CI = 0.95,                  # Confidence interval
+  filter = "pval",            # Filter method
+  threshold = 0.05            # Significant level of the selected filter
+) 
 ```
 
 ## (v) Interactive visualization
@@ -172,13 +176,14 @@ conditions are met:
     attributes
 
 ``` r
-p <- plot_cn(ig = consensus_er$consensus_network, # An "igraph" object
-             query = NULL, # Node of interests, NULL or a character vector
-             order = 1, # Order of neighbors
-             edge_label = "pcor", # The edge attribute to be shown
-             CI_show = TRUE, # Show empirical confidence interval
-             main = "Example") # Title
-
+p <- plot_cn(
+  ig = consensus_er$consensus_network, # An "igraph" object
+  query = NULL,                        # Node of interests, NULL or a character vector
+  order = 1,                           # Order of neighbors
+  edge_label = "pcor",                 # The edge attribute to be shown
+  CI_show = TRUE,                      # Show empirical confidence interval
+  main = "Example"                     # Title
+) 
 
 p$p
 ```
@@ -199,12 +204,14 @@ parameter to indicate the edge attribute representing the desired
 weighting scheme.
 
 ``` r
-centrality(ig = consensus_er$consensus_network,
-           weight = NULL) %>% 
-  as.matrix(.) %>% 
-  round(., 4) %>% 
+centrality(
+  ig = consensus_er$consensus_network,
+  weight = NULL
+) %>%
+  as.matrix(.) %>%
+  round(., 4) %>%
   as.data.frame(.) %>%
-  head(.) %>% 
+  head(.) %>%
   DT::datatable(.)
 ```
 

@@ -138,16 +138,18 @@ for improved memory efficiency, this option can be disabled
 <code>n_cores</code> parameter.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">toy_er</span><span class="op">)</span></span>
-<span><span class="va">ensemble_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ensemble_ggm.html">ensemble_ggm</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">toy_er</span><span class="op">$</span><span class="va">dat</span>, <span class="co"># A n x p dataframe/matrix</span></span>
-<span>                             num_iteration <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Number of resampling iteration</span></span>
-<span>                             boot <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If FALSE, perform sub-sampling</span></span>
-<span>                             sub_ratio <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Subsampling ratio (0–1)</span></span>
-<span>                             sample_class <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Optional: for stratified sampling</span></span>
-<span>                             correlated <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># If TRUE, then clusted-based resampling is performed</span></span>
-<span>                             cluster_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Used only when `correlated = TRUE`</span></span>
-<span>                             estimate_CI <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If TRUE, estimate the empirical confidence interval</span></span>
-<span>                             method <span class="op">=</span> <span class="st">"D-S_NW_SL"</span>, <span class="co"># Inference method</span></span>
-<span>                             n_cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># Number of cores for parallel computing</span></span></code></pre></div>
+<span><span class="va">ensemble_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ensemble_ggm.html">ensemble_ggm</a></span><span class="op">(</span></span>
+<span>  dat <span class="op">=</span> <span class="va">toy_er</span><span class="op">$</span><span class="va">dat</span>,     <span class="co"># A n x p dataframe/matrix</span></span>
+<span>  num_iteration <span class="op">=</span> <span class="fl">100</span>,  <span class="co"># Number of resampling iteration</span></span>
+<span>  boot <span class="op">=</span> <span class="cn">TRUE</span>,          <span class="co"># If FALSE, perform sub-sampling</span></span>
+<span>  sub_ratio <span class="op">=</span> <span class="cn">NULL</span>,     <span class="co"># Subsampling ratio (0–1)</span></span>
+<span>  sample_class <span class="op">=</span> <span class="cn">NULL</span>,  <span class="co"># Optional: for stratified sampling</span></span>
+<span>  correlated <span class="op">=</span> <span class="cn">FALSE</span>,   <span class="co"># If TRUE, then clusted-based resampling is performed</span></span>
+<span>  cluster_ratio <span class="op">=</span> <span class="fl">1</span>,    <span class="co"># Used only when `correlated = TRUE`</span></span>
+<span>  estimate_CI <span class="op">=</span> <span class="cn">TRUE</span>,   <span class="co"># If TRUE, estimate the empirical confidence interval</span></span>
+<span>  method <span class="op">=</span> <span class="st">"D-S_NW_SL"</span>, <span class="co"># Inference method</span></span>
+<span>  n_cores <span class="op">=</span> <span class="fl">1</span>           <span class="co"># Number of cores for parallel computing</span></span>
+<span><span class="op">)</span> </span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="consensus-network-construction">Consensus network construction<a class="anchor" aria-label="anchor" href="#consensus-network-construction"></a>
@@ -193,10 +195,12 @@ specified during the <code><a href="../reference/ensemble_ggm.html">ensemble_ggm
 empirical confidence intervals include zero are automatically excluded
 from the consensus network.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">consensus_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensus_net_ggm.html">consensus_net_ggm</a></span><span class="op">(</span>ggm_networks <span class="op">=</span> <span class="va">ensemble_toy</span>, <span class="co"># The output of "ensemble_ggm()"</span></span>
-<span>                                   CI <span class="op">=</span> <span class="fl">0.95</span>, <span class="co"># Confidence interval</span></span>
-<span>                                   filter <span class="op">=</span> <span class="st">"pval"</span>, <span class="co"># Filter method</span></span>
-<span>                                   threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="co"># Significant level of the selected filter</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">consensus_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/consensus_net_ggm.html">consensus_net_ggm</a></span><span class="op">(</span></span>
+<span>  ggm_networks <span class="op">=</span> <span class="va">ensemble_toy</span>, <span class="co"># The output of "ensemble_ggm()"</span></span>
+<span>  CI <span class="op">=</span> <span class="fl">0.95</span>,                   <span class="co"># Confidence interval</span></span>
+<span>  filter <span class="op">=</span> <span class="st">"pval"</span>, <span class="co"># Filter method</span></span>
+<span>  threshold <span class="op">=</span> <span class="fl">0.05</span></span>
+<span><span class="op">)</span> <span class="co"># Significant level of the selected filter</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="section"></h3>
 </div>

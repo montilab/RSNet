@@ -91,13 +91,15 @@ The function
 also supports parallel computing.
 
 ``` r
-ensemble_toy <- ensemble_cgbn(dat = toy_cgbn, # A n x p dataframe
-                              discrete_variable = sprintf("D%d",1:5), # Column names of the discrete variables
-                              num_iteration = 5, # Number of resampling iteration
-                              sample_class = NULL, # Optional: for stratified sampling
-                              boot = TRUE, # If FALSE, perform sub-sampling
-                              sub_ratio = 1, # Subsampling ratio (0–1)
-                              n_cores = 1) # Number of cores for parallel computing
+ensemble_toy <- ensemble_cgbn(
+  dat = toy_cgbn,      # A n x p dataframe
+  discrete_variable = sprintf("D%d", 1:5), # Column names of the discrete variables
+  num_iteration = 5,   # Number of resampling iteration
+  sample_class = NULL, # Optional: for stratified sampling
+  boot = TRUE,         # If FALSE, perform sub-sampling
+  sub_ratio = 1,       # Subsampling ratio (0–1)
+  n_cores = 1          # Number of cores for parallel computing
+) 
 ```
 
 ## Consensus network construction
@@ -119,25 +121,30 @@ Bayesian networks (CGBNs) supports two complementary approaches:
 ``` r
 ## Directed consensus network (method = "all")
 ## A simple way to generate a reference network is to set: num_iteration = 1, boot = FALSE, sub_ratio = 1
-reference_network <- ensemble_cgbn(dat = toy_cgbn, 
-                                   discrete_variable = sprintf("D%d",1:5), 
-                                   num_iteration = 1, 
-                                   sample_class = NULL, 
-                                   boot = FALSE, 
-                                   sub_ratio = 1, 
-                                   n_cores = 1)
+reference_network <- ensemble_cgbn(
+  dat = toy_cgbn,
+  discrete_variable = sprintf("D%d", 1:5),
+  num_iteration = 1,
+  sample_class = NULL,
+  boot = FALSE,
+  sub_ratio = 1,
+  n_cores = 1
+)
 
-directed_cons_net <- consensus_net_cgbn(ensemble_toy$ig_networks, # A list of igraph objects
-                                        reference_network = reference_network$ig_networks$iter_1, # An igraph object
-                                        method="all", # Integration method
-                                        cut = 0.5) # Edge weight threshold
+directed_cons_net <- consensus_net_cgbn(
+  ensemble_toy$ig_networks, # A list of igraph objects
+  reference_network = reference_network$ig_networks$iter_1, # An igraph object
+  method = "all",           # Integration method
+  cut = 0.5                 # Edge weight threshold
+) 
 
-
-## Markov blanket-based undirected consensus network, set `method="average" 
-undirected_cons_net <- consensus_net_cgbn(ensemble_toy$ig_networks, # A list of igraph objects
-                                          reference_network = NULL, # Not required for method = "average"
-                                          method="average", # Integration method
-                                          cut = 0.5) # Edge weight threshold
+## Markov blanket-based undirected consensus network, set `method="average"
+undirected_cons_net <- consensus_net_cgbn(
+  ensemble_toy$ig_networks, # A list of igraph objects
+  reference_network = NULL, # Not required for method = "average"
+  method = "average",       # Integration method
+  cut = 0.5                 # Edge weight threshold
+)
 ```
 
 ### 

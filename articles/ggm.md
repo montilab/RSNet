@@ -74,16 +74,18 @@ parallel computation through the `n_cores` parameter.
 
 ``` r
 data(toy_er)
-ensemble_toy <- ensemble_ggm(dat = toy_er$dat, # A n x p dataframe/matrix
-                             num_iteration = 100, # Number of resampling iteration
-                             boot = TRUE, # If FALSE, perform sub-sampling
-                             sub_ratio = NULL, # Subsampling ratio (0–1)
-                             sample_class = NULL, # Optional: for stratified sampling
-                             correlated = FALSE, # If TRUE, then clusted-based resampling is performed
-                             cluster_ratio = 1, # Used only when `correlated = TRUE`
-                             estimate_CI = TRUE, # If TRUE, estimate the empirical confidence interval
-                             method = "D-S_NW_SL", # Inference method
-                             n_cores = 1) # Number of cores for parallel computing
+ensemble_toy <- ensemble_ggm(
+  dat = toy_er$dat,     # A n x p dataframe/matrix
+  num_iteration = 100,  # Number of resampling iteration
+  boot = TRUE,          # If FALSE, perform sub-sampling
+  sub_ratio = NULL,     # Subsampling ratio (0–1)
+  sample_class = NULL,  # Optional: for stratified sampling
+  correlated = FALSE,   # If TRUE, then clusted-based resampling is performed
+  cluster_ratio = 1,    # Used only when `correlated = TRUE`
+  estimate_CI = TRUE,   # If TRUE, estimate the empirical confidence interval
+  method = "D-S_NW_SL", # Inference method
+  n_cores = 1           # Number of cores for parallel computing
+) 
 ```
 
 ## Consensus network construction
@@ -120,10 +122,12 @@ step, edges whose empirical confidence intervals include zero are
 automatically excluded from the consensus network.
 
 ``` r
-consensus_toy <- consensus_net_ggm(ggm_networks = ensemble_toy, # The output of "ensemble_ggm()"
-                                   CI = 0.95, # Confidence interval
-                                   filter = "pval", # Filter method
-                                   threshold = 0.05) # Significant level of the selected filter
+consensus_toy <- consensus_net_ggm(
+  ggm_networks = ensemble_toy, # The output of "ensemble_ggm()"
+  CI = 0.95,                   # Confidence interval
+  filter = "pval", # Filter method
+  threshold = 0.05
+) # Significant level of the selected filter
 ```
 
 ### 
