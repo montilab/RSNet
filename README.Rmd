@@ -30,8 +30,8 @@ To enhance the stability and reliability of inferred network structures, **RSNet
   
 For Gaussian networks, **RSNet** further provides cluster-based sampling options specifically designed to accommodate correlated or family-based data, including:
 
-  1. Cluster-based bootstrap.
-  2. Fractional cluster-based bootstrap.
+  1. Cluster-based bootstrap, which resamples entire clusters with replacement to preserve intra-cluster dependence. 
+  2. Fractional cluster-based bootstrap, which resamples only a subset of clusters with replacement, offering improved computational efficiency while retaining cluster-level correlation structure.
   
 Beyond structure learning, **RSNet** includes a suite of network analysis tools containing standard network metrics, graphlet-based analysis, and differential connectivity analysis.
 
@@ -138,7 +138,7 @@ p$p
 
 ## (vi) Centrality analysis
 
-**Centrality analysis** is a classical approach in network analysis used to quantify the relative importance or influence of individual nodes within a network. **RSNet** implements this functionality through the `centrality()` function, which computes several commonly used centrality measures, including **degree**, **strength**, **eigenvector**, **betweenness**, **closeness**, and **PageRank** centralities, using an `igraph` object as input. For weighted networks, users can specify the `weight` parameter to indicate the edge attribute representing the desired weighting scheme.
+**Centrality analysis** is a classical approach in network analysis used to quantify the relative importance or influence of individual nodes within a network. **RSNet** implements this functionality through the `centrality()` function, which computes several commonly used centrality measures, including **degree**, **strength (weighted degree)**, **eigenvector**, **betweenness**, **closeness**, and **PageRank** centralities, using an `igraph` object as input. For weighted networks, users can specify the `weight` parameter to indicate the edge attribute representing the desired weighting scheme.
 
 ```{r}
 centrality(ig = consensus_er$consensus_network,

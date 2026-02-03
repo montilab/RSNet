@@ -39,7 +39,7 @@ The overall workflow is illustrated in the following figures. Briefly, a feature
 knitr::include_graphics("figs/ggm_resampling.png")
 ```
 
-These procedures are implemented in the function `ensemble_ggm()`, which leverages structure inference algorithms from the `SILGGM` package. The resampling module supports parallel computing, enabling efficient large-scale network inference and ensuring scalability for high-dimensional datasets.
+These procedures are implemented in the function `ensemble_ggm()`, which leverages structure inference algorithms from the `SILGGM` [package](https://cran.r-project.org/web/packages/SILGGM/index.html). The resampling module supports parallel computing, enabling efficient large-scale network inference and ensuring scalability for high-dimensional datasets.
 
 In the following example, we use a synthetic dataset as input and perform bootstrap resampling (`boot = TRUE`) with 100 iterations (`num_iteration = 100`). To estimate empirical confidence intervals for each edge, set `estimate_CI = TRUE`; for improved memory efficiency, this option can be disabled (`estimate_CI = FALSE`). The function `ensemble_ggm()`support parallel computation through the `n_cores` parameter.
 
