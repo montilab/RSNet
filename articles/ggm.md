@@ -60,8 +60,9 @@ downstream analyses.
 These procedures are implemented in the function
 [`ensemble_ggm()`](https://montilab.github.io/RSNet/reference/ensemble_ggm.md),
 which leverages structure inference algorithms from the `SILGGM`
-package. The resampling module supports parallel computing, enabling
-efficient large-scale network inference and ensuring scalability for
+[package](https://cran.r-project.org/web/packages/SILGGM/index.html).
+The resampling module supports parallel computing, enabling efficient
+large-scale network inference and ensuring scalability for
 high-dimensional datasets.
 
 In the following example, we use a synthetic dataset as input and

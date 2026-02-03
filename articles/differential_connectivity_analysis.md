@@ -111,7 +111,12 @@ Because null generation can be computationally intensive,
 also supports **parallel computing** for improved efficiency.
 
 In the following example, we generate two null distributions, one using
-permutation and one using bootstrap, each with five iterations.
+permutation and one using bootstrap, each with five iterations. The
+output from
+[`null_ggm()`](https://montilab.github.io/RSNet/reference/null_ggm.md)
+can be used as the input of the
+[`diff_centrality()`](https://montilab.github.io/RSNet/reference/diff_centrality.md)
+function in the following section.
 
 ``` r
 shuffle_iter <- 5
@@ -159,10 +164,10 @@ Internally,
 [`diff_centrality()`](https://montilab.github.io/RSNet/reference/diff_centrality.md)
 calls the
 [`null_ggm()`](https://montilab.github.io/RSNet/reference/null_ggm.md)
-function to generate the null distribution. For improved memory
+function to generate the null distribution. **For improved memory
 efficiency, users can alternatively run
 [`null_ggm()`](https://montilab.github.io/RSNet/reference/null_ggm.md)
-separately and supply its output to the `null_networks` argument.
+separately and supply its output to the `null_networks` argument.**
 
 The
 [`diff_centrality()`](https://montilab.github.io/RSNet/reference/diff_centrality.md)
@@ -176,7 +181,7 @@ diff_centrality_res <- capture_all(
     obs_networks = obs_networks,
     dat = toy_load,
     group_col = "phenotype",
-    null_networks = NULL,
+    null_networks = NULL, # can be replaced by the output from "null_ggm()"
     alternative = "two.sided",
     inference_method = "D-S_NW_SL",
     shuffle_method = "permutation",
@@ -190,7 +195,7 @@ diff_centrality_res <- capture_all(
 )
 
 diff_centrality_res %>% 
-#  dplyr::mutate(across(where(is.numeric), \(x) signif(x, digits = 3))) %>%
+  dplyr::mutate(across(where(is.numeric), \(x) signif(x, digits = 3))) %>%
   head(.) %>% 
   DT::datatable(.)
 ```
@@ -220,7 +225,7 @@ diff_gdv_res <- capture_all(
     obs_networks = obs_networks,
     dat = toy_load,
     group_col = "phenotype",
-    null_networks = NULL,
+    null_networks = NULL, # can be replaced by the output from "null_ggm()"
     sign = TRUE,
     inference_method = "D-S_NW_SL",
     shuffle_method = "permutation",
@@ -234,7 +239,7 @@ diff_gdv_res <- capture_all(
 )
 
 diff_gdv_res %>% 
-#  dplyr::mutate(across(where(is.numeric), \(x) signif(x, digits = 3))) %>%
+  dplyr::mutate(across(where(is.numeric), \(x) signif(x, digits = 3))) %>%
   head(.) %>% 
   DT::datatable(.)
 ```

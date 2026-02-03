@@ -181,8 +181,9 @@ function.</p>
 <code><a href="../reference/null_ggm.html">null_ggm()</a></code> also supports <strong>parallel
 computing</strong> for improved efficiency.</p>
 <p>In the following example, we generate two null distributions, one
-using permutation and one using bootstrap, each with five
-iterations.</p>
+using permutation and one using bootstrap, each with five iterations.
+The output from <code><a href="../reference/null_ggm.html">null_ggm()</a></code> can be used as the input of the
+<code><a href="../reference/diff_centrality.html">diff_centrality()</a></code> function in the following section.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">shuffle_iter</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
 <span></span>
@@ -225,10 +226,10 @@ centralities, etc. This functionality is implemented in the
 <code><a href="../reference/diff_centrality.html">diff_centrality()</a></code> function, which takes as input the
 observed networks。</p>
 <p>Internally, <code><a href="../reference/diff_centrality.html">diff_centrality()</a></code> calls the
-<code><a href="../reference/null_ggm.html">null_ggm()</a></code> function to generate the null distribution. For
-improved memory efficiency, users can alternatively run
+<code><a href="../reference/null_ggm.html">null_ggm()</a></code> function to generate the null distribution.
+<strong>For improved memory efficiency, users can alternatively run
 <code><a href="../reference/null_ggm.html">null_ggm()</a></code> separately and supply its output to the
-<code>null_networks</code> argument.</p>
+<code>null_networks</code> argument.</strong></p>
 <p>The <code><a href="../reference/diff_centrality.html">diff_centrality()</a></code> function supports both
 <strong>permutation-based</strong> and <strong>bootstrap-based</strong>
 randomization procedures, and allows for <strong>one-sided</strong> or
@@ -239,7 +240,7 @@ randomization procedures, and allows for <strong>one-sided</strong> or
 <span>    obs_networks <span class="op">=</span> <span class="va">obs_networks</span>,</span>
 <span>    dat <span class="op">=</span> <span class="va">toy_load</span>,</span>
 <span>    group_col <span class="op">=</span> <span class="st">"phenotype"</span>,</span>
-<span>    null_networks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    null_networks <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># can be replaced by the output from "null_ggm()"</span></span>
 <span>    alternative <span class="op">=</span> <span class="st">"two.sided"</span>,</span>
 <span>    inference_method <span class="op">=</span> <span class="st">"D-S_NW_SL"</span>,</span>
 <span>    shuffle_method <span class="op">=</span> <span class="st">"permutation"</span>,</span>
@@ -253,11 +254,11 @@ randomization procedures, and allows for <strong>one-sided</strong> or
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">diff_centrality_res</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span><span class="co">#  dplyr::mutate(across(where(is.numeric), \(x) signif(x, digits = 3))) %&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">signif</a></span><span class="op">(</span><span class="va">x</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"filter":"none","vertical":false,"data":[["SERPINA3","S100A8","RGS1","S100A9","CRH","HSPA1A"],[2,0,-1,0,-1,0],[0.3333333333333333,1,0.5,1,0.5,1],[2,0,-1,0,-1,0],[0.3333333333333333,1,0.5,1,0.5,1],[0.9909297610655974,0,0.07848131795611485,0,-0.01685973172115828,-0.01355094690837081],[0.1666666666666667,1,0.8333333333333334,1,0.8333333333333334,1],[167.5,0,-36,0,-106,-36],[0.5,1,0.5,1,0.1666666666666667,0.5],[-0.00103319783197832,0,-0.02946428571428571,0,-0.002024035420619861,0.4961977186311787],[0.1666666666666667,1,0.1666666666666667,1,0.1666666666666667,0.1666666666666667],[0.002233784945799629,-0.0001436472024707331,-0.005770096546784848,-0.0001436472024707331,-0.005284093911369773,0.00499328462710906],[0.6666666666666666,1,0.3333333333333333,1,0.1666666666666667,0.5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>degree_diff<\/th>\n      <th>degree_pval<\/th>\n      <th>strength_diff<\/th>\n      <th>strength_pval<\/th>\n      <th>eigen_diff<\/th>\n      <th>eigen_pval<\/th>\n      <th>betweenness_diff<\/th>\n      <th>betweenness_pval<\/th>\n      <th>closeness_diff<\/th>\n      <th>closeness_pval<\/th>\n      <th>pagerank_diff<\/th>\n      <th>pagerank_pval<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"degree_diff","targets":1},{"name":"degree_pval","targets":2},{"name":"strength_diff","targets":3},{"name":"strength_pval","targets":4},{"name":"eigen_diff","targets":5},{"name":"eigen_pval","targets":6},{"name":"betweenness_diff","targets":7},{"name":"betweenness_pval","targets":8},{"name":"closeness_diff","targets":9},{"name":"closeness_pval","targets":10},{"name":"pagerank_diff","targets":11},{"name":"pagerank_pval","targets":12}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"filter":"none","vertical":false,"data":[["SERPINA3","S100A8","RGS1","S100A9","CRH","HSPA1A"],[2,0,-1,0,-1,0],[0.333,1,0.5,1,0.5,1],[2,0,-1,0,-1,0],[0.333,1,0.5,1,0.5,1],[0.991,0,0.0785,0,-0.0169,-0.0136],[0.167,1,0.833,1,0.833,1],[168,0,-36,0,-106,-36],[0.5,1,0.5,1,0.167,0.5],[-0.00103,0,-0.0295,0,-0.00202,0.496],[0.167,1,0.167,1,0.167,0.167],[0.00223,-0.000144,-0.00577,-0.000144,-0.00528,0.00499],[0.667,1,0.333,1,0.167,0.5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>degree_diff<\/th>\n      <th>degree_pval<\/th>\n      <th>strength_diff<\/th>\n      <th>strength_pval<\/th>\n      <th>eigen_diff<\/th>\n      <th>eigen_pval<\/th>\n      <th>betweenness_diff<\/th>\n      <th>betweenness_pval<\/th>\n      <th>closeness_diff<\/th>\n      <th>closeness_pval<\/th>\n      <th>pagerank_diff<\/th>\n      <th>pagerank_pval<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"degree_diff","targets":1},{"name":"degree_pval","targets":2},{"name":"strength_diff","targets":3},{"name":"strength_pval","targets":4},{"name":"eigen_diff","targets":5},{"name":"eigen_pval","targets":6},{"name":"betweenness_diff","targets":7},{"name":"betweenness_pval","targets":8},{"name":"closeness_diff","targets":9},{"name":"closeness_pval","targets":10},{"name":"pagerank_diff","targets":11},{"name":"pagerank_pval","targets":12}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="section level2">
 <h2 id="differential-graphlet-degree-vectorgdv-based-distance">Differential graphlet degree vector(GDV)-based distance<a class="anchor" aria-label="anchor" href="#differential-graphlet-degree-vectorgdv-based-distance"></a>
@@ -279,7 +280,7 @@ measure.</p>
 <span>    obs_networks <span class="op">=</span> <span class="va">obs_networks</span>,</span>
 <span>    dat <span class="op">=</span> <span class="va">toy_load</span>,</span>
 <span>    group_col <span class="op">=</span> <span class="st">"phenotype"</span>,</span>
-<span>    null_networks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    null_networks <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># can be replaced by the output from "null_ggm()"</span></span>
 <span>    sign <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    inference_method <span class="op">=</span> <span class="st">"D-S_NW_SL"</span>,</span>
 <span>    shuffle_method <span class="op">=</span> <span class="st">"permutation"</span>,</span>
@@ -293,11 +294,11 @@ measure.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">diff_gdv_res</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span><span class="co">#  dplyr::mutate(across(where(is.numeric), \(x) signif(x, digits = 3))) %&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">where</span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">signif</a></span><span class="op">(</span><span class="va">x</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-e5c8c404fe174e4c81bd" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"filter":"none","vertical":false,"data":[["SERPINA3","S100A8","RGS1","S100A9","CRH","HSPA1A"],[0.4782524243354972,0,0.270082656268956,0,0.2984955107318202,0.2797495791308545],[0.1666666666666667,1,0.5,1,0.1666666666666667,0.8333333333333334],[0.2181673121681831,0,0.112840630167119,0,0.2205474010305006,0.2481459801196274],[0.5,1,0.5,1,0.6666666666666666,0.6666666666666666]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>GDV_distance<\/th>\n      <th>GDV_distance_pval<\/th>\n      <th>signed_GDV_distance<\/th>\n      <th>signed_GDV_distance_pval<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"GDV_distance","targets":1},{"name":"GDV_distance_pval","targets":2},{"name":"signed_GDV_distance","targets":3},{"name":"signed_GDV_distance_pval","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><div class="section level3">
+<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"filter":"none","vertical":false,"data":[["SERPINA3","S100A8","RGS1","S100A9","CRH","HSPA1A"],[0.478,0,0.27,0,0.298,0.28],[0.167,1,0.5,1,0.167,0.833],[0.218,0,0.113,0,0.221,0.248],[0.5,1,0.5,1,0.667,0.667]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>GDV_distance<\/th>\n      <th>GDV_distance_pval<\/th>\n      <th>signed_GDV_distance<\/th>\n      <th>signed_GDV_distance_pval<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"GDV_distance","targets":1},{"name":"GDV_distance_pval","targets":2},{"name":"signed_GDV_distance","targets":3},{"name":"signed_GDV_distance_pval","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><div class="section level3">
 <h3 id="section"></h3>
 </div>
 </div>
