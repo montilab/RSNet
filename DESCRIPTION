@@ -1,7 +1,7 @@
 Package: RSNet
 Type: Package
 Title: Resampling-Based Structure Learning for Markov and Conditional Gaussian Bayesian Networks
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: 
     c(person(given = "Ziwei",
              family = "Huang",
