@@ -37,6 +37,7 @@ ensemble_ggm <- function(dat,
   if (is.null(colnames(dat))) stop("'data' must have column names")
   if (is.null(rownames(dat))) stop("'data' must have row names")
   if (!is.null(sample_class) && !is.atomic(sample_class)) stop("'sample_class' must be an atomic vector")
+  if (num_iteration < 1) stop("'num_iteration' must be >= 1")
 
   ## Validate method
   method <- match.arg(method)
@@ -99,7 +100,9 @@ ensemble_ggm <- function(dat,
 
   ## Organize results
   partialCor_mat <- matrix(0, nrow = num_iteration, ncol = ecount)
-  z_score_partialCor <- numeric(ecount)
+  ##############################################################################
+  z_score_partialCor_mat <- matrix(0, nrow = num_iteration, ncol = ecount)
+  ##############################################################################
   baggings <- list()
 
   if (correlated){
@@ -110,7 +113,7 @@ ensemble_ggm <- function(dat,
 
     partialCor_mat[i, ] <- results[[i]]$partialCor
 
-    z_score_partialCor <- z_score_partialCor + results[[i]]$z_score_partialCor
+    z_score_partialCor_mat[i,] <- results[[i]]$z_score_partialCor
 
     baggings[[paste0("iter_", i)]] <- results[[i]]$bagging
 
@@ -119,6 +122,16 @@ ensemble_ggm <- function(dat,
     }
   }
 
+  ## adjust z-scores
+  z_score_partialCor_mat[!is.finite(z_score_partialCor_mat)] <- 0
+  z_mean <- colMeans(z_score_partialCor_mat)
+
+  if (correlated && num_iteration >= 2) {
+    z_sd <- apply(z_score_partialCor_mat, 2, stats::sd)
+    avg_z <- ifelse(is.finite(z_sd) & z_sd > 0, z_mean / z_sd, 0)
+  } else {
+    avg_z <- z_mean
+  }
 
   ## Construct output
   if (estimate_CI) {
@@ -128,7 +141,7 @@ ensemble_ggm <- function(dat,
       n = n,
       p = p,
       partialCor_mat = partialCor_mat,
-      avg_z_score_partialCor = z_score_partialCor / num_iteration,
+      avg_z_score_partialCor = avg_z,
       vids = vids,
       baggings = baggings
     )
@@ -139,7 +152,7 @@ ensemble_ggm <- function(dat,
       n = n,
       p = p,
       avg_partialCor = colMeans(partialCor_mat),
-      avg_z_score_partialCor = z_score_partialCor / num_iteration,
+      avg_z_score_partialCor = avg_z,
       vids = vids,
       baggings = baggings
     )

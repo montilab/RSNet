@@ -32,7 +32,7 @@ consensus_net_ggm <- function(ggm_networks,
   estimate_CI <- ggm_networks$estimate_CI
 
   # inference method
-  match.arg(filter)
+  filter <- match.arg(filter)
   if(!(filter %in% c("pval","fdr","none"))) stop("invalid filter!")
 
   if(!is.null(node_annot)){
@@ -41,9 +41,15 @@ consensus_net_ggm <- function(ggm_networks,
   }
 
   ## dealing with unexpected missing values
-  ggm_networks$avg_partialCor[is.na(ggm_networks$avg_partialCor)] <- 0
+  if (estimate_CI) {
+    ggm_networks$partialCor_mat[is.na(ggm_networks$partialCor_mat)] <- 0
+  } else {
+    ggm_networks$avg_partialCor[is.na(ggm_networks$avg_partialCor)] <- 0
+  }
   ggm_networks$avg_z_score_partialCor[is.na(ggm_networks$avg_z_score_partialCor)] <- 0
 
+
+  ##############################################################################
   ## estimate the p-value of each edge
   pval_pcor <- sapply(ggm_networks$avg_z_score_partialCor, .pvalue) %>%
     upper_tri_to_matrix(., variable_names = ggm_networks$vids, diagl = 1)
@@ -52,8 +58,12 @@ consensus_net_ggm <- function(ggm_networks,
   qval_pcor <- pval_pcor %>%
     matrix_p_adjust(.)
 
+  ##############################################################################
+
   ## Initialize consensus network
   if(!estimate_CI){
+
+    ## average partial correlation and estimate the p-value of each edge
     pcor_avg <- ggm_networks$avg_partialCor %>%
       round(.,2) %>%
       upper_tri_to_matrix(., variable_names = ggm_networks$vids, diagl = 1)
@@ -88,6 +98,8 @@ consensus_net_ggm <- function(ggm_networks,
     consensus_network <- apply(consensus_network, c(1,2), .abs_pcor_filter, pos_cut, neg_cut)
   }
 
+
+  ##############################################################################
   ## further filtering by significance
   if(filter == "fdr"){
     consensus_network[qval_pcor >= threshold] <- 0
@@ -95,6 +107,7 @@ consensus_net_ggm <- function(ggm_networks,
   if(filter == "pval"){
     consensus_network[pval_pcor >= threshold] <- 0
   }
+  ##############################################################################
 
   ## diagonal to 0 before creating igraph object
   diag(consensus_network) <- 0
@@ -113,9 +126,10 @@ consensus_net_ggm <- function(ggm_networks,
       tibble::rownames_to_column(var='id') %>%
       dplyr::left_join(node_annot, by='id') %>%
       dplyr::pull(symbol)
-
-    row.names(pcor_CI) <- igraph::V(consensus_network)$symbol
-    colnames(pcor_CI) <- igraph::V(consensus_network)$symbol
+    if(estimate_CI){
+      row.names(pcor_CI) <- igraph::V(consensus_network)$symbol
+      colnames(pcor_CI) <- igraph::V(consensus_network)$symbol
+    }
   }
 
   if(estimate_CI){
