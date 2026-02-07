@@ -67,8 +67,8 @@
 </ol>
 <p>For Gaussian networks, <strong>RSNet</strong> further provides cluster-based sampling options specifically designed to accommodate correlated or family-based data, including:</p>
 <ol style="list-style-type: decimal">
-<li>Cluster-based bootstrap.</li>
-<li>Fractional cluster-based bootstrap.</li>
+<li>Cluster-based bootstrap, which resamples entire clusters with replacement to preserve intra-cluster dependence.</li>
+<li>Fractional cluster-based bootstrap, which resamples only a subset of clusters with replacement, offering improved computational efficiency while retaining cluster-level correlation structure.</li>
 </ol>
 <p>Beyond structure learning, <strong>RSNet</strong> includes a suite of network analysis tools containing standard network metrics, graphlet-based analysis, and differential connectivity analysis.</p>
 <p>The overall workflow is illustrated in the following diagram: <img src="reference/figures/flowchart.png" width="80%" height="80%"></p>
@@ -110,18 +110,16 @@
 <p>In this example, we use the simulated dataset as input and perform bootstrap resampling (<code>boot = TRUE</code>) with 100 iterations (<code>num_iteration = 100</code>). To estimate empirical confidence intervals for each edge, set <code>estimate_CI = TRUE</code>; for improved memory efficiency, this option can be disabled (<code>estimate_CI = FALSE</code>). Both <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code> and the optional <code><a href="reference/ensemble_cgbn.html">ensemble_cgbn()</a></code> functions support parallel computation through the <code>n_cores</code> parameter.</p>
 <p>The wrapper function <code><a href="reference/capture_all.html">capture_all()</a></code> can be used to suppress messages generated during the execution of <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ensemble_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/capture_all.html">capture_all</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="reference/ensemble_ggm.html">ensemble_ggm</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">toy_er</span><span class="op">$</span><span class="va">dat</span>,     <span class="co"># A n x p dataframe/matrix</span></span>
-<span>               num_iteration <span class="op">=</span> <span class="fl">100</span>,  <span class="co"># Number of resampling iteration</span></span>
-<span>               boot <span class="op">=</span> <span class="cn">TRUE</span>,          <span class="co"># If FALSE, perform sub-sampling</span></span>
-<span>               sub_ratio <span class="op">=</span> <span class="cn">NULL</span>,     <span class="co"># Subsampling ratio (0–1)</span></span>
-<span>               sample_class <span class="op">=</span> <span class="cn">NULL</span>,  <span class="co"># Optional: for stratified sampling</span></span>
-<span>               correlated <span class="op">=</span> <span class="cn">FALSE</span>,   <span class="co"># If TRUE, then clusted-based resampling is performed</span></span>
-<span>               cluster_ratio <span class="op">=</span> <span class="fl">1</span>,    <span class="co"># Used only when `correlated = TRUE`</span></span>
-<span>               estimate_CI <span class="op">=</span> <span class="cn">TRUE</span>,   <span class="co"># If TRUE, estimate the empirical confidence interval</span></span>
-<span>               method <span class="op">=</span> <span class="st">"D-S_NW_SL"</span>, <span class="co"># Inference method</span></span>
-<span>               n_cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>          <span class="co"># Number of cores for parallel computing</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ensemble_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/capture_all.html">capture_all</a></span><span class="op">(</span><span class="fu"><a href="reference/ensemble_ggm.html">ensemble_ggm</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">toy_er</span><span class="op">$</span><span class="va">dat</span>, <span class="co"># A n x p dataframe/matrix</span></span>
+<span>                                        num_iteration <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Number of resampling iteration</span></span>
+<span>                                        boot <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If FALSE, perform sub-sampling</span></span>
+<span>                                        sub_ratio <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Subsampling ratio (0–1)</span></span>
+<span>                                        sample_class <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Optional: for stratified sampling</span></span>
+<span>                                        correlated <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># If TRUE, then clusted-based resampling is performed</span></span>
+<span>                                        cluster_ratio <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Used only when `correlated = TRUE`</span></span>
+<span>                                        estimate_CI <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># If TRUE, estimate the empirical confidence interval</span></span>
+<span>                                        method <span class="op">=</span> <span class="st">"D-S_NW_SL"</span>, <span class="co"># Inference method</span></span>
+<span>                                        n_cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="co"># Number of cores for parallel computing</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="iv-consensus-network-construction">(iv) Consensus network construction<a class="anchor" aria-label="anchor" href="#iv-consensus-network-construction"></a>
@@ -129,12 +127,10 @@
 <p>We then integrate the ensemble of inferred networks to construct a consensus network, designed to filter out spurious edges introduced by noise and to facilitate downstream analyses. The <code><a href="reference/consensus_net_ggm.html">consensus_net_ggm()</a></code> function takes the output of <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code> as its primary input, while the optional <code><a href="reference/consensus_net_cgbn.html">consensus_net_cgbn()</a></code> function operates on the output of <code><a href="reference/ensemble_cgbn.html">ensemble_cgbn()</a></code>.</p>
 <p>Edges in the consensus network can be filtered based on their significance using the filter parameter: nominal p-value (<code>filter = "pval"</code>), Benjamini–Hochberg adjusted p-value (<code>filter = "fdr"</code>), or no filtering (<code>filter = "none"</code>). If <code>estimate_CI = TRUE</code> was specified in the <code><a href="reference/ensemble_ggm.html">ensemble_ggm()</a></code> step, edges whose confidence intervals include zero are automatically excluded.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">consensus_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/consensus_net_ggm.html">consensus_net_ggm</a></span><span class="op">(</span></span>
-<span>  ggm_networks <span class="op">=</span> <span class="va">ensemble_er</span>, <span class="co"># The output of "ensemble_ggm()"</span></span>
-<span>  CI <span class="op">=</span> <span class="fl">0.95</span>,                  <span class="co"># Confidence interval</span></span>
-<span>  filter <span class="op">=</span> <span class="st">"pval"</span>,            <span class="co"># Filter method</span></span>
-<span>  threshold <span class="op">=</span> <span class="fl">0.05</span>            <span class="co"># Significant level of the selected filter</span></span>
-<span><span class="op">)</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">consensus_er</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/consensus_net_ggm.html">consensus_net_ggm</a></span><span class="op">(</span>ggm_networks <span class="op">=</span> <span class="va">ensemble_er</span>, <span class="co"># The output of "ensemble_ggm()"</span></span>
+<span>                                  CI <span class="op">=</span> <span class="fl">0.95</span>, <span class="co"># Confidence interval</span></span>
+<span>                                  filter <span class="op">=</span> <span class="st">"pval"</span>, <span class="co"># Filter method</span></span>
+<span>                                  threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="co"># Significant level of the selected filter</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="v-interactive-visualization">(v) Interactive visualization<a class="anchor" aria-label="anchor" href="#v-interactive-visualization"></a>
@@ -148,14 +144,13 @@
 <li><p>Both <code>lower_quantile</code> and <code>upper_quantile</code> are included in the edge attributes</p></li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_cn.html">plot_cn</a></span><span class="op">(</span></span>
-<span>  ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>, <span class="co"># An "igraph" object</span></span>
-<span>  query <span class="op">=</span> <span class="cn">NULL</span>,                        <span class="co"># Node of interests, NULL or a character vector</span></span>
-<span>  order <span class="op">=</span> <span class="fl">1</span>,                           <span class="co"># Order of neighbors</span></span>
-<span>  edge_label <span class="op">=</span> <span class="st">"pcor"</span>,                 <span class="co"># The edge attribute to be shown</span></span>
-<span>  CI_show <span class="op">=</span> <span class="cn">TRUE</span>,                      <span class="co"># Show empirical confidence interval</span></span>
-<span>  main <span class="op">=</span> <span class="st">"Example"</span>                     <span class="co"># Title</span></span>
-<span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot_cn.html">plot_cn</a></span><span class="op">(</span>ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>, <span class="co"># An "igraph" object</span></span>
+<span>             query <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Node of interests, NULL or a character vector</span></span>
+<span>             order <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Order of neighbors</span></span>
+<span>             edge_label <span class="op">=</span> <span class="st">"pcor"</span>, <span class="co"># The edge attribute to be shown</span></span>
+<span>             CI_show <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Show empirical confidence interval</span></span>
+<span>             main <span class="op">=</span> <span class="st">"Example"</span><span class="op">)</span> <span class="co"># Title</span></span>
+<span></span>
 <span></span>
 <span><span class="va">p</span><span class="op">$</span><span class="va">p</span></span></code></pre></div>
 <p><img src="./reference/figures/unnamed-chunk-7-1.png"><!-- --></p>
@@ -163,16 +158,14 @@
 <div class="section level2">
 <h2 id="vi-centrality-analysis">(vi) Centrality analysis<a class="anchor" aria-label="anchor" href="#vi-centrality-analysis"></a>
 </h2>
-<p><strong>Centrality analysis</strong> is a classical approach in network analysis used to quantify the relative importance or influence of individual nodes within a network. <strong>RSNet</strong> implements this functionality through the <code><a href="reference/centrality.html">centrality()</a></code> function, which computes several commonly used centrality measures, including <strong>degree</strong>, <strong>strength</strong>, <strong>eigenvector</strong>, <strong>betweenness</strong>, <strong>closeness</strong>, and <strong>PageRank</strong> centralities, using an <code>igraph</code> object as input. For weighted networks, users can specify the <code>weight</code> parameter to indicate the edge attribute representing the desired weighting scheme.</p>
+<p><strong>Centrality analysis</strong> is a classical approach in network analysis used to quantify the relative importance or influence of individual nodes within a network. <strong>RSNet</strong> implements this functionality through the <code><a href="reference/centrality.html">centrality()</a></code> function, which computes several commonly used centrality measures, including <strong>degree</strong>, <strong>strength (weighted degree)</strong>, <strong>eigenvector</strong>, <strong>betweenness</strong>, <strong>closeness</strong>, and <strong>PageRank</strong> centralities, using an <code>igraph</code> object as input. For weighted networks, users can specify the <code>weight</code> parameter to indicate the edge attribute representing the desired weighting scheme.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/centrality.html">centrality</a></span><span class="op">(</span></span>
-<span>  ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>,</span>
-<span>  weight <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">.</span>, <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/centrality.html">centrality</a></span><span class="op">(</span>ig <span class="op">=</span> <span class="va">consensus_er</span><span class="op">$</span><span class="va">consensus_network</span>,</span>
+<span>           weight <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">.</span>, <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <p><img src="./reference/figures/unnamed-chunk-8-1.png"><!-- --></p>
 </div>
