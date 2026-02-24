@@ -1,2 +1,19 @@
-# Declare known global variables used in NSE (e.g., magrittr, dplyr)
-utils::globalVariables(c("."))
+# Declare known global variables/functions used via NSE in tidy evaluation.
+utils::globalVariables(
+  c(
+    ".",
+    ":=",
+    "color",
+    "community",
+    "counts",
+    "ID",
+    "lower_quantile",
+    "n",
+    "name",
+    "node_id",
+    "pcor",
+    "symbol",
+    "upper_quantile",
+    "value"
+  )
+)

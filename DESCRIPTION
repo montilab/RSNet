@@ -40,12 +40,12 @@ Imports:
     magrittr,
     dplyr,
     tidyr,
-    stringr,
-    DT,
-    proxy
+    stringr
 Suggests:
     RHugin,
     tidyverse,
+    DT,
+    proxy,
     devtools,
     rmarkdown,
     knitr,

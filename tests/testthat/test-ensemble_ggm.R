@@ -26,8 +26,8 @@ test_that("ensemble_ggm returns expected output",{
 
   testthat::expect_type(ensemble_networks$partialCor_mat,"double")
   testthat::expect_type(ensemble_networks$avg_z_score_partialCor,"double")
-  testthat::expect_type(ensemble_networks$bagging,"list")
-  testthat::expect_length(ensemble_networks$bagging, 10L)
+  testthat::expect_type(ensemble_networks[["baggings"]],"list")
+  testthat::expect_length(ensemble_networks[["baggings"]], 10L)
 
   ## Consensus Network
   cons_network <- consensus_net_ggm(ggm_networks = ensemble_networks,
