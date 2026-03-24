@@ -20,20 +20,24 @@
 #' gdv1 <- matrix(runif(50), nrow = 10)
 #' gdv2 <- matrix(runif(50), nrow = 10)
 #' rownames(gdv1) <- rownames(gdv2) <- paste0("node", 1:10)
-#' paired_gdv_dist(gdvm1 = gdv1, gdvm2 = gdv2)
+#' paired_gdv_distance(gdvm1 = gdv1, gdvm2 = gdv2)
 #' }
 #' @export
 paired_gdv_distance <- function(gdvm1, gdvm2) {
 
   # --- Input validation -------------------------------------------------------
 
-  if (!is.matrix(gdvm1) || !is.matrix(gdvm2)) {
+  if (!(is.matrix(gdvm1) || is.data.frame(gdvm1)) ||
+      !(is.matrix(gdvm2) || is.data.frame(gdvm2))) {
     stop("'gdvm1' and 'gdvm2' must both be matrices or data frames.", call. = FALSE)
   }
 
   if (is.null(rownames(gdvm1)) || is.null(rownames(gdvm2))) {
     stop("Both 'gdvm1' and 'gdvm2' must have row names representing node IDs.", call. = FALSE)
   }
+
+  gdvm1 <- as.matrix(gdvm1)
+  gdvm2 <- as.matrix(gdvm2)
 
   # --- Align and match nodes --------------------------------------------------
   inter_rows <- intersect(rownames(gdvm1), rownames(gdvm2))

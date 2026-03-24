@@ -37,7 +37,9 @@ consensus_net_ggm <- function(ggm_networks,
 
   if(!is.null(node_annot)){
     if(!is.data.frame(node_annot)) stop(" 'node_annot ' must be a data frame")
-    if(!(c("id","symbol") %in% colnames(node_annot))) stop(" 'node_annot ' must contains 'id' and 'symbol' column ")
+    if(!all(c("id", "symbol") %in% colnames(node_annot))) {
+      stop(" 'node_annot ' must contains 'id' and 'symbol' column ")
+    }
   }
 
   ## dealing with unexpected missing values

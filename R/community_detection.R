@@ -86,7 +86,7 @@ community_detection <- function(ig,
 
   set.seed(1)
   if(igraph::is_weighted(igs$ig)){
-    weights <- igraph::E(igs$ig)$weights
+    weights <- igraph::E(igs$ig)$weight
   }else{
     weights <- NULL
   }
@@ -129,7 +129,7 @@ community_detection <- function(ig,
 
   set.seed(1)
   if(igraph::is_weighted(igs$ig)){
-    weights <- igraph::E(igs$ig)$weights
+    weights <- igraph::E(igs$ig)$weight
   }else{
     weights <- NULL
   }
@@ -175,7 +175,7 @@ community_detection <- function(ig,
 
   set.seed(1)
   if(igraph::is_weighted(igs$ig)){
-    weights <- igraph::E(igs$ig)$weights
+    weights <- igraph::E(igs$ig)$weight
   }else{
     weights <- NULL
   }

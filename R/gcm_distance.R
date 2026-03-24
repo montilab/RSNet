@@ -13,7 +13,7 @@ gcm_distance <- function(gcm1, gcm2){
   stopifnot(nrow(gcm1) == ncol(gcm1))
 
   v1 <- gcm1[upper.tri(gcm1)]
-  v2 <- gcm1[upper.tri(gcm2)]
+  v2 <- gcm2[upper.tri(gcm2)]
 
   return(.euclidean_pairwise_complete_obs(v1, v2))
 }
