@@ -42,6 +42,6 @@ if (FALSE) { # \dontrun{
 gdv1 <- matrix(runif(50), nrow = 10)
 gdv2 <- matrix(runif(50), nrow = 10)
 rownames(gdv1) <- rownames(gdv2) <- paste0("node", 1:10)
-paired_gdv_dist(gdvm1 = gdv1, gdvm2 = gdv2)
+paired_gdv_distance(gdvm1 = gdv1, gdvm2 = gdv2)
 } # }
 ```
