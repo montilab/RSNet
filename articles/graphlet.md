@@ -27,6 +27,7 @@ corresponding orbits.
 ## Load packages
 
 ``` r
+
 library(RSNet)
 library(igraph)
 library(DT)
@@ -39,12 +40,12 @@ library(dplyr)
 
 Since there are eight graphlets and fifteen automorphism orbits for
 2–4-node graphlets, the local structural characteristics of a node
-$v_{i}$ can be represented by a **Graphlet Degree Vector (GDV)** of
-length 15, where $GVD_{j}^{i}$ denotes the frequency with which node $i$
-touches orbit $j$. Therefore,the entire network can be represented as an
-$n \times 15$ matrix, where $n$ is the number of nodes in the network.
-This matrix is referred to as the **Graphlet Degree Vector Matrix
-(GDVM)**.
+$`v_{i}`$ can be represented by a **Graphlet Degree Vector (GDV)** of
+length 15, where $`GVD^{i}_{j}`$ denotes the frequency with which node
+$`i`$ touches orbit $`j`$. Therefore,the entire network can be
+represented as an $`n \times 15`$ matrix, where $`n`$ is the number of
+nodes in the network. This matrix is referred to as the **Graphlet
+Degree Vector Matrix (GDVM)**.
 
 ### Example of an unsigned network
 
@@ -70,16 +71,17 @@ orbits may introduce noise, as demonstrated by [Yaveroğlu, Ömer Nebil,
 et al](https://www.nature.com/articles/srep04547).
 
 For node `1` in this dummy network, the degree is 3, corresponding to
-three counts in orbit $O_{0}$. It also has five counts in orbit $O_{1}$,
-corresponding to the subgraphs 1–3–5, 1–3–4, 1–3–6, 1–2–4, and 1–7–6.
-Additionally, node `1`has three counts in orbit $O_{2}$, represented by
-the subgraphs 2–1–7, 2–1–6, and 7–1–3. The counts across all fifteen
-orbits associated with node `1` are recorded in the first row of the
-GDVM.
+three counts in orbit $`O_{0}`$. It also has five counts in orbit
+$`O_{1}`$, corresponding to the subgraphs 1–3–5, 1–3–4, 1–3–6, 1–2–4,
+and 1–7–6. Additionally, node `1`has three counts in orbit $`O_{2}`$,
+represented by the subgraphs 2–1–7, 2–1–6, and 7–1–3. The counts across
+all fifteen orbits associated with node `1` are recorded in the first
+row of the GDVM.
 
 #### Dummy network
 
 ``` r
+
 ig <- igraph::graph(edges = c(1,2, 1,3, 1,7, 2,4, 3,4, 3,5, 3,6, 4,5, 5,6, 6,7), directed = FALSE)
 plot(ig)
 ```
@@ -89,6 +91,7 @@ plot(ig)
 #### Graphlet degree vector matrix (GDVM)
 
 ``` r
+
 suppressWarnings(
   gdvm_gcm(ig,
     level = "4",
@@ -109,13 +112,12 @@ extended to **signed networks**. However, this extension is
 computationally more demanding, and currently no R packages provide
 functionality for constructing GDVMs for signed networks. A brute-force
 enumeration approach has computational complexity exceeding
-$O\left( p^{3} \right)$, where $p$ is the network size.
+$`O(p^{3})`$, where $`p`$ is the network size.
 
 **RSNet** overcomes this limitation by integrating state-of-the-art
 graphlet counting algorithms with parallel computing, enabling efficient
-construction of signed GDVMs in $O( \mid d \mid )$, where
-$\mid d \mid$is the average degree, resulting near-constant time
-complexity for sparse networks.
+construction of signed GDVMs in $`O(∣d∣)`$, where $`∣d∣`$is the average
+degree, resulting near-constant time complexity for sparse networks.
 
 The function `signed_gdv_gcm()` takes an `igraph` object as input and
 computes the GDV of each node for graphlets of up to three nodes.
@@ -131,6 +133,7 @@ graphlets.
 #### Dummy network
 
 ``` r
+
 signed_ig <- igraph::graph(edges = c(1,2, 1,3, 1,7, 2,4, 3,4, 3,5, 3,6, 4,5, 5,6, 6,7), directed = FALSE)
 E(signed_ig)$sign <- c(-1,1,-1,1,-1,1,1,1,1,-1)
 E(signed_ig)$lty <- ifelse(E(signed_ig)$sign == -1, "dashed", "solid")
@@ -142,6 +145,7 @@ plot(signed_ig, edge.lty = E(signed_ig)$lty)
 #### Graphlet degree vector matrix (GDVM)
 
 ``` r
+
 suppressWarnings(
   signed_gdvm_gcm(signed_ig,
     n_cores = 1,
@@ -179,6 +183,7 @@ For demonstration purposes, we illustrate how to compute the GDV
 distance between nodes `1` and `3` in the unsigned dummy network.
 
 ``` r
+
 ## Compute the unsigned GDVM
 gdvm <- suppressWarnings(
   gdvm_gcm(ig,
@@ -197,20 +202,20 @@ print(paste("The GDV distance between node 1 and 3 is :", round(dist_13, 4)))
 ## Graphlet correlation matrix (GCM)
 
 The **Graphlet Correlation Matrix (GCM)** is another key application of
-the **Graphlet Degree Vector Matrix (GDVM)**.Given an $n \times O$ GDVM,
-the GCM is constructed by computing the pairwise **Spearman
+the **Graphlet Degree Vector Matrix (GDVM)**.Given an $`n \times O`$
+GDVM, the GCM is constructed by computing the pairwise **Spearman
 correlations** between the columns of the GDVM. This produces an
-$O \times O$ matrix that captures the correlations between different
+$`O \times O`$ matrix that captures the correlations between different
 orbits. The GCM is recognized as a state-of-the-art measure for
 quantifying **topological distance** between networks.
 
 The GCM can also be interpreted as a **network embedding framework**,
-encoding a network of arbitrary size into an $O \times O$ matrix with
+encoding a network of arbitrary size into an $`O \times O`$ matrix with
 entries ranging between –1 and 1. This representation enables the
 comparison of networks of different sizes on a common scale.
-Consequently, for any two networks $G$ and $H$, their distance is
+Consequently, for any two networks $`G`$ and $`H`$, their distance is
 defined by taking he Euclidean distance of the upper triangle values of
-$GCM_{G}$ and $GCM_{H}$. More details can be found in the work of
+$`GCM_{G}`$ and $`GCM_{H}`$. More details can be found in the work of
 [Yaveroğlu et al](https://www.nature.com/articles/srep04547).
 
 The GCM can be computed using the function
@@ -243,6 +248,7 @@ networks within the same class, highlighting the discriminative power of
 the GCM.
 
 ``` r
+
 set.seed(66)
 ## Create 3 random networks with n = 100 with edge_density = 0.01, 0.015, 0.02
 N <- c(100,100,100)

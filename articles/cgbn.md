@@ -18,11 +18,11 @@ Starting from a complete graph, edges are iteratively removed when
 conditional independence between variable pairs is detected given
 appropriate conditioning sets. A key step in orienting edges in the
 resulting partially directed graph is the identification of
-**v-structures**, of the form
-$\left. X\rightarrow Z\leftarrow Y \right.$. A v-structure is inferred
-when two variables $X$ and $Y$ are marginally independent but become
-conditionally dependent upon conditioning on a third variable $Z$, as
-illustrated in the following figure:
+**v-structures**, of the form $`X \rightarrow Z \leftarrow Y`$. A
+v-structure is inferred when two variables $`X`$ and $`Y`$ are
+marginally independent but become conditionally dependent upon
+conditioning on a third variable $`Z`$, as illustrated in the following
+figure:
 
 ![](figs/v_structure.png)
 
@@ -33,7 +33,7 @@ given node, its Markov blanket consists of its **parents**, its
 **children**, and its **spouses** (i.e., the other parents of its
 children). As illustrated in the following figure, we use **yellow**,
 **orange**, and **red** to denote the parents, spouses, and children of
-node $X$, respectively.
+node $`X`$, respectively.
 
 ![](figs/markov_blanket.png)
 
@@ -61,6 +61,7 @@ and
 ## Load packages
 
 ``` r
+
 library(RSNet)
 ```
 
@@ -72,6 +73,7 @@ mixed-type dataset suitable for conditional Gaussian Bayesian network
 analysis.
 
 ``` r
+
 data("toy_cgbn")
 ```
 
@@ -91,6 +93,7 @@ The function
 also supports parallel computing.
 
 ``` r
+
 ensemble_toy <- ensemble_cgbn(
   dat = toy_cgbn,      # A n x p dataframe
   discrete_variable = sprintf("D%d", 1:5), # Column names of the discrete variables
@@ -119,6 +122,7 @@ Bayesian networks (CGBNs) supports two complementary approaches:
     stable dependency patterns rather than directionality.
 
 ``` r
+
 ## Directed consensus network (method = "all")
 ## A simple way to generate a reference network is to set: num_iteration = 1, boot = FALSE, sub_ratio = 1
 reference_network <- ensemble_cgbn(
