@@ -10,7 +10,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/montilab/RSNet/blob/joss26/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/montilab/RSNet/blob/main/DESCRIPTION)
 
 Huang Z, Monti S (2026). *RSNet: Resampling-Based Structure Learning for
 Markov and Conditional Gaussian Bayesian Networks*. R package version

@@ -1,8 +1,12 @@
 # RSNet
 
-![build](https://github.com/montilab/RSNet/workflows/rcmdcheck/badge.svg)![Gitter](https://img.shields.io/gitter/room/montilab/RSNet)![GitHub
-issues](https://img.shields.io/github/issues/montilab/RSNet)![GitHub
-last commit](https://img.shields.io/github/last-commit/montilab/RSNet)
+[![build](https://github.com/montilab/RSNet/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/montilab/RSNet/actions/workflows/R-CMD-check.yaml)
+[![Gitter](https://img.shields.io/gitter/room/montilab/RSNet)](https://gitter.im/montilab/RSNet)
+[![GitHub
+issues](https://img.shields.io/github/issues/montilab/RSNet)](https://github.com/montilab/RSNet/issues)
+[![GitHub last
+commit](https://img.shields.io/github/last-commit/montilab/RSNet)](https://github.com/montilab/RSNet)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20122935.svg)](https://doi.org/10.5281/zenodo.20122935)
 
 **RSNet** is an R package that implements a resampling-based framework
 for structure learning and analysis of partial correlation networks
