@@ -34,7 +34,7 @@
 #'     \item If \code{shuffle_method == "permutation"}: \eqn{p x (2k)} with
 #'       columns \code{<stat>_diff}, \code{<stat>_pval}.
 #'     \item If \code{shuffle_method == "bootstrap"}: \eqn{p x (3k)} with
-#'       columns \code{<stat>_diff}, \code{<stat>_pval}, \code{<stat>_95pct_CI}.
+#'       columns \code{<stat>_diff}, \code{<stat>_pval}, \code{<stat>_95\%_CI}.
 #'       (The CI level is fixed at 95 percent in the current implementation.)
 #'   }
 #'
@@ -345,7 +345,7 @@ diff_centrality <- function(obs_networks,
   })
   res <- do.call(cbind, blocks)
   colnames(res) <- as.vector(unlist(lapply(stats, function(s)
-    paste0(s, c("_diff", "_pval", "_", ci_label))
+    paste0(s, c("_diff", "_pval", paste0("_", ci_label)))
   )))
   rownames(res) <- subject_symbols
 

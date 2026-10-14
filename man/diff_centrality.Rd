@@ -62,7 +62,7 @@ A \code{data.frame} with rows corresponding to nodes (row names taken
     \item If \code{shuffle_method == "permutation"}: \eqn{p x (2k)} with
       columns \code{<stat>_diff}, \code{<stat>_pval}.
     \item If \code{shuffle_method == "bootstrap"}: \eqn{p x (3k)} with
-      columns \code{<stat>_diff}, \code{<stat>_pval}, \code{<stat>_95pct_CI}.
+      columns \code{<stat>_diff}, \code{<stat>_pval}, \code{<stat>_95\%_CI}.
       (The CI level is fixed at 95 percent in the current implementation.)
   }
 }

@@ -105,5 +105,5 @@ the centrality matrices) and columns interleaved by statistic:
   `<stat>_diff`, `<stat>_pval`.
 
 - If `shuffle_method == "bootstrap"`: \\p x (3k)\\ with columns
-  `<stat>_diff`, `<stat>_pval`, `<stat>_95pct_CI`. (The CI level is
+  `<stat>_diff`, `<stat>_pval`, `<stat>_95%_CI`. (The CI level is
   fixed at 95 percent in the current implementation.)
